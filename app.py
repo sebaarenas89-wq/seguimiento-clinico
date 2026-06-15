@@ -1,14 +1,25 @@
 import streamlit as st
 import pandas as pd
+from datetime import date
 
 st.set_page_config(
     page_title="Seguimiento Clínico",
     layout="wide"
 )
 
-# Base temporal de pacientes
+# --------------------------
+# BASE TEMPORAL
+# --------------------------
+
 if "pacientes" not in st.session_state:
     st.session_state.pacientes = []
+
+if "evoluciones" not in st.session_state:
+    st.session_state.evoluciones = []
+
+# --------------------------
+# TÍTULO Y MENÚ
+# --------------------------
 
 st.title("🏥 Seguimiento Clínico Farmacéutico")
 
@@ -18,7 +29,7 @@ menu = st.sidebar.radio(
 )
 
 # --------------------------
-# INGRESO DE PACIENTES
+# PACIENTES
 # --------------------------
 
 if menu == "Pacientes":
@@ -32,13 +43,7 @@ if menu == "Pacientes":
         id_paciente = st.text_input("ID paciente")
         servicio = st.selectbox(
             "Servicio",
-            [
-                "UCI",
-                "UTI",
-                "UCO",
-                "Medicina",
-                "Cirugía"
-            ]
+            ["UCI", "UTI", "UCO", "Medicina", "Cirugía"]
         )
 
     with col2:
@@ -47,31 +52,28 @@ if menu == "Pacientes":
 
     if st.button("Guardar paciente"):
 
-        st.session_state.pacientes.append(
-            {
+        if nombre == "" or id_paciente == "":
+            st.error("Debe ingresar nombre e ID del paciente")
+
+        else:
+            nuevo_paciente = {
                 "Nombre": nombre,
                 "ID": id_paciente,
                 "Servicio": servicio,
                 "Ingreso": fecha_ingreso,
                 "Diagnósticos": diagnosticos
             }
-        )
 
-        st.success("Paciente guardado correctamente")
+            st.session_state.pacientes.append(nuevo_paciente)
+            st.success("Paciente guardado correctamente")
 
     st.divider()
 
     st.subheader("Pacientes registrados")
 
     if len(st.session_state.pacientes) > 0:
-
         df = pd.DataFrame(st.session_state.pacientes)
-
-        st.dataframe(
-            df,
-            use_container_width=True
-        )
-
+        st.dataframe(df, use_container_width=True)
     else:
         st.info("No existen pacientes registrados")
 
@@ -84,15 +86,10 @@ elif menu == "Ficha clínica":
     st.header("📋 Ficha clínica")
 
     if len(st.session_state.pacientes) == 0:
-
-        st.warning("No existen pacientes")
+        st.warning("No existen pacientes registrados")
 
     else:
-
-        nombres = [
-            p["Nombre"]
-            for p in st.session_state.pacientes
-        ]
+        nombres = [p["Nombre"] for p in st.session_state.pacientes]
 
         paciente = st.selectbox(
             "Seleccione paciente",
@@ -100,26 +97,117 @@ elif menu == "Ficha clínica":
         )
 
         datos = next(
-            p
-            for p in st.session_state.pacientes
+            p for p in st.session_state.pacientes
             if p["Nombre"] == paciente
         )
 
-        st.write("### Datos generales")
+        st.subheader(datos["Nombre"])
 
-        st.write(f"**Nombre:** {datos['Nombre']}")
-        st.write(f"**ID:** {datos['ID']}")
-        st.write(f"**Servicio:** {datos['Servicio']}")
-        st.write(f"**Diagnósticos:** {datos['Diagnósticos']}")
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            st.metric("Servicio", datos["Servicio"])
+
+        with col2:
+            st.metric("ID paciente", datos["ID"])
+
+        with col3:
+            st.metric("Fecha ingreso", str(datos["Ingreso"]))
+
+        st.write("### Diagnósticos")
+        st.info(datos["Diagnósticos"])
+
+        st.divider()
+
+        st.write("### Evoluciones registradas")
+
+        evoluciones_paciente = [
+            e for e in st.session_state.evoluciones
+            if e["Paciente"] == paciente
+        ]
+
+        if len(evoluciones_paciente) > 0:
+            df_evo = pd.DataFrame(evoluciones_paciente)
+            st.dataframe(df_evo, use_container_width=True)
+        else:
+            st.info("Este paciente aún no tiene evoluciones registradas")
 
 # --------------------------
-# EVOLUCIÓN
+# EVOLUCIÓN DIARIA
 # --------------------------
 
 elif menu == "Evolución diaria":
 
-    st.header("📝 Evolución diaria")
+    st.header("📝 Evolución clínica diaria")
 
-    st.info(
-        "Aquí construiremos la evolución clínica diaria."
-    )
+    if len(st.session_state.pacientes) == 0:
+        st.warning("Debe ingresar al menos un paciente antes de registrar evolución")
+
+    else:
+        nombres = [p["Nombre"] for p in st.session_state.pacientes]
+
+        paciente = st.selectbox(
+            "Paciente",
+            nombres
+        )
+
+        fecha_evolucion = st.date_input(
+            "Fecha evolución",
+            value=date.today()
+        )
+
+        evolucion_clinica = st.text_area(
+            "Evolución clínica",
+            height=150
+        )
+
+        resultados_laboratorio = st.text_area(
+            "Resultados laboratorio",
+            height=120
+        )
+
+        resultados_microbiologia = st.text_area(
+            "Resultados microbiología",
+            height=120
+        )
+
+        antimicrobianos_activos = st.text_area(
+            "Antimicrobianos activos",
+            height=100
+        )
+
+        intervencion_farmaceutica = st.text_area(
+            "Intervención farmacéutica",
+            height=120
+        )
+
+        if st.button("Guardar evolución"):
+
+            nueva_evolucion = {
+                "Paciente": paciente,
+                "Fecha": fecha_evolucion,
+                "Evolución clínica": evolucion_clinica,
+                "Resultados laboratorio": resultados_laboratorio,
+                "Resultados microbiología": resultados_microbiologia,
+                "Antimicrobianos activos": antimicrobianos_activos,
+                "Intervención farmacéutica": intervencion_farmaceutica
+            }
+
+            st.session_state.evoluciones.append(nueva_evolucion)
+
+            st.success("Evolución guardada correctamente")
+
+        st.divider()
+
+        st.subheader("Evoluciones del paciente")
+
+        evoluciones_paciente = [
+            e for e in st.session_state.evoluciones
+            if e["Paciente"] == paciente
+        ]
+
+        if len(evoluciones_paciente) > 0:
+            df = pd.DataFrame(evoluciones_paciente)
+            st.dataframe(df, use_container_width=True)
+        else:
+            st.info("No hay evoluciones registradas para este paciente")
