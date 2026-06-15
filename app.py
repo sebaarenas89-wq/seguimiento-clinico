@@ -137,6 +137,7 @@ elif menu == "Ficha clínica":
     for evo in evoluciones_paciente:
 
         with st.container(border=True):
+
             st.subheader(f"📅 {evo['Fecha']}")
 
             st.markdown("**Evolución clínica**")
