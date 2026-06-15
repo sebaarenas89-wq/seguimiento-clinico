@@ -286,7 +286,7 @@ elif menu == "Ficha clínica":
 
         if len(evoluciones_df) > 0:
             for _, evo in evoluciones_df.iterrows():
-                with st.container(border=True):
+                with st.expander(f"📅 {evo['fecha']}"):
                     st.subheader(f"📅 {evo['fecha']}")
 
                     st.markdown("**Evolución clínica**")
@@ -303,6 +303,65 @@ elif menu == "Ficha clínica":
 
                     st.markdown("**Intervención farmacéutica**")
                     st.write(evo["intervencion_farmaceutica"])
+                    with st.expander("✏️ Editar evolución"):
+
+                        nueva_fecha = st.date_input(
+                            "Fecha",
+                            value=pd.to_datetime(evo["fecha"]).date(),
+                            key=f"fecha_{evo['id']}"
+                        )
+
+                        nueva_evolucion = st.text_area(
+                            "Evolución clínica",
+                            value=evo["evolucion_clinica"],
+                            height=150,
+                            key=f"evolucion_{evo['id']}"
+                        )
+
+                        nuevo_lab = st.text_area(
+                            "Resultados laboratorio",
+                            value=evo["resultados_laboratorio"],
+                            height=120,
+                            key=f"lab_{evo['id']}"
+                        )
+
+                        nueva_micro = st.text_area(
+                            "Resultados microbiología",
+                            value=evo["resultados_microbiologia"],
+                            height=120,
+                            key=f"micro_{evo['id']}"
+                        )
+
+                        nuevo_atb = st.text_area(
+                            "Antimicrobianos activos",
+                            value=evo["antimicrobianos_activos"],
+                            height=100,
+                            key=f"atb_{evo['id']}"
+                        )
+
+                        nueva_intervencion = st.text_area(
+                            "Intervención farmacéutica",
+                            value=evo["intervencion_farmaceutica"],
+                            height=120,
+                            key=f"interv_{evo['id']}"
+                        )
+
+                        if st.button(
+                            "Guardar cambios evolución",
+                            key=f"guardar_evo_{evo['id']}"
+                        ):
+                            actualizar_evolucion(
+                                evo["id"],
+                                nueva_fecha,
+                                nueva_evolucion,
+                                nuevo_lab,
+                                nueva_micro,
+                                nuevo_atb,
+                                nueva_intervencion
+                            )
+
+                            st.success("Evolución actualizada correctamente")
+                            st.rerun()
         else:
             st.info("Este paciente aún no tiene evoluciones registradas")
 
