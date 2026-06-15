@@ -374,6 +374,7 @@ elif menu == "Ficha clínica":
 
                             st.success("Evolución actualizada correctamente")
                             st.rerun()
+                        
         else:
             st.info("Este paciente aún no tiene evoluciones registradas")
 
