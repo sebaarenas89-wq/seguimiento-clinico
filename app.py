@@ -65,7 +65,32 @@ def actualizar_paciente(paciente_id, nombre, id_paciente, servicio, fecha_ingres
         UPDATE pacientes
         SET nombre = ?, id_paciente = ?, servicio = ?, fecha_ingreso = ?, diagnosticos = ?
         WHERE id = ?
-    """, (nombre, id_paciente, servicio, str(fecha_ingreso), diagnosticos, int(paciente_id)))
+    """, (
+        nombre,
+        id_paciente,
+        servicio,
+        str(fecha_ingreso),
+        diagnosticos,
+        int(paciente_id)
+    ))
+    conn.commit()
+    conn.close()
+
+
+def eliminar_paciente(paciente_id):
+    conn = conectar_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        DELETE FROM evoluciones
+        WHERE paciente_id = ?
+    """, (int(paciente_id),))
+
+    cursor.execute("""
+        DELETE FROM pacientes
+        WHERE id = ?
+    """, (int(paciente_id),))
+
     conn.commit()
     conn.close()
 
@@ -91,8 +116,13 @@ def guardar_evolucion(
 
     cursor.execute("""
         INSERT INTO evoluciones (
-            paciente_id, fecha, evolucion_clinica, resultados_laboratorio,
-            resultados_microbiologia, antimicrobianos_activos, intervencion_farmaceutica
+            paciente_id,
+            fecha,
+            evolucion_clinica,
+            resultados_laboratorio,
+            resultados_microbiologia,
+            antimicrobianos_activos,
+            intervencion_farmaceutica
         )
         VALUES (?, ?, ?, ?, ?, ?, ?)
     """, (
@@ -144,6 +174,7 @@ def actualizar_evolucion(
     conn.commit()
     conn.close()
 
+
 def eliminar_evolucion(evolucion_id):
     conn = conectar_db()
     cursor = conn.cursor()
@@ -155,23 +186,7 @@ def eliminar_evolucion(evolucion_id):
 
     conn.commit()
     conn.close()
-    
-def eliminar_paciente(paciente_id):
-    conn = conectar_db()
-    cursor = conn.cursor()
 
-    cursor.execute("""
-        DELETE FROM evoluciones
-        WHERE paciente_id = ?
-    """, (int(paciente_id),))
-
-    cursor.execute("""
-        DELETE FROM pacientes
-        WHERE id = ?
-    """, (int(paciente_id),))
-
-    conn.commit()
-    conn.close()
 
 def obtener_evoluciones_paciente(paciente_id):
     conn = conectar_db()
@@ -205,6 +220,11 @@ menu = st.sidebar.radio(
     ["Pacientes", "Ficha clínica", "Evolución diaria"]
 )
 
+
+# --------------------------
+# PACIENTES
+# --------------------------
+
 if menu == "Pacientes":
 
     st.header("👤 Ingreso de paciente")
@@ -214,18 +234,28 @@ if menu == "Pacientes":
     with col1:
         nombre = st.text_input("Nombre paciente")
         id_paciente = st.text_input("ID paciente")
-        servicio = st.selectbox("Servicio", ["UCI", "UTI", "UCO", "Medicina", "Cirugía"])
+        servicio = st.selectbox(
+            "Servicio",
+            ["UCI", "UTI", "UCO", "Medicina", "Cirugía"]
+        )
 
     with col2:
         fecha_ingreso = st.date_input("Fecha ingreso")
-        diagnosticos = st.text_area("Diagnósticos")
+        diagnosticos = st.text_area("Diagnósticos", height=160)
 
     if st.button("Guardar paciente"):
         if nombre == "" or id_paciente == "":
             st.error("Debe ingresar nombre e ID del paciente")
         else:
-            guardar_paciente(nombre, id_paciente, servicio, fecha_ingreso, diagnosticos)
+            guardar_paciente(
+                nombre,
+                id_paciente,
+                servicio,
+                fecha_ingreso,
+                diagnosticos
+            )
             st.success("Paciente guardado correctamente")
+            st.rerun()
 
     st.divider()
     st.subheader("Pacientes registrados")
@@ -238,6 +268,10 @@ if menu == "Pacientes":
         st.info("No existen pacientes registrados")
 
 
+# --------------------------
+# FICHA CLÍNICA
+# --------------------------
+
 elif menu == "Ficha clínica":
 
     st.header("📋 Ficha clínica")
@@ -248,9 +282,14 @@ elif menu == "Ficha clínica":
         st.warning("No existen pacientes registrados")
 
     else:
-        pacientes_df["selector"] = pacientes_df["nombre"] + " | ID: " + pacientes_df["id_paciente"]
+        pacientes_df["selector"] = (
+            pacientes_df["nombre"] + " | ID: " + pacientes_df["id_paciente"]
+        )
 
-        seleccion = st.selectbox("Seleccione paciente", pacientes_df["selector"].tolist())
+        seleccion = st.selectbox(
+            "Seleccione paciente",
+            pacientes_df["selector"].tolist()
+        )
 
         paciente = pacientes_df[pacientes_df["selector"] == seleccion].iloc[0]
 
@@ -260,8 +299,10 @@ elif menu == "Ficha clínica":
 
         with col1:
             st.metric("Servicio", paciente["servicio"])
+
         with col2:
             st.metric("ID paciente", paciente["id_paciente"])
+
         with col3:
             st.metric("Fecha ingreso", paciente["fecha_ingreso"])
 
@@ -270,8 +311,17 @@ elif menu == "Ficha clínica":
 
         with st.expander("✏️ Editar datos del paciente"):
 
-            nuevo_nombre = st.text_input("Nombre paciente", value=paciente["nombre"])
-            nuevo_id_paciente = st.text_input("ID paciente", value=paciente["id_paciente"])
+            nuevo_nombre = st.text_input(
+                "Nombre paciente",
+                value=paciente["nombre"],
+                key=f"nombre_paciente_{paciente['id']}"
+            )
+
+            nuevo_id_paciente = st.text_input(
+                "ID paciente",
+                value=paciente["id_paciente"],
+                key=f"id_paciente_{paciente['id']}"
+            )
 
             servicios = ["UCI", "UTI", "UCO", "Medicina", "Cirugía"]
             servicio_actual = paciente["servicio"] if paciente["servicio"] in servicios else "UCI"
@@ -279,22 +329,45 @@ elif menu == "Ficha clínica":
             nuevo_servicio = st.selectbox(
                 "Servicio",
                 servicios,
-                index=servicios.index(servicio_actual)
+                index=servicios.index(servicio_actual),
+                key=f"servicio_paciente_{paciente['id']}"
             )
 
             nueva_fecha_ingreso = st.date_input(
                 "Fecha ingreso",
-                value=pd.to_datetime(paciente["fecha_ingreso"]).date()
+                value=pd.to_datetime(paciente["fecha_ingreso"]).date(),
+                key=f"fecha_ingreso_paciente_{paciente['id']}"
             )
 
             nuevos_diagnosticos = st.text_area(
                 "Diagnósticos",
                 value=paciente["diagnosticos"],
-                height=160
+                height=160,
+                key=f"diagnosticos_paciente_{paciente['id']}"
             )
 
-            if st.button("Guardar cambios del paciente"):
-                st.divider()
+            if st.button(
+                "Guardar cambios del paciente",
+                key=f"guardar_paciente_{paciente['id']}"
+            ):
+
+                if nuevo_nombre == "" or nuevo_id_paciente == "":
+                    st.error("Nombre e ID no pueden quedar vacíos")
+
+                else:
+                    actualizar_paciente(
+                        paciente["id"],
+                        nuevo_nombre,
+                        nuevo_id_paciente,
+                        nuevo_servicio,
+                        nueva_fecha_ingreso,
+                        nuevos_diagnosticos
+                    )
+
+                    st.success("Paciente actualizado correctamente")
+                    st.rerun()
+
+            st.divider()
 
             with st.expander("⚠️ Eliminar paciente"):
 
@@ -314,28 +387,20 @@ elif menu == "Ficha clínica":
                         st.rerun()
                     else:
                         st.warning("Debe confirmar antes de eliminar")
-                if nuevo_nombre == "" or nuevo_id_paciente == "":
-                    st.error("Nombre e ID no pueden quedar vacíos")
-                else:
-                    actualizar_paciente(
-                        paciente["id"],
-                        nuevo_nombre,
-                        nuevo_id_paciente,
-                        nuevo_servicio,
-                        nueva_fecha_ingreso,
-                        nuevos_diagnosticos
-                    )
-                    st.success("Paciente actualizado correctamente")
-                    st.rerun()
 
         st.divider()
         st.write("### Evoluciones registradas")
 
         evoluciones_df = obtener_evoluciones_paciente(paciente["id"])
 
-        if len(evoluciones_df) > 0:
+        if len(evoluciones_df) == 0:
+            st.info("Este paciente aún no tiene evoluciones registradas")
+
+        else:
             for _, evo in evoluciones_df.iterrows():
+
                 with st.expander(f"📅 {evo['fecha']}"):
+
                     st.subheader(f"📅 {evo['fecha']}")
 
                     st.markdown("**Evolución clínica**")
@@ -352,12 +417,13 @@ elif menu == "Ficha clínica":
 
                     st.markdown("**Intervención farmacéutica**")
                     st.write(evo["intervencion_farmaceutica"])
+
                     with st.expander("✏️ Editar evolución"):
 
                         nueva_fecha = st.date_input(
                             "Fecha",
                             value=pd.to_datetime(evo["fecha"]).date(),
-                            key=f"fecha_{evo['id']}"
+                            key=f"fecha_evo_{evo['id']}"
                         )
 
                         nueva_evolucion = st.text_area(
@@ -399,6 +465,7 @@ elif menu == "Ficha clínica":
                             "Guardar cambios evolución",
                             key=f"guardar_evo_{evo['id']}"
                         ):
+
                             actualizar_evolucion(
                                 evo["id"],
                                 nueva_fecha,
@@ -411,6 +478,7 @@ elif menu == "Ficha clínica":
 
                             st.success("Evolución actualizada correctamente")
                             st.rerun()
+
                     with st.expander("⚠️ Opciones de eliminación"):
 
                         confirmar = st.checkbox(
@@ -430,8 +498,10 @@ elif menu == "Ficha clínica":
                             else:
                                 st.warning("Debe confirmar antes de eliminar")
 
-        if len(evoluciones_df) == 0:
-            st.info("Este paciente aún no tiene evoluciones registradas")
+
+# --------------------------
+# EVOLUCIÓN DIARIA
+# --------------------------
 
 elif menu == "Evolución diaria":
 
@@ -443,21 +513,49 @@ elif menu == "Evolución diaria":
         st.warning("Debe ingresar al menos un paciente antes de registrar evolución")
 
     else:
-        pacientes_df["selector"] = pacientes_df["nombre"] + " | ID: " + pacientes_df["id_paciente"]
+        pacientes_df["selector"] = (
+            pacientes_df["nombre"] + " | ID: " + pacientes_df["id_paciente"]
+        )
 
-        seleccion = st.selectbox("Paciente", pacientes_df["selector"].tolist())
+        seleccion = st.selectbox(
+            "Paciente",
+            pacientes_df["selector"].tolist()
+        )
 
         paciente = pacientes_df[pacientes_df["selector"] == seleccion].iloc[0]
 
-        fecha_evolucion = st.date_input("Fecha evolución", value=date.today())
+        fecha_evolucion = st.date_input(
+            "Fecha evolución",
+            value=date.today()
+        )
 
-        evolucion_clinica = st.text_area("Evolución clínica", height=150)
-        resultados_laboratorio = st.text_area("Resultados laboratorio", height=120)
-        resultados_microbiologia = st.text_area("Resultados microbiología", height=120)
-        antimicrobianos_activos = st.text_area("Antimicrobianos activos", height=100)
-        intervencion_farmaceutica = st.text_area("Intervención farmacéutica", height=120)
+        evolucion_clinica = st.text_area(
+            "Evolución clínica",
+            height=150
+        )
+
+        resultados_laboratorio = st.text_area(
+            "Resultados laboratorio",
+            height=120
+        )
+
+        resultados_microbiologia = st.text_area(
+            "Resultados microbiología",
+            height=120
+        )
+
+        antimicrobianos_activos = st.text_area(
+            "Antimicrobianos activos",
+            height=100
+        )
+
+        intervencion_farmaceutica = st.text_area(
+            "Intervención farmacéutica",
+            height=120
+        )
 
         if st.button("Guardar evolución"):
+
             guardar_evolucion(
                 paciente["id"],
                 fecha_evolucion,
@@ -469,6 +567,7 @@ elif menu == "Evolución diaria":
             )
 
             st.success("Evolución guardada correctamente")
+            st.rerun()
 
         st.divider()
         st.subheader("Evoluciones del paciente")
