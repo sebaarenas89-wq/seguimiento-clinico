@@ -126,7 +126,7 @@ elif menu == "Ficha clínica":
             if e["Paciente"] == paciente
         ]
 
-        if len(evoluciones_paciente) > 0:
+if len(evoluciones_paciente) > 0:
 
     evoluciones_paciente = sorted(
         evoluciones_paciente,
