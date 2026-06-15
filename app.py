@@ -294,6 +294,26 @@ elif menu == "Ficha clínica":
             )
 
             if st.button("Guardar cambios del paciente"):
+                st.divider()
+
+            with st.expander("⚠️ Eliminar paciente"):
+
+                confirmar_paciente = st.checkbox(
+                    "Confirmo que deseo eliminar este paciente y todas sus evoluciones",
+                    key=f"confirmar_eliminar_paciente_{paciente['id']}"
+                )
+
+                if st.button(
+                    "🗑️ Eliminar paciente",
+                    key=f"eliminar_paciente_{paciente['id']}"
+                ):
+
+                    if confirmar_paciente:
+                        eliminar_paciente(paciente["id"])
+                        st.success("Paciente eliminado correctamente")
+                        st.rerun()
+                    else:
+                        st.warning("Debe confirmar antes de eliminar")
                 if nuevo_nombre == "" or nuevo_id_paciente == "":
                     st.error("Nombre e ID no pueden quedar vacíos")
                 else:
