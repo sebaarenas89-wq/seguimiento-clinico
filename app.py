@@ -144,6 +144,18 @@ def actualizar_evolucion(
     conn.commit()
     conn.close()
 
+def eliminar_evolucion(evolucion_id):
+    conn = conectar_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        DELETE FROM evoluciones
+        WHERE id = ?
+    """, (int(evolucion_id),))
+
+    conn.commit()
+    conn.close()
+
 def obtener_evoluciones_paciente(paciente_id):
     conn = conectar_db()
     df = pd.read_sql_query(
