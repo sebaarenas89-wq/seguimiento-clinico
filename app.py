@@ -41,9 +41,21 @@ def crear_tablas():
         )
     """)
 
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS terapias_atm (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            paciente_id INTEGER NOT NULL,
+            antimicrobiano TEXT NOT NULL,
+            fecha_inicio TEXT NOT NULL,
+            fecha_termino TEXT,
+            estado TEXT,
+            observacion TEXT,
+            FOREIGN KEY (paciente_id) REFERENCES pacientes(id)
+        )
+    """)
+
     conn.commit()
     conn.close()
-
 
 def guardar_paciente(nombre, id_paciente, servicio, fecha_ingreso, diagnosticos):
     conn = conectar_db()
