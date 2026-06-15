@@ -155,6 +155,23 @@ def eliminar_evolucion(evolucion_id):
 
     conn.commit()
     conn.close()
+    
+def eliminar_paciente(paciente_id):
+    conn = conectar_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        DELETE FROM evoluciones
+        WHERE paciente_id = ?
+    """, (int(paciente_id),))
+
+    cursor.execute("""
+        DELETE FROM pacientes
+        WHERE id = ?
+    """, (int(paciente_id),))
+
+    conn.commit()
+    conn.close()
 
 def obtener_evoluciones_paciente(paciente_id):
     conn = conectar_db()
