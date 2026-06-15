@@ -221,7 +221,146 @@ def obtener_evoluciones_paciente(paciente_id):
     )
     conn.close()
     return df
+def calcular_dias_tratamiento(fecha_inicio, fecha_termino, estado):
+    inicio = pd.to_datetime(fecha_inicio).date()
 
+    if estado == "Vigente":
+        fin = date.today()
+    else:
+        if fecha_termino:
+            fin = pd.to_datetime(fecha_termino).date()
+        else:
+            fin = date.today()
+
+    return (fin - inicio).days + 1
+
+
+def guardar_terapia_atm(
+    paciente_id,
+    antimicrobiano,
+    fecha_inicio,
+    fecha_termino,
+    estado,
+    observacion
+):
+    conn = conectar_db()
+    cursor = conn.cursor()
+
+    fecha_termino_texto = str(fecha_termino) if fecha_termino else ""
+
+    cursor.execute("""
+        INSERT INTO terapias_atm (
+            paciente_id,
+            antimicrobiano,
+            fecha_inicio,
+            fecha_termino,
+            estado,
+            observacion
+        )
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (
+        int(paciente_id),
+        antimicrobiano,
+        str(fecha_inicio),
+        fecha_termino_texto,
+        estado,
+        observacion
+    ))
+
+    conn.commit()
+    conn.close()
+
+
+def obtener_terapias_atm_paciente(paciente_id):
+    conn = conectar_db()
+
+    df = pd.read_sql_query(
+        """
+        SELECT
+            id,
+            paciente_id,
+            antimicrobiano,
+            fecha_inicio,
+            fecha_termino,
+            estado,
+            observacion
+        FROM terapias_atm
+        WHERE paciente_id = ?
+        ORDER BY
+            CASE estado
+                WHEN 'Vigente' THEN 1
+                WHEN 'Cambio' THEN 2
+                WHEN 'Suspendida' THEN 3
+                WHEN 'Término tratamiento' THEN 4
+                ELSE 5
+            END,
+            fecha_inicio DESC
+        """,
+        conn,
+        params=(int(paciente_id),)
+    )
+
+    conn.close()
+
+    if len(df) > 0:
+        df["dias_tratamiento"] = df.apply(
+            lambda row: calcular_dias_tratamiento(
+                row["fecha_inicio"],
+                row["fecha_termino"],
+                row["estado"]
+            ),
+            axis=1
+        )
+
+    return df
+
+
+def actualizar_terapia_atm(
+    terapia_id,
+    antimicrobiano,
+    fecha_inicio,
+    fecha_termino,
+    estado,
+    observacion
+):
+    conn = conectar_db()
+    cursor = conn.cursor()
+
+    fecha_termino_texto = str(fecha_termino) if fecha_termino else ""
+
+    cursor.execute("""
+        UPDATE terapias_atm
+        SET
+            antimicrobiano = ?,
+            fecha_inicio = ?,
+            fecha_termino = ?,
+            estado = ?,
+            observacion = ?
+        WHERE id = ?
+    """, (
+        antimicrobiano,
+        str(fecha_inicio),
+        fecha_termino_texto,
+        estado,
+        observacion,
+        int(terapia_id)
+    ))
+
+    conn.commit()
+    conn.close()
+
+
+def eliminar_terapia_atm(terapia_id):
+    conn = conectar_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        DELETE FROM terapias_atm
+        WHERE id = ?
+    """, (int(terapia_id),))
+
+    conn.commit()
+    conn.close()
 
 crear_tablas()
 
