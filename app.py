@@ -127,10 +127,35 @@ elif menu == "Ficha clínica":
         ]
 
         if len(evoluciones_paciente) > 0:
-            df_evo = pd.DataFrame(evoluciones_paciente)
-            st.dataframe(df_evo, use_container_width=True)
-        else:
-            st.info("Este paciente aún no tiene evoluciones registradas")
+
+    evoluciones_paciente = sorted(
+        evoluciones_paciente,
+        key=lambda x: x["Fecha"],
+        reverse=True
+    )
+
+    for evo in evoluciones_paciente:
+
+        with st.container(border=True):
+            st.subheader(f"📅 {evo['Fecha']}")
+
+            st.markdown("**Evolución clínica**")
+            st.write(evo["Evolución clínica"])
+
+            st.markdown("**Resultados laboratorio**")
+            st.write(evo["Resultados laboratorio"])
+
+            st.markdown("**Resultados microbiología**")
+            st.write(evo["Resultados microbiología"])
+
+            st.markdown("**Antimicrobianos activos**")
+            st.write(evo["Antimicrobianos activos"])
+
+            st.markdown("**Intervención farmacéutica**")
+            st.write(evo["Intervención farmacéutica"])
+
+else:
+    st.info("Este paciente aún no tiene evoluciones registradas")
 
 # --------------------------
 # EVOLUCIÓN DIARIA
