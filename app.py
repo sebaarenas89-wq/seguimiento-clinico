@@ -374,15 +374,15 @@ elif menu == "Ficha clínica":
 
                             st.success("Evolución actualizada correctamente")
                             st.rerun()
-                        with st.expander("🗑️ Eliminar evolución"):
+                        with st.expander("⚠️ Opciones de eliminación"):
 
-                            confirmar = st.checkbox(
+                        confirmar = st.checkbox(
                             "Confirmo que deseo eliminar esta evolución",
                             key=f"confirmar_eliminar_{evo['id']}"
                         )
 
                         if st.button(
-                            "Eliminar evolución",
+                            "🗑️ Eliminar evolución",
                             key=f"eliminar_evo_{evo['id']}"
                         ):
 
