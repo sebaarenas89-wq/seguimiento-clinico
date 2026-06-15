@@ -13,8 +13,6 @@ def conectar_db():
 
 
 def crear_tablas():
-    cursor.execute("""
-        
     conn = conectar_db()
     cursor = conn.cursor()
 
