@@ -430,7 +430,7 @@ elif menu == "Ficha clínica":
                             else:
                                 st.warning("Debe confirmar antes de eliminar")
 
-else:
+        if len(evoluciones_df) == 0:
             st.info("Este paciente aún no tiene evoluciones registradas")
 
 elif menu == "Evolución diaria":
