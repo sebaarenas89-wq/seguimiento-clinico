@@ -374,6 +374,24 @@ elif menu == "Ficha clínica":
 
                             st.success("Evolución actualizada correctamente")
                             st.rerun()
+                        with st.expander("🗑️ Eliminar evolución"):
+
+                        confirmar = st.checkbox(
+                            "Confirmo que deseo eliminar esta evolución",
+                            key=f"confirmar_eliminar_{evo['id']}"
+                        )
+
+                        if st.button(
+                            "Eliminar evolución",
+                            key=f"eliminar_evo_{evo['id']}"
+                        ):
+
+                            if confirmar:
+                                eliminar_evolucion(evo["id"])
+                                st.success("Evolución eliminada correctamente")
+                                st.rerun()
+                            else:
+                                st.warning("Debe confirmar antes de eliminar")
                         
         else:
             st.info("Este paciente aún no tiene evoluciones registradas")
