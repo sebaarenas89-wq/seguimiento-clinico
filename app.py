@@ -428,7 +428,10 @@ elif menu == "Ficha clínica":
                                 st.success("Evolución eliminada correctamente")
                                 st.rerun()
                             else:
-                                st.warning("Debe confirmar antes de eliminar")                    
+                                st.warning("Debe confirmar antes de eliminar")
+
+else:
+            st.info("Este paciente aún no tiene evoluciones registradas")
 
 elif menu == "Evolución diaria":
 
