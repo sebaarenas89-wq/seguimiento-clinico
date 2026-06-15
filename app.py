@@ -88,6 +88,7 @@ def guardar_evolucion(
 ):
     conn = conectar_db()
     cursor = conn.cursor()
+
     cursor.execute("""
         INSERT INTO evoluciones (
             paciente_id, fecha, evolucion_clinica, resultados_laboratorio,
@@ -103,15 +104,52 @@ def guardar_evolucion(
         antimicrobianos_activos,
         intervencion_farmaceutica
     ))
+
     conn.commit()
     conn.close()
 
+
+def actualizar_evolucion(
+    evolucion_id,
+    fecha,
+    evolucion_clinica,
+    resultados_laboratorio,
+    resultados_microbiologia,
+    antimicrobianos_activos,
+    intervencion_farmaceutica
+):
+    conn = conectar_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        UPDATE evoluciones
+        SET
+            fecha = ?,
+            evolucion_clinica = ?,
+            resultados_laboratorio = ?,
+            resultados_microbiologia = ?,
+            antimicrobianos_activos = ?,
+            intervencion_farmaceutica = ?
+        WHERE id = ?
+    """, (
+        str(fecha),
+        evolucion_clinica,
+        resultados_laboratorio,
+        resultados_microbiologia,
+        antimicrobianos_activos,
+        intervencion_farmaceutica,
+        int(evolucion_id)
+    ))
+
+    conn.commit()
+    conn.close()
 
 def obtener_evoluciones_paciente(paciente_id):
     conn = conectar_db()
     df = pd.read_sql_query(
         """
         SELECT
+            id,
             fecha,
             evolucion_clinica,
             resultados_laboratorio,
