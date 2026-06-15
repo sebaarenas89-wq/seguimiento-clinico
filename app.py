@@ -418,16 +418,16 @@ elif menu == "Ficha clínica":
                             key=f"confirmar_eliminar_{evo['id']}"
                         )
 
-                            if st.button(
+                        if st.button(
                             "🗑️ Eliminar evolución",
                             key=f"eliminar_evo_{evo['id']}"
                         ):
 
-                                if confirmar:
+                            if confirmar:
                                 eliminar_evolucion(evo["id"])
                                 st.success("Evolución eliminada correctamente")
                                 st.rerun()
-                                else:
+                            else:
                                 st.warning("Debe confirmar antes de eliminar")
                         
         else:
