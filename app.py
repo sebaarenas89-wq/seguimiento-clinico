@@ -7,19 +7,11 @@ st.set_page_config(
     layout="wide"
 )
 
-# --------------------------
-# BASE TEMPORAL
-# --------------------------
-
 if "pacientes" not in st.session_state:
     st.session_state.pacientes = []
 
 if "evoluciones" not in st.session_state:
     st.session_state.evoluciones = []
-
-# --------------------------
-# TÍTULO Y MENÚ
-# --------------------------
 
 st.title("🏥 Seguimiento Clínico Farmacéutico")
 
@@ -27,10 +19,6 @@ menu = st.sidebar.radio(
     "Menú",
     ["Pacientes", "Ficha clínica", "Evolución diaria"]
 )
-
-# --------------------------
-# PACIENTES
-# --------------------------
 
 if menu == "Pacientes":
 
@@ -68,7 +56,6 @@ if menu == "Pacientes":
             st.success("Paciente guardado correctamente")
 
     st.divider()
-
     st.subheader("Pacientes registrados")
 
     if len(st.session_state.pacientes) > 0:
@@ -77,9 +64,6 @@ if menu == "Pacientes":
     else:
         st.info("No existen pacientes registrados")
 
-# --------------------------
-# FICHA CLÍNICA
-# --------------------------
 
 elif menu == "Ficha clínica":
 
@@ -118,7 +102,6 @@ elif menu == "Ficha clínica":
         st.info(datos["Diagnósticos"])
 
         st.divider()
-
         st.write("### Evoluciones registradas")
 
         evoluciones_paciente = [
@@ -126,41 +109,38 @@ elif menu == "Ficha clínica":
             if e["Paciente"] == paciente
         ]
 
-if len(evoluciones_paciente) > 0:
+        if len(evoluciones_paciente) > 0:
 
-    evoluciones_paciente = sorted(
-        evoluciones_paciente,
-        key=lambda x: x["Fecha"],
-        reverse=True
-    )
+            evoluciones_paciente = sorted(
+                evoluciones_paciente,
+                key=lambda x: x["Fecha"],
+                reverse=True
+            )
 
-    for evo in evoluciones_paciente:
+            for evo in evoluciones_paciente:
 
-        with st.container(border=True):
+                with st.container(border=True):
 
-            st.subheader(f"📅 {evo['Fecha']}")
+                    st.subheader(f"📅 {evo['Fecha']}")
 
-            st.markdown("**Evolución clínica**")
-            st.write(evo["Evolución clínica"])
+                    st.markdown("**Evolución clínica**")
+                    st.write(evo["Evolución clínica"])
 
-            st.markdown("**Resultados laboratorio**")
-            st.write(evo["Resultados laboratorio"])
+                    st.markdown("**Resultados laboratorio**")
+                    st.write(evo["Resultados laboratorio"])
 
-            st.markdown("**Resultados microbiología**")
-            st.write(evo["Resultados microbiología"])
+                    st.markdown("**Resultados microbiología**")
+                    st.write(evo["Resultados microbiología"])
 
-            st.markdown("**Antimicrobianos activos**")
-            st.write(evo["Antimicrobianos activos"])
+                    st.markdown("**Antimicrobianos activos**")
+                    st.write(evo["Antimicrobianos activos"])
 
-            st.markdown("**Intervención farmacéutica**")
-            st.write(evo["Intervención farmacéutica"])
+                    st.markdown("**Intervención farmacéutica**")
+                    st.write(evo["Intervención farmacéutica"])
 
-else:
-    st.info("Este paciente aún no tiene evoluciones registradas")
+        else:
+            st.info("Este paciente aún no tiene evoluciones registradas")
 
-# --------------------------
-# EVOLUCIÓN DIARIA
-# --------------------------
 
 elif menu == "Evolución diaria":
 
@@ -220,11 +200,9 @@ elif menu == "Evolución diaria":
             }
 
             st.session_state.evoluciones.append(nueva_evolucion)
-
             st.success("Evolución guardada correctamente")
 
         st.divider()
-
         st.subheader("Evoluciones del paciente")
 
         evoluciones_paciente = [
