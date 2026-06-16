@@ -600,7 +600,7 @@ elif menu == "Ficha clínica":
 
                 with st.expander(
                     f"📅 {formatear_fecha(evo['fecha'])}",
-                    expanded=True if _ == 0 else False
+                    expanded=True if idx == evoluciones_df.index[0] else False
                 ):
 
                     st.subheader(f"📅 {formatear_fecha(evo['fecha'])}")
