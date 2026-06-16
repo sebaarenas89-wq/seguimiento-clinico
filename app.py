@@ -264,7 +264,7 @@ guardar_terapia_atm(
     observacion,
     excepcion_prolongada,
     motivo_excepcion
-):
+)
     conn = conectar_db()
     cursor = conn.cursor()
 
