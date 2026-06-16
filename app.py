@@ -422,7 +422,11 @@ if menu == "Pacientes":
     pacientes_df = obtener_pacientes()
 
     if len(pacientes_df) > 0:
-        st.dataframe(pacientes_df, use_container_width=True)
+
+        pacientes_mostrar = pacientes_df.copy()
+        pacientes_mostrar["fecha_ingreso"] = pacientes_mostrar["fecha_ingreso"].apply(formatear_fecha)
+
+        st.dataframe(pacientes_mostrar, use_container_width=True)
     else:
         st.info("No existen pacientes registrados")
 
