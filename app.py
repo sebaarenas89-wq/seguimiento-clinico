@@ -396,7 +396,10 @@ if menu == "Pacientes":
         )
 
     with col2:
-        fecha_ingreso = st.date_input("Fecha ingreso")
+        fecha_ingreso = st.date_input(
+            "Fecha ingreso",
+            format="DD/MM/YYYY"
+        )
         diagnosticos = st.text_area("Diagnósticos", height=160)
 
     if st.button("Guardar paciente"):
