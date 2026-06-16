@@ -272,14 +272,16 @@ def guardar_terapia_atm(
 
     cursor.execute("""
         INSERT INTO terapias_atm (
-            paciente_id,
-            antimicrobiano,
-            fecha_inicio,
-            fecha_termino,
-            estado,
-            observacion
-        )
-        VALUES (?, ?, ?, ?, ?, ?)
+    paciente_id,
+    antimicrobiano,
+    fecha_inicio,
+    fecha_termino,
+    estado,
+    observacion,
+    excepcion_prolongada,
+    motivo_excepcion
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     """, (
         int(paciente_id),
         antimicrobiano,
