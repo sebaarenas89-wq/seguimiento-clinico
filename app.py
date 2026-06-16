@@ -729,3 +729,73 @@ elif menu == "Evolución diaria":
             st.dataframe(evoluciones_df, use_container_width=True)
         else:
             st.info("No hay evoluciones registradas para este paciente")
+
+elif menu == "Terapia ATM":
+
+    st.header("💊 Terapia Antimicrobiana")
+
+    pacientes_df = obtener_pacientes()
+
+    if len(pacientes_df) == 0:
+        st.warning("No existen pacientes registrados")
+        st.stop()
+
+    paciente_seleccionado = st.selectbox(
+        "Seleccione paciente",
+        pacientes_df["nombre"] + " | ID: " + pacientes_df["id_paciente"].astype(str)
+    )
+
+    paciente_idx = (
+        pacientes_df["nombre"]
+        + " | ID: "
+        + pacientes_df["id_paciente"].astype(str)
+    ) == paciente_seleccionado
+
+    paciente = pacientes_df[paciente_idx].iloc[0]
+
+    st.subheader(paciente["nombre"])
+
+    antimicrobiano = st.text_input("Antimicrobiano")
+
+    fecha_inicio = st.date_input(
+        "Fecha inicio"
+    )
+
+    estado = st.selectbox(
+        "Estado",
+        [
+            "Vigente",
+            "Cambio",
+            "Suspendida",
+            "Término tratamiento"
+        ]
+    )
+
+    fecha_termino = None
+
+    if estado != "Vigente":
+        fecha_termino = st.date_input(
+            "Fecha término"
+        )
+
+    observacion = st.text_area(
+        "Observación"
+    )
+
+    if st.button("Guardar terapia ATM"):
+        if antimicrobiano.strip():
+
+            guardar_terapia_atm(
+                paciente["id"],
+                antimicrobiano,
+                fecha_inicio,
+                fecha_termino,
+                estado,
+                observacion
+            )
+
+            st.success("Terapia registrada correctamente")
+            st.rerun()
+
+        else:
+            st.warning("Debe ingresar un antimicrobiano")
