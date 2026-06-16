@@ -851,6 +851,17 @@ elif menu == "Terapia ATM":
         "Observación"
     )
 
+    excepcion_prolongada = st.checkbox(
+        "Tratamiento prolongado justificado"
+    )
+
+    motivo_excepcion = ""
+
+    if excepcion_prolongada:
+        motivo_excepcion = st.text_area(
+            "Motivo de excepción"
+        )
+
     if st.button("Guardar terapia ATM"):
         if antimicrobiano.strip():
 
