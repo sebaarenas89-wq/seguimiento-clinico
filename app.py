@@ -579,7 +579,7 @@ elif menu == "Ficha clínica":
 
         st.dataframe(terapias_mostrar, use_container_width=True)
 
-    else:
+else:
             st.info("Este paciente no tiene terapias ATM registradas")
         st.divider()
         st.write("### Evoluciones registradas")
