@@ -806,7 +806,7 @@ elif menu == "Terapia ATM":
 
     terapias_df = obtener_terapias_atm_paciente(paciente["id"])
 
-if len(terapias_df) > 0:
+    if len(terapias_df) > 0:
 
     terapias_df["fecha_inicio"] = terapias_df["fecha_inicio"].apply(formatear_fecha)
     terapias_df["fecha_termino"] = terapias_df["fecha_termino"].apply(formatear_fecha)
