@@ -255,8 +255,8 @@ def calcular_dias_tratamiento(fecha_inicio, fecha_termino, estado):
     return (fin - inicio).days + 1
 
 
-def guardar_terapia_atm(
-    paciente_id,
+guardar_terapia_atm(
+    paciente["id"],
     antimicrobiano,
     fecha_inicio,
     fecha_termino,
