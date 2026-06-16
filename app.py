@@ -551,7 +551,21 @@ elif menu == "Ficha clínica":
                         st.rerun()
                     else:
                         st.warning("Debe confirmar antes de eliminar")
+        st.divider()
+        st.write("### Terapia antimicrobiana")
 
+        terapias_df = obtener_terapias_atm_paciente(paciente["id"])
+
+        if len(terapias_df) > 0:
+
+            terapias_mostrar = terapias_df.copy()
+            terapias_mostrar["fecha_inicio"] = terapias_mostrar["fecha_inicio"].apply(formatear_fecha)
+            terapias_mostrar["fecha_termino"] = terapias_mostrar["fecha_termino"].apply(formatear_fecha)
+
+            st.dataframe(terapias_mostrar, use_container_width=True)
+
+        else:
+            st.info("Este paciente no tiene terapias ATM registradas")
         st.divider()
         st.write("### Evoluciones registradas")
 
