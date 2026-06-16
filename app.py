@@ -552,34 +552,40 @@ elif menu == "Ficha clínica":
                     else:
                         st.warning("Debe confirmar antes de eliminar")
         st.divider()
-        terapias_mostrar = terapias_df.copy()
+        st.write("### Terapia antimicrobiana")
 
-        terapias_mostrar["fecha_inicio"] = terapias_mostrar["fecha_inicio"].apply(formatear_fecha)
-        terapias_mostrar["fecha_termino"] = terapias_mostrar["fecha_termino"].apply(formatear_fecha)
+        terapias_df = obtener_terapias_atm_paciente(paciente["id"])
 
-        terapias_mostrar = terapias_mostrar[
-            [
-                "antimicrobiano",
-                "fecha_inicio",
-                "fecha_termino",
-                "estado",
-                "dias_tratamiento",
-                "observacion"
+        if len(terapias_df) > 0:
+
+            terapias_mostrar = terapias_df.copy()
+
+            terapias_mostrar["fecha_inicio"] = terapias_mostrar["fecha_inicio"].apply(formatear_fecha)
+            terapias_mostrar["fecha_termino"] = terapias_mostrar["fecha_termino"].apply(formatear_fecha)
+
+            terapias_mostrar = terapias_mostrar[
+                [
+                    "antimicrobiano",
+                    "fecha_inicio",
+                    "fecha_termino",
+                    "estado",
+                    "dias_tratamiento",
+                    "observacion"
+                ]
             ]
-        ]
 
-        terapias_mostrar = terapias_mostrar.rename(columns={
-            "antimicrobiano": "Antimicrobiano",
-            "fecha_inicio": "Inicio",
-            "fecha_termino": "Término",
-            "estado": "Estado",
-            "dias_tratamiento": "Días",
-            "observacion": "Observación"
-        })
+            terapias_mostrar = terapias_mostrar.rename(columns={
+                "antimicrobiano": "Antimicrobiano",
+                "fecha_inicio": "Inicio",
+                "fecha_termino": "Término",
+                "estado": "Estado",
+                "dias_tratamiento": "Días",
+                "observacion": "Observación"
+            })
 
-        st.dataframe(terapias_mostrar, use_container_width=True)
+            st.dataframe(terapias_mostrar, use_container_width=True)
 
-else:
+        else:
             st.info("Este paciente no tiene terapias ATM registradas")
         st.divider()
         st.write("### Evoluciones registradas")
