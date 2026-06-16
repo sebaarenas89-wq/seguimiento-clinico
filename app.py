@@ -685,7 +685,8 @@ elif menu == "Evolución diaria":
 
         fecha_evolucion = st.date_input(
             "Fecha evolución",
-            value=date.today()
+            value=date.today(),
+            format="DD/MM/YYYY"
         )
 
         evolucion_clinica = st.text_area(
