@@ -7,6 +7,11 @@ st.set_page_config(page_title="Seguimiento Clínico", layout="wide")
 
 DB_NAME = "seguimiento_clinico.db"
 
+def formatear_fecha(fecha):
+    if fecha is None or fecha == "":
+        return ""
+    return pd.to_datetime(fecha).strftime("%d/%m/%Y")
+
 
 def conectar_db():
     return sqlite3.connect(DB_NAME, check_same_thread=False)
