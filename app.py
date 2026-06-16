@@ -767,7 +767,8 @@ elif menu == "Terapia ATM":
     antimicrobiano = st.text_input("Antimicrobiano")
 
     fecha_inicio = st.date_input(
-        "Fecha inicio"
+        "Fecha inicio",
+        format="DD/MM/YYYY"
     )
 
     estado = st.selectbox(
