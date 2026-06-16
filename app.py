@@ -36,7 +36,9 @@ def crear_tablas():
         )
     """)
 try:
-    cursor.execute("ALTER TABLE terapias_atm ADD COLUMN excepcion_prolongada INTEGER DEFAULT 0")
+    cursor.execute(
+        "ALTER TABLE terapias_atm ADD COLUMN excepcion_prolongada INTEGER DEFAULT 0"
+    )
 except sqlite3.OperationalError:
     pass
 
