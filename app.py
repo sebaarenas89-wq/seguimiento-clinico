@@ -796,6 +796,15 @@ elif menu == "Terapia ATM":
 
             st.success("Terapia registrada correctamente")
             st.rerun()
+            st.divider()
+    st.subheader("Terapias ATM registradas")
+
+    terapias_df = obtener_terapias_atm_paciente(paciente["id"])
+
+    if len(terapias_df) > 0:
+        st.dataframe(terapias_df, use_container_width=True)
+    else:
+        st.info("Este paciente no tiene terapias ATM registradas")
 
         else:
             st.warning("Debe ingresar un antimicrobiano")
