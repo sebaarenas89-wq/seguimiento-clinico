@@ -35,17 +35,18 @@ def crear_tablas():
             FOREIGN KEY (paciente_id) REFERENCES pacientes(id)
         )
     """)
-try:
-    cursor.execute(
-        "ALTER TABLE terapias_atm ADD COLUMN excepcion_prolongada INTEGER DEFAULT 0"
-    )
-except sqlite3.OperationalError:
-    pass
+    try:
+        cursor.execute(
+            "ALTER TABLE terapias_atm ADD COLUMN excepcion_prolongada INTEGER DEFAULT 0"
+        )
+    except sqlite3.OperationalError:
+        pass
 
-try:
-    cursor.execute("ALTER TABLE terapias_atm ADD COLUMN motivo_excepcion TEXT")
-except sqlite3.OperationalError:
-    pass
+    try:
+        cursor.execute(
+            "ALTER TABLE terapias_atm ADD COLUMN motivo_excepcion TEXT")
+    except sqlite3.OperationalError:
+       pass
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS evoluciones (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
