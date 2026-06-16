@@ -261,7 +261,9 @@ def guardar_terapia_atm(
     fecha_inicio,
     fecha_termino,
     estado,
-    observacion
+    observacion,
+    excepcion_prolongada,
+    motivo_excepcion
 ):
     conn = conectar_db()
     cursor = conn.cursor()
