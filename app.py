@@ -310,6 +310,8 @@ def obtener_terapias_atm_paciente(paciente_id):
             fecha_termino,
             estado,
             observacion
+            excepcion_prolongada,
+            motivo_excepcion,
         FROM terapias_atm
         WHERE paciente_id = ?
         ORDER BY
