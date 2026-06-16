@@ -557,7 +557,7 @@ elif menu == "Ficha clínica":
 
                 with st.expander(f"📅 {evo['fecha']}"):
 
-                    st.subheader(f"📅 {evo['fecha']}")
+                    st.subheader(f"📅 {formatear_fecha(evo['fecha'])}")
 
                     st.markdown("**Evolución clínica**")
                     st.write(evo["evolucion_clinica"])
