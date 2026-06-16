@@ -460,7 +460,7 @@ elif menu == "Ficha clínica":
             st.metric("ID paciente", paciente["id_paciente"])
 
         with col3:
-            st.metric("Fecha ingreso", paciente["fecha_ingreso"])
+            st.metric("Fecha ingreso", formatear_fecha(paciente["fecha_ingreso"]))
 
         st.write("### Diagnósticos")
         st.info(paciente["diagnosticos"])
