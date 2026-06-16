@@ -805,6 +805,3 @@ elif menu == "Terapia ATM":
         st.dataframe(terapias_df, use_container_width=True)
     else:
         st.info("Este paciente no tiene terapias ATM registradas")
-
-        else:
-            st.warning("Debe ingresar un antimicrobiano")
