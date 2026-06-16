@@ -22,13 +22,17 @@ def crear_tablas():
     cursor = conn.cursor()
 
     cursor.execute("""
-        CREATE TABLE IF NOT EXISTS pacientes (
+        CREATE TABLE IF NOT EXISTS terapias_atm (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nombre TEXT NOT NULL,
-            id_paciente TEXT NOT NULL,
-            servicio TEXT,
-            fecha_ingreso TEXT,
-            diagnosticos TEXT
+            paciente_id INTEGER NOT NULL,
+            antimicrobiano TEXT NOT NULL,
+            fecha_inicio TEXT NOT NULL,
+            fecha_termino TEXT,
+            estado TEXT,
+            observacion TEXT,
+            excepcion_prolongada INTEGER DEFAULT 0,
+            motivo_excepcion TEXT,
+            FOREIGN KEY (paciente_id) REFERENCES pacientes(id)
         )
     """)
 
