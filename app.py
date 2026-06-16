@@ -269,29 +269,29 @@ def guardar_terapia_atm(
     cursor = conn.cursor()
 
     fecha_termino_texto = str(fecha_termino) if fecha_termino else ""
-(
+
     cursor.execute("""
         INSERT INTO terapias_atm (
-    paciente_id,
-    antimicrobiano,
-    fecha_inicio,
-    fecha_termino,
-    estado,
-    observacion,
-    excepcion_prolongada,
-    motivo_excepcion
-)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            paciente_id,
+            antimicrobiano,
+            fecha_inicio,
+            fecha_termino,
+            estado,
+            observacion,
+            excepcion_prolongada,
+            motivo_excepcion
+    )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     """, (
         int(paciente_id),
-    antimicrobiano,
-    str(fecha_inicio),
-    fecha_termino_texto,
-    estado,
-    observacion,
-    1 if excepcion_prolongada else 0,
-    motivo_excepcion
-)
+        antimicrobiano,
+        str(fecha_inicio),
+        fecha_termino_texto,
+        estado,
+        observacion,
+        1 if excepcion_prolongada else 0,
+        motivo_excepcion
+    ))
 
     conn.commit()
     conn.close()
