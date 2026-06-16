@@ -269,7 +269,7 @@ def guardar_terapia_atm(
     cursor = conn.cursor()
 
     fecha_termino_texto = str(fecha_termino) if fecha_termino else ""
-
+(
     cursor.execute("""
         INSERT INTO terapias_atm (
     paciente_id,
