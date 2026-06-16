@@ -785,7 +785,8 @@ elif menu == "Terapia ATM":
 
     if estado != "Vigente":
         fecha_termino = st.date_input(
-            "Fecha término"
+            "Fecha término",
+            format="DD/MM/YYYY"
         )
 
     observacion = st.text_area(
