@@ -596,9 +596,12 @@ elif menu == "Ficha clínica":
             st.info("Este paciente aún no tiene evoluciones registradas")
 
         else:
-            for _, evo in evoluciones_df.iterrows():
+            for idx, evo in evoluciones_df.iterrows():
 
-                with st.expander(f"📅 {formatear_fecha(evo['fecha'])}"):
+                with st.expander(
+                    f"📅 {formatear_fecha(evo['fecha'])}",
+                    expanded=True if _ == 0 else False
+                ):
 
                     st.subheader(f"📅 {formatear_fecha(evo['fecha'])}")
 
