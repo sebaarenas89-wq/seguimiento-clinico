@@ -869,20 +869,20 @@ elif menu == "Terapia ATM":
         )
 
     if st.button("Guardar terapia ATM"):
-    if antimicrobiano.strip():
+        if antimicrobiano.strip():
 
-        guardar_terapia_atm(
-            paciente["id"],
-            antimicrobiano,
-            fecha_inicio,
-            fecha_termino,
-            estado,
-            observacion,
-            excepcion_prolongada,
-            motivo_excepcion
-        )
+            guardar_terapia_atm(
+                paciente["id"],
+                antimicrobiano,
+                fecha_inicio,
+                fecha_termino,
+                estado,
+                observacion,
+                excepcion_prolongada,
+                motivo_excepcion
+            )
 
-        st.success("Terapia registrada correctamente")
+            st.success("Terapia registrada correctamente")
             st.rerun()
             st.divider()
     st.subheader("Terapias ATM registradas")
