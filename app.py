@@ -495,7 +495,7 @@ elif menu == "Ficha clínica":
             nueva_fecha_ingreso = st.date_input(
                 "Fecha ingreso",
                 value=pd.to_datetime(paciente["fecha_ingreso"]).date(),
-                format="DD/MM/YYYY"
+                format="DD/MM/YYYY",
                 key=f"fecha_ingreso_paciente_{paciente['id']}"
             )
 
