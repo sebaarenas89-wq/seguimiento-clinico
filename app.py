@@ -255,8 +255,8 @@ def calcular_dias_tratamiento(fecha_inicio, fecha_termino, estado):
     return (fin - inicio).days + 1
 
 
-guardar_terapia_atm(
-    paciente["id"],
+def guardar_terapia_atm(
+    paciente_id,
     antimicrobiano,
     fecha_inicio,
     fecha_termino,
@@ -264,7 +264,7 @@ guardar_terapia_atm(
     observacion,
     excepcion_prolongada,
     motivo_excepcion
-)
+):
     conn = conectar_db()
     cursor = conn.cursor()
 
@@ -280,7 +280,7 @@ guardar_terapia_atm(
             observacion,
             excepcion_prolongada,
             motivo_excepcion
-    )
+        )
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     """, (
         int(paciente_id),
