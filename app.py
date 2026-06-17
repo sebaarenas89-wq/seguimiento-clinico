@@ -956,11 +956,11 @@ elif menu == "Búsqueda global":
         else:
             st.warning("No se encontraron resultados")
 
-else:
-    st.info("Ingrese un término de búsqueda")
+    else:
+        st.info("Ingrese un término de búsqueda")
 
         
-if menu == "Terapia ATM":
+elif menu == "Terapia ATM":
 
     st.header("💊 Terapia Antimicrobiana")
 
