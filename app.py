@@ -552,12 +552,6 @@ if menu == "Pacientes":
     st.divider()
     st.subheader("Pacientes registrados")
 
-    with st.expander("📋 Ver pacientes registrados", expanded=False):
-        st.dataframe(
-            pacientes_mostrar,
-            use_container_width=True
-        )
-
     pacientes_df = obtener_pacientes()
 
     if len(pacientes_df) > 0:
