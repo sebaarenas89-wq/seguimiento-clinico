@@ -1101,7 +1101,11 @@ elif menu == "Terapia ATM":
         terapias_df["fecha_inicio"] = terapias_df["fecha_inicio"].apply(formatear_fecha)
         terapias_df["fecha_termino"] = terapias_df["fecha_termino"].apply(formatear_fecha)
 
-        st.dataframe(terapias_df, use_container_width=True)
+        with st.expander("💊 Ver terapias ATM registradas", expanded=False):
+            st.dataframe(
+                terapias_df,
+                use_container_width=True
+            )
 
 else:
     st.info("Este paciente no tiene terapias ATM registradas")
