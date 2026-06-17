@@ -920,11 +920,13 @@ elif menu == "Búsqueda global":
             resultados_mostrar["fecha_ingreso"] = resultados_mostrar["fecha_ingreso"].apply(formatear_fecha)
 
             resultados_mostrar = resultados_mostrar.rename(columns={
+                
                 "nombre": "Paciente",
                 "id_paciente": "ID paciente",
                 "servicio": "Servicio",
                 "fecha_ingreso": "Ingreso",
-                "diagnosticos": "Diagnósticos"
+                "diagnosticos": "Diagnósticos",
+                "origen": "Origen coincidencia"
             })
 
             st.success(f"Se encontraron {len(resultados_mostrar)} paciente(s)")
