@@ -882,10 +882,11 @@ elif menu == "Evolución diaria":
                 height=250
             )
 
-        resultados_laboratorio = st.text_area(
-            "Resultados laboratorio",
-            height=120
-        )
+        with st.expander("🧪 Resultados laboratorio", expanded=False):
+            resultados_laboratorio = st.text_area(
+                "Resultados laboratorio",
+                height=200
+            )
 
         resultados_microbiologia = st.text_area(
             "Resultados microbiología",
