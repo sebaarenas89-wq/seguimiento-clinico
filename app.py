@@ -33,6 +33,47 @@ def evaluar_alerta_atm(fila):
 def conectar_db():
     return sqlite3.connect(DB_NAME, check_same_thread=False)
 
+def buscar_global(texto_busqueda):
+    conn = conectar_db()
+
+    texto = f"%{texto_busqueda}%"
+
+    df = pd.read_sql_query(
+        """
+        SELECT DISTINCT
+            p.id,
+            p.nombre,
+            p.id_paciente,
+            p.servicio,
+            p.fecha_ingreso,
+            p.diagnosticos
+        FROM pacientes p
+        LEFT JOIN evoluciones e ON e.paciente_id = p.id
+        LEFT JOIN terapias_atm t ON t.paciente_id = p.id
+        WHERE
+            p.nombre LIKE ?
+            OR p.id_paciente LIKE ?
+            OR p.diagnosticos LIKE ?
+            OR e.evolucion_clinica LIKE ?
+            OR e.resultados_laboratorio LIKE ?
+            OR e.resultados_microbiologia LIKE ?
+            OR e.antimicrobianos_activos LIKE ?
+            OR e.intervencion_farmaceutica LIKE ?
+            OR t.antimicrobiano LIKE ?
+            OR t.observacion LIKE ?
+            OR t.motivo_excepcion LIKE ?
+        ORDER BY p.nombre
+        """,
+        conn,
+        params=(
+            texto, texto, texto,
+            texto, texto, texto, texto, texto,
+            texto, texto, texto
+        )
+    )
+
+    conn.close()
+    return df
 
 def crear_tablas():
     conn = conectar_db()
