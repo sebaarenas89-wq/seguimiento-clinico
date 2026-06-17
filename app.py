@@ -900,10 +900,11 @@ elif menu == "Evolución diaria":
                 height=180
             )
 
-        intervencion_farmaceutica = st.text_area(
-            "Intervención farmacéutica",
-            height=120
-        )
+        with st.expander("💬 Intervención farmacéutica", expanded=False):
+            intervencion_farmaceutica = st.text_area(
+                "Intervención farmacéutica",
+                height=200
+            )
 
         if st.button("Guardar evolución"):
 
