@@ -35,10 +35,29 @@ def conectar_db():
 
 def buscar_global(texto_busqueda):
     conn = conectar_db()
-
     texto = f"%{texto_busqueda}%"
 
-    df = pd.read_sql_query(
+    pacientes = pd.read_sql_query(
+        """
+        SELECT
+            id,
+            nombre,
+            id_paciente,
+            servicio,
+            fecha_ingreso,
+            diagnosticos
+        FROM pacientes
+        WHERE
+            nombre LIKE ?
+            OR id_paciente LIKE ?
+            OR diagnosticos LIKE ?
+        """,
+        conn,
+        params=(texto, texto, texto)
+    )
+    pacientes["origen"] = "Datos del paciente / Diagnóstico"
+
+    evoluciones = pd.read_sql_query(
         """
         SELECT DISTINCT
             p.id,
@@ -48,31 +67,47 @@ def buscar_global(texto_busqueda):
             p.fecha_ingreso,
             p.diagnosticos
         FROM pacientes p
-        LEFT JOIN evoluciones e ON e.paciente_id = p.id
-        LEFT JOIN terapias_atm t ON t.paciente_id = p.id
+        INNER JOIN evoluciones e ON e.paciente_id = p.id
         WHERE
-            p.nombre LIKE ?
-            OR p.id_paciente LIKE ?
-            OR p.diagnosticos LIKE ?
-            OR e.evolucion_clinica LIKE ?
+            e.evolucion_clinica LIKE ?
             OR e.resultados_laboratorio LIKE ?
             OR e.resultados_microbiologia LIKE ?
             OR e.antimicrobianos_activos LIKE ?
             OR e.intervencion_farmaceutica LIKE ?
-            OR t.antimicrobiano LIKE ?
-            OR t.observacion LIKE ?
-            OR t.motivo_excepcion LIKE ?
-        ORDER BY p.nombre
         """,
         conn,
-        params=(
-            texto, texto, texto,
-            texto, texto, texto, texto, texto,
-            texto, texto, texto
-        )
+        params=(texto, texto, texto, texto, texto)
     )
+    evoluciones["origen"] = "Evolución clínica"
+
+    terapias = pd.read_sql_query(
+        """
+        SELECT DISTINCT
+            p.id,
+            p.nombre,
+            p.id_paciente,
+            p.servicio,
+            p.fecha_ingreso,
+            p.diagnosticos
+        FROM pacientes p
+        INNER JOIN terapias_atm t ON t.paciente_id = p.id
+        WHERE
+            t.antimicrobiano LIKE ?
+            OR t.observacion LIKE ?
+            OR t.motivo_excepcion LIKE ?
+        """,
+        conn,
+        params=(texto, texto, texto)
+    )
+    terapias["origen"] = "Terapia ATM"
 
     conn.close()
+
+    df = pd.concat([pacientes, evoluciones, terapias], ignore_index=True)
+
+    if len(df) > 0:
+        df = df.drop_duplicates(subset=["id", "origen"])
+
     return df
 
 def crear_tablas():
