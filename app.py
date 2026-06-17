@@ -613,6 +613,7 @@ elif menu == "Ficha clínica":
                     "fecha_termino",
                     "estado",
                     "dias_tratamiento",
+                    "alerta",
                     "observacion"
                 ]
             ]
