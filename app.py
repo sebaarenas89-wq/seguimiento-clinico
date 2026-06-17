@@ -490,13 +490,20 @@ opciones_menu = ["Pacientes", "Ficha clínica", "Evolución diaria", "Terapia AT
 if "menu_actual" not in st.session_state:
     st.session_state.menu_actual = "Pacientes"
 
-menu = st.sidebar.radio(
+if "menu_radio" not in st.session_state:
+    st.session_state.menu_radio = st.session_state.menu_actual
+
+def cambiar_menu():
+    st.session_state.menu_actual = st.session_state.menu_radio
+
+st.sidebar.radio(
     "Menú",
     opciones_menu,
-    index=opciones_menu.index(st.session_state.menu_actual)
+    key="menu_radio",
+    on_change=cambiar_menu
 )
 
-st.session_state.menu_actual = menu
+menu = st.session_state.menu_actual
 
 
 # --------------------------
