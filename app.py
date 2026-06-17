@@ -964,7 +964,7 @@ elif menu == "Terapia ATM":
 else:
     st.info("Este paciente no tiene terapias ATM registradas")
 
-elif menu == "Búsqueda global":
+if menu == "Búsqueda global":
 
     st.header("🔍 Búsqueda global")
 
