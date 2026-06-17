@@ -10,7 +10,24 @@ DB_NAME = "seguimiento_clinico.db"
 def formatear_fecha(fecha):
     if fecha is None or fecha == "":
         return ""
+
     return pd.to_datetime(fecha).strftime("%d/%m/%Y")
+
+
+def evaluar_alerta_atm(fila):
+
+    dias = fila["dias_tratamiento"]
+
+    if fila.get("excepcion_prolongada", 0) == 1:
+        return "🔵 Prolongado justificado"
+
+    if dias >= 14:
+        return "🔴 Alerta PROA"
+
+    if dias >= 7:
+        return "🟡 Reevaluar"
+
+    return "🟢 Dentro de rango"
 
 
 def conectar_db():
