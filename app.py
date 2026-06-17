@@ -876,10 +876,11 @@ elif menu == "Evolución diaria":
             format="DD/MM/YYYY"
         )
 
-        evolucion_clinica = st.text_area(
-            "Evolución clínica",
-            height=150
-        )
+        with st.expander("📝 Evolución clínica", expanded=False):
+            evolucion_clinica = st.text_area(
+                "Evolución clínica",
+                height=250
+            )
 
         resultados_laboratorio = st.text_area(
             "Resultados laboratorio",
