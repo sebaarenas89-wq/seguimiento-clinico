@@ -894,10 +894,11 @@ elif menu == "Evolución diaria":
                 height=200
             )
 
-        antimicrobianos_activos = st.text_area(
-            "Antimicrobianos activos",
-            height=100
-        )
+        with st.expander("💊 Antimicrobianos activos", expanded=False):
+            antimicrobianos_activos = st.text_area(
+                "Antimicrobianos activos",
+                height=180
+            )
 
         intervencion_farmaceutica = st.text_area(
             "Intervención farmacéutica",
