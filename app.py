@@ -867,6 +867,46 @@ elif menu == "Evolución diaria":
             st.dataframe(evoluciones_df, use_container_width=True)
         else:
             st.info("No hay evoluciones registradas para este paciente")
+if menu == "Búsqueda global":
+
+    st.header("🔍 Búsqueda global")
+
+    texto_busqueda = st.text_input(
+        "Buscar por nombre, ID, diagnóstico, antimicrobiano, microbiología o evolución"
+    )
+
+    if texto_busqueda.strip():
+
+        resultados_df = buscar_global(texto_busqueda.strip())
+
+        if len(resultados_df) > 0:
+
+            resultados_mostrar = resultados_df.copy()
+            resultados_mostrar["fecha_ingreso"] = resultados_mostrar["fecha_ingreso"].apply(formatear_fecha)
+
+            resultados_mostrar = resultados_mostrar.rename(columns={
+                "nombre": "Paciente",
+                "id_paciente": "ID paciente",
+                "servicio": "Servicio",
+                "fecha_ingreso": "Ingreso",
+                "diagnosticos": "Diagnósticos"
+            })
+
+            st.success(f"Se encontraron {len(resultados_mostrar)} paciente(s)")
+
+            st.dataframe(
+                resultados_mostrar[
+                    ["Paciente", "ID paciente", "Servicio", "Ingreso", "Diagnósticos"]
+                ],
+                use_container_width=True
+            )
+
+        else:
+            st.warning("No se encontraron resultados")
+
+    else:
+        st.info("Ingrese un término de búsqueda")
+
 
 elif menu == "Terapia ATM":
 
@@ -963,43 +1003,3 @@ elif menu == "Terapia ATM":
 
 else:
     st.info("Este paciente no tiene terapias ATM registradas")
-
-if menu == "Búsqueda global":
-
-    st.header("🔍 Búsqueda global")
-
-    texto_busqueda = st.text_input(
-        "Buscar por nombre, ID, diagnóstico, antimicrobiano, microbiología o evolución"
-    )
-
-    if texto_busqueda.strip():
-
-        resultados_df = buscar_global(texto_busqueda.strip())
-
-        if len(resultados_df) > 0:
-
-            resultados_mostrar = resultados_df.copy()
-            resultados_mostrar["fecha_ingreso"] = resultados_mostrar["fecha_ingreso"].apply(formatear_fecha)
-
-            resultados_mostrar = resultados_mostrar.rename(columns={
-                "nombre": "Paciente",
-                "id_paciente": "ID paciente",
-                "servicio": "Servicio",
-                "fecha_ingreso": "Ingreso",
-                "diagnosticos": "Diagnósticos"
-            })
-
-            st.success(f"Se encontraron {len(resultados_mostrar)} paciente(s)")
-
-            st.dataframe(
-                resultados_mostrar[
-                    ["Paciente", "ID paciente", "Servicio", "Ingreso", "Diagnósticos"]
-                ],
-                use_container_width=True
-            )
-
-        else:
-            st.warning("No se encontraron resultados")
-
-    else:
-        st.info("Ingrese un término de búsqueda")
