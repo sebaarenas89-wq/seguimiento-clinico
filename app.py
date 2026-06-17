@@ -939,7 +939,11 @@ elif menu == "Evolución diaria":
         evoluciones_df = obtener_evoluciones_paciente(paciente["id"])
 
         if len(evoluciones_df) > 0:
-            st.dataframe(evoluciones_df, use_container_width=True)
+            with st.expander("📋 Ver evoluciones registradas", expanded=False):
+                st.dataframe(
+                    evoluciones_df,
+                    use_container_width=True
+                )
         else:
             st.info("No hay evoluciones registradas para este paciente")
 elif menu == "Búsqueda global":
