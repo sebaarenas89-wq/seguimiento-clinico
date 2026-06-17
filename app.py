@@ -485,10 +485,18 @@ crear_tablas()
 
 st.title("🏥 Seguimiento Clínico Farmacéutico")
 
+opciones_menu = ["Pacientes", "Ficha clínica", "Evolución diaria", "Terapia ATM", "Búsqueda global"]
+
+if "menu_actual" not in st.session_state:
+    st.session_state.menu_actual = "Pacientes"
+
 menu = st.sidebar.radio(
     "Menú",
-    ["Pacientes", "Ficha clínica", "Evolución diaria", "Terapia ATM", "Búsqueda global"]
+    opciones_menu,
+    index=opciones_menu.index(st.session_state.menu_actual)
 )
+
+st.session_state.menu_actual = menu
 
 
 # --------------------------
