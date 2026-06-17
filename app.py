@@ -624,6 +624,7 @@ elif menu == "Ficha clínica":
                 "fecha_termino": "Término",
                 "estado": "Estado",
                 "dias_tratamiento": "Días",
+                "alerta": "Alerta",
                 "observacion": "Observación"
             })
 
