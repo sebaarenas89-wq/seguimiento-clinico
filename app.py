@@ -933,7 +933,7 @@ elif menu == "Búsqueda global":
 
             st.dataframe(
                 resultados_mostrar[
-                    ["Paciente", "ID paciente", "Servicio", "Ingreso", "Diagnósticos"]
+                    ["Paciente", "ID paciente", "Servicio", "Ingreso", "Diagnósticos", "Origen coincidencia"]
                 ],
                 use_container_width=True
             )
