@@ -867,7 +867,7 @@ elif menu == "Evolución diaria":
             st.dataframe(evoluciones_df, use_container_width=True)
         else:
             st.info("No hay evoluciones registradas para este paciente")
-if menu == "Búsqueda global":
+elif menu == "Búsqueda global":
 
     st.header("🔍 Búsqueda global")
 
