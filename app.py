@@ -967,10 +967,15 @@ elif menu == "Búsqueda global":
                 pacientes_unicos["Paciente"] + " | ID: " + pacientes_unicos["ID paciente"].astype(str)
             )
 
-            st.info(
-                "Para abrir la ficha, vaya al menú lateral → Ficha clínica y seleccione este paciente: "
-                + opcion_paciente
-            )
+            paciente_seleccionado_busqueda = pacientes_unicos[
+                (pacientes_unicos["Paciente"] + " | ID: " + pacientes_unicos["ID paciente"].astype(str))
+                == opcion_paciente
+            ].iloc[0]
+
+            if st.button("📋 Abrir ficha clínica"):
+                st.session_state.paciente_ficha_id = int(paciente_seleccionado_busqueda["id"])
+                st.session_state.menu_actual = "Ficha clínica"
+                st.rerun()
 
         else:
             st.warning("No se encontraron resultados")
