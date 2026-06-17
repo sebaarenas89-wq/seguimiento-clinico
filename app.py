@@ -960,7 +960,7 @@ else:
     st.info("Ingrese un término de búsqueda")
 
         
-elif menu == "Terapia ATM":
+if menu == "Terapia ATM":
 
     st.header("💊 Terapia Antimicrobiana")
 
