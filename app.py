@@ -571,8 +571,8 @@ if menu == "Pacientes":
                 use_container_width=True
             )
 
-else:
-    st.info("No existen pacientes registrados")
+    else:
+        st.info("No existen pacientes registrados")
 
 
 # --------------------------
