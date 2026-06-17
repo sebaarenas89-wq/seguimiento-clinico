@@ -597,6 +597,11 @@ elif menu == "Ficha clínica":
         if len(terapias_df) > 0:
 
             terapias_mostrar = terapias_df.copy()
+            
+            terapias_mostrar["alerta"] = terapias_mostrar.apply(
+                evaluar_alerta_atm,
+                axis=1
+            )
 
             terapias_mostrar["fecha_inicio"] = terapias_mostrar["fecha_inicio"].apply(formatear_fecha)
             terapias_mostrar["fecha_termino"] = terapias_mostrar["fecha_termino"].apply(formatear_fecha)
