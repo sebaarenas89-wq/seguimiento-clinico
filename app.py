@@ -411,7 +411,7 @@ st.title("🏥 Seguimiento Clínico Farmacéutico")
 
 menu = st.sidebar.radio(
     "Menú",
-    ["Pacientes", "Ficha clínica", "Evolución diaria", "Terapia ATM"]
+    ["Pacientes", "Ficha clínica", "Evolución diaria", "Terapia ATM", "Búsqueda global"]
 )
 
 
