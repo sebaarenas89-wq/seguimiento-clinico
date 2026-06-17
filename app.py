@@ -522,7 +522,11 @@ if menu == "Pacientes":
             "Fecha ingreso",
             format="DD/MM/YYYY"
         )
-        diagnosticos = st.text_area("Diagnósticos", height=160)
+        with st.expander("📝 Diagnósticos", expanded=False):
+            diagnosticos = st.text_area(
+                "Diagnósticos",
+                height=220
+            )
 
     if st.button("Guardar paciente"):
         if nombre == "" or id_paciente == "":
