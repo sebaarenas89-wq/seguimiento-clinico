@@ -937,6 +937,27 @@ elif menu == "Búsqueda global":
                 ],
                 use_container_width=True
             )
+            st.write("### Acceso rápido")
+
+            pacientes_unicos = resultados_mostrar.drop_duplicates(
+                subset=["ID paciente"]
+            )
+
+            opcion_paciente = st.selectbox(
+                "Seleccione paciente para revisar",
+                pacientes_unicos["Paciente"] + " | ID: " + pacientes_unicos["ID paciente"].astype(str)
+            )
+
+            st.info(
+                "Para abrir la ficha, vaya al menú lateral → Ficha clínica y seleccione este paciente: "
+                + opcion_paciente
+            )
+
+        else:
+            st.warning("No se encontraron resultados")
+
+else:
+    st.info("Ingrese un término de búsqueda")
 
         else:
             st.warning("No se encontraron resultados")
