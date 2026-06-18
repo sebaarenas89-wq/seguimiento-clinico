@@ -575,7 +575,7 @@ if menu == "Pacientes":
 
 elif menu == "Ficha clínica":
 
-    st.header("📋 Ficha clínica")
+    st.subheader("📋 Ficha clínica")
 
     pacientes_df = obtener_pacientes()
 
