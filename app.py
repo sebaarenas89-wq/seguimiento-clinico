@@ -896,6 +896,9 @@ elif menu == "Evolución diaria":
     if "intervencion_farmaceutica_txt" not in st.session_state:
         st.session_state.intervencion_farmaceutica_txt = ""
 
+    if "evolucion_form_version" not in st.session_state:
+        st.session_state.evolucion_form_version = 0
+
     pacientes_df = obtener_pacientes()
 
     if len(pacientes_df) == 0:
