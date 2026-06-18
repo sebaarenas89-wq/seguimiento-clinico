@@ -1035,7 +1035,7 @@ elif menu == "Evolución diaria":
             with st.expander("📋 Ver evoluciones registradas", expanded=False):
                 st.dataframe(
                     evoluciones_mostrar,
-                    use_container_width=True
+                    use_container_width=True,
                     hide_index=True
                 )
         else:
