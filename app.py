@@ -597,11 +597,28 @@ elif menu == "Ficha clínica":
             if len(paciente_preseleccionado) > 0:
                 indice_paciente = pacientes_df.index.get_loc(paciente_preseleccionado.index[0])
 
+        opciones_pacientes = ["-- Seleccione paciente --"] + pacientes_df["selector"].tolist()
+
+        indice_paciente = 0
+
+        if "paciente_ficha_id" in st.session_state:
+            paciente_preseleccionado = pacientes_df[
+                pacientes_df["id"] == st.session_state.paciente_ficha_id
+            ]
+
+            if len(paciente_preseleccionado) > 0:
+                selector_preseleccionado = paciente_preseleccionado.iloc[0]["selector"]
+                indice_paciente = opciones_pacientes.index(selector_preseleccionado)
+
         seleccion = st.selectbox(
-        "Seleccione paciente",
-        pacientes_df["selector"].tolist(),
-        index=indice_paciente
-    )
+            "Seleccione paciente",
+            opciones_pacientes,
+            index=indice_paciente
+        )
+
+        if seleccion == "-- Seleccione paciente --":
+            st.info("Seleccione un paciente para visualizar la ficha clínica")
+            st.stop()
 
         paciente = pacientes_df[pacientes_df["selector"] == seleccion].iloc[0]
 
