@@ -512,7 +512,7 @@ menu = st.session_state.menu_actual
 
 if menu == "Pacientes":
 
-    st.header("👤 Ingreso de paciente")
+    st.subheader("👤 Ingreso de paciente")
 
     col1, col2 = st.columns(2)
 
