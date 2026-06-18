@@ -1075,7 +1075,6 @@ elif menu == "Búsqueda global":
             if st.button("📋 Abrir ficha clínica"):
                 st.session_state.paciente_ficha_id = int(paciente_seleccionado_busqueda["id"])
                 st.session_state.menu_actual = "Ficha clínica"
-                st.session_state.menu_radio = "Ficha clínica"
                 st.rerun()
 
         else:
