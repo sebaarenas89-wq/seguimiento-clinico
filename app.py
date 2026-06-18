@@ -605,7 +605,7 @@ elif menu == "Ficha clínica":
 
         paciente = pacientes_df[pacientes_df["selector"] == seleccion].iloc[0]
 
-        st.markdown(f"### {paciente['nombre']}")
+        st.markdown(f"**👤 {paciente['nombre']}**")
 
         col1, col2, col3 = st.columns(3)
 
