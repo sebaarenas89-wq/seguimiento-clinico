@@ -879,22 +879,22 @@ elif menu == "Evolución diaria":
     st.markdown("### 📝 Evolución clínica diaria")
     
     if "expandir_evolucion" not in st.session_state:
-    st.session_state.expandir_evolucion = False
+        st.session_state.expandir_evolucion = False
 
     if "evolucion_clinica_txt" not in st.session_state:
-    st.session_state.evolucion_clinica_txt = ""
+        st.session_state.evolucion_clinica_txt = ""
 
     if "resultados_laboratorio_txt" not in st.session_state:
-    st.session_state.resultados_laboratorio_txt = ""
+        st.session_state.resultados_laboratorio_txt = ""
 
     if "resultados_microbiologia_txt" not in st.session_state:
-    st.session_state.resultados_microbiologia_txt = ""
+        st.session_state.resultados_microbiologia_txt = ""
 
     if "antimicrobianos_activos_txt" not in st.session_state:
-    st.session_state.antimicrobianos_activos_txt = ""
+        st.session_state.antimicrobianos_activos_txt = ""
 
     if "intervencion_farmaceutica_txt" not in st.session_state:
-    st.session_state.intervencion_farmaceutica_txt = ""
+        st.session_state.intervencion_farmaceutica_txt = ""
 
     pacientes_df = obtener_pacientes()
 
