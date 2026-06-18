@@ -1091,7 +1091,65 @@ elif menu == "Terapia ATM":
 
     paciente = pacientes_df[paciente_idx].iloc[0]
 
-    antimicrobiano = st.text_input("Antimicrobiano")
+    lista_antimicrobianos = [
+        "Aciclovir ev",
+        "Aciclovir vo",
+        "Amikacina",
+        "Ampicilina",
+        "Ampicilina/sulbactam",
+        "Anfotericina B liposomal",
+        "Anidulafungina",
+        "Azitromicina ev",
+        "Azitromicina vo",
+        "Aztreonam",
+        "Cefazolina",
+        "Cefepime",
+        "Cefotaxima ev",
+        "Ceftazidima",
+        "Ceftazidima/avibactam", 
+        "Ceftriaxona",
+        "Ciprofloxacino ev",  
+        "Ciprofloxacino vo",
+        "Clindamicina vo",
+        "Clindamicina ev",
+        "Cloxacilina ev",
+        "Cloxacilina vo",
+        "Colistin",
+        "Cotrimoxazol ev",
+        "Cotrimoxazol vo",
+        "Daptomicina",
+        "Ertapenem",
+        "Fluconazol ev",
+        "Fluconazol vo",
+        "Fosfomicina ev",
+        "Ganciclovir",
+        "Imipenem",
+        "Isavuconazol vo",
+        "Isavuconazol ev",
+        "Levofloxacino ev",
+        "Levofloxacino vo",
+        "Linezolid vo",
+        "Linezolid ev",
+        "Meropenem",
+        "Metronidazol ev",
+        "Metronidazol vo",
+        "Penicilina G",
+        "Piperacilina/tazobactam",
+        "Tigeciclina",
+        "Vancomicina",
+        "Voriconazol ev",
+        "Voriconazol vo",
+        "Otro"
+    ]
+
+    antimicrobiano = st.selectbox(
+        "Antimicrobiano",
+        lista_antimicrobianos
+    )
+
+    if antimicrobiano == "Otro":
+        antimicrobiano = st.text_input("Especifique antimicrobiano")
+
 
     fecha_inicio = st.date_input(
         "Fecha inicio",
