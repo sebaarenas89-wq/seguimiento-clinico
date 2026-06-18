@@ -616,7 +616,8 @@ elif menu == "Ficha clínica":
         📅 **Fecha ingreso:** {formatear_fecha(paciente['fecha_ingreso'])}
         """
         )
-
+        st.markdown("**Diagnósticos**")
+        
         st.markdown(
         f"""
     <div style="
@@ -625,6 +626,7 @@ elif menu == "Ficha clínica":
         padding:15px;
         border-radius:8px;
         font-size:18px;
+        margin-bottom:25px;
     ">
     {paciente["diagnosticos"]}
     </div>
