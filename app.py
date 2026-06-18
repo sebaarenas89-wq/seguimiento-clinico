@@ -919,31 +919,31 @@ elif menu == "Evolución diaria":
             format="DD/MM/YYYY"
         )
 
-        with st.expander("📝 Evolución clínica", expanded=False):
+        with st.expander("📝 Evolución clínica", expanded=st.session_state.expandir_evolucion):
             evolucion_clinica = st.text_area(
                 "Evolución clínica",
                 height=250
             )
 
-        with st.expander("🧪 Resultados laboratorio", expanded=False):
+        with st.expander("🧪 Resultados laboratorio", expanded=st.session_state.expandir_evolucion):
             resultados_laboratorio = st.text_area(
                 "Resultados laboratorio",
                 height=200
             )
 
-        with st.expander("🦠 Resultados microbiología", expanded=False):
+        with st.expander("🦠 Resultados microbiología", expanded=st.session_state.expandir_evolucion):
             resultados_microbiologia = st.text_area(
                 "Resultados microbiología",
                 height=200
             )
 
-        with st.expander("💊 Antimicrobianos activos", expanded=False):
+        with st.expander("💊 Antimicrobianos activos", expanded=st.session_state.expandir_evolucion):
             antimicrobianos_activos = st.text_area(
                 "Antimicrobianos activos",
                 height=180
             )
 
-        with st.expander("💬 Intervención farmacéutica", expanded=False):
+        with st.expander("💬 Intervención farmacéutica", expanded=st.session_state.expandir_evolucion):
             intervencion_farmaceutica = st.text_area(
                 "Intervención farmacéutica",
                 height=200
