@@ -620,7 +620,7 @@ elif menu == "Ficha clínica":
         st.markdown("**Diagnósticos**")
         st.info(paciente["diagnosticos"])
 
-        with st.expander("✏️ Editar datos del paciente"):
+        with st.expander("✏️ Editar paciente"):
 
             nuevo_nombre = st.text_input(
                 "Nombre paciente",
