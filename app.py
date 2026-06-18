@@ -1046,8 +1046,6 @@ elif menu == "Terapia ATM":
 
     paciente = pacientes_df[paciente_idx].iloc[0]
 
-    st.subheader(paciente["nombre"])
-
     antimicrobiano = st.text_input("Antimicrobiano")
 
     fecha_inicio = st.date_input(
