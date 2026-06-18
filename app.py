@@ -922,31 +922,36 @@ elif menu == "Evolución diaria":
         with st.expander("📝 Evolución clínica", expanded=st.session_state.expandir_evolucion):
             evolucion_clinica = st.text_area(
                 "Evolución clínica",
-                height=250
+                height=250,
+                key="evolucion_clinica_txt"
             )
 
         with st.expander("🧪 Resultados laboratorio", expanded=st.session_state.expandir_evolucion):
             resultados_laboratorio = st.text_area(
                 "Resultados laboratorio",
-                height=200
+                height=200,
+                key="resultados_laboratorio_txt"
             )
 
         with st.expander("🦠 Resultados microbiología", expanded=st.session_state.expandir_evolucion):
             resultados_microbiologia = st.text_area(
                 "Resultados microbiología",
-                height=200
+                height=200,
+                key="resultados microbiología_txt"
             )
 
         with st.expander("💊 Antimicrobianos activos", expanded=st.session_state.expandir_evolucion):
             antimicrobianos_activos = st.text_area(
                 "Antimicrobianos activos",
-                height=180
+                height=180,
+                key="antimicrobianos activos_txt"
             )
 
         with st.expander("💬 Intervención farmacéutica", expanded=st.session_state.expandir_evolucion):
             intervencion_farmaceutica = st.text_area(
                 "Intervención farmacéutica",
-                height=200
+                height=200,
+                key="intervención farmacéutica_txt"
             )
 
         if st.button("Guardar evolución"):
