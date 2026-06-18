@@ -876,7 +876,7 @@ elif menu == "Ficha clínica":
 
 elif menu == "Evolución diaria":
 
-    st.header("📝 Evolución clínica diaria")
+    st.markdown("### 📝 Evolución clínica diaria")
 
     pacientes_df = obtener_pacientes()
 
