@@ -1078,10 +1078,19 @@ elif menu == "Terapia ATM":
         st.warning("No existen pacientes registrados")
         st.stop()
 
+    opciones_pacientes = ["-- Seleccione paciente --"] + (
+        pacientes_df["nombre"] + " | ID: " + pacientes_df["id_paciente"].astype(str)
+    ).tolist()
+
     paciente_seleccionado = st.selectbox(
         "Seleccione paciente",
-        pacientes_df["nombre"] + " | ID: " + pacientes_df["id_paciente"].astype(str)
+        opciones_pacientes,
+        index=0
     )
+
+    if paciente_seleccionado == "-- Seleccione paciente --":
+        st.info("Seleccione un paciente para continuar")
+        st.stop()
 
     paciente_idx = (
         pacientes_df["nombre"]
