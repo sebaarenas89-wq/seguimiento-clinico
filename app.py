@@ -1092,7 +1092,7 @@ elif menu == "Terapia ATM":
     paciente = pacientes_df[paciente_idx].iloc[0]
 
     lista_antimicrobianos = [
-        "",
+        "-- Seleccione antimicrobiano --",
         "Aciclovir ev",
         "Aciclovir vo",
         "Amikacina",
@@ -1145,7 +1145,8 @@ elif menu == "Terapia ATM":
 
     antimicrobiano = st.selectbox(
         "Antimicrobiano",
-        lista_antimicrobianos
+        lista_antimicrobianos,
+        index=0
     )
 
     if antimicrobiano == "Otro":
