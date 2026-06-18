@@ -610,13 +610,16 @@ elif menu == "Ficha clínica":
         col1, col2, col3 = st.columns(3)
 
         with col1:
-            st.metric("Servicio", paciente["servicio"])
+            st.markdown("**Servicio**")
+            st.markdown(f"### {paciente['servicio']}")
 
         with col2:
-            st.metric("ID paciente", paciente["id_paciente"])
+            st.markdown("**ID paciente**")
+            st.markdown(f"### {paciente['id_paciente']}")
 
         with col3:
-            st.metric("Fecha ingreso", formatear_fecha(paciente["fecha_ingreso"]))
+            st.markdown("**Fecha ingreso**")
+            st.markdown(f"### {formatear_fecha(paciente['fecha_ingreso'])}")
 
         st.write("### Diagnósticos")
         st.info(paciente["diagnosticos"])
