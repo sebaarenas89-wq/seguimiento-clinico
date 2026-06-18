@@ -1254,7 +1254,7 @@ elif menu == "Terapia ATM":
 
         with st.expander("💊 Ver terapias ATM registradas", expanded=False):
             st.dataframe(
-                terapias_df
+                terapias_mostrar,
                 use_container_width=True
             )
 
