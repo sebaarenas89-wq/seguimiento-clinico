@@ -607,19 +607,15 @@ elif menu == "Ficha clínica":
 
         st.markdown(f"**👤 {paciente['nombre']}**")
 
-        col1, col2, col3 = st.columns(3)
+        st.info(
+            f"""
+        🏥 **Servicio:** {paciente['servicio']}
 
-        with col1:
-            st.markdown("**Servicio**")
-            st.markdown(f"**{paciente['servicio']}**")
+        🆔 **ID paciente:** {paciente['id_paciente']}
 
-        with col2:
-            st.markdown("**ID paciente**")
-            st.markdown(f"**{paciente['id_paciente']}**")
-
-        with col3:
-            st.markdown("**Fecha ingreso**")
-            st.markdown(f"**{formatear_fecha(paciente['fecha_ingreso'])}**")
+        📅 **Fecha ingreso:** {formatear_fecha(paciente['fecha_ingreso'])}
+        """
+        )
 
         st.markdown("**Diagnósticos**")
         st.info(paciente["diagnosticos"])
