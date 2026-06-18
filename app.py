@@ -1192,7 +1192,10 @@ elif menu == "Terapia ATM":
         )
 
     if st.button("Guardar terapia ATM"):
-        if antimicrobiano.strip():
+        if antimicrobiano == "-- Seleccione antimicrobiano --":
+            st.warning("Seleccione un antimicrobiano")
+
+        else:
 
             guardar_terapia_atm(
                 paciente["id"],
