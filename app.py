@@ -926,10 +926,17 @@ elif menu == "Evolución diaria":
             pacientes_df["nombre"] + " | ID: " + pacientes_df["id_paciente"]
         )
 
+        opciones_pacientes = ["-- Seleccione paciente --"] + pacientes_df["selector"].tolist()
+
         seleccion = st.selectbox(
             "Paciente",
-            pacientes_df["selector"].tolist()
+            opciones_pacientes,
+            index=0
         )
+
+        if seleccion == "-- Seleccione paciente --":
+            st.info("Seleccione un paciente para registrar una evolución")
+            st.stop()
 
         paciente = pacientes_df[pacientes_df["selector"] == seleccion].iloc[0]
 
