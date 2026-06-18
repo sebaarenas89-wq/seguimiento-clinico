@@ -1245,9 +1245,16 @@ elif menu == "Terapia ATM":
         terapias_df["fecha_inicio"] = terapias_df["fecha_inicio"].apply(formatear_fecha)
         terapias_df["fecha_termino"] = terapias_df["fecha_termino"].apply(formatear_fecha)
 
+        terapias_mostrar = terapias_df.copy()
+        
+        columnas_ocultar = ["id", "paciente_id"]
+        terapias_mostrar = terapias_mostrar.drop(
+            columns=[col for col in columnas_ocultar if col in terapias_mostrar.columns]
+        )
+
         with st.expander("💊 Ver terapias ATM registradas", expanded=False):
             st.dataframe(
-                terapias_df,
+                terapias_df
                 use_container_width=True
             )
 
