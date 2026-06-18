@@ -921,36 +921,52 @@ elif menu == "Evolución diaria":
             value=date.today(),
             format="DD/MM/YYYY"
         )
-
-        with st.expander("📝 Evolución clínica", expanded=st.session_state.expandir_evolucion):
+        version_invisible = "\u200b" * st.session_state.evolucion_form_version
+        
+        with st.expander(
+            f"📝 Evolución clínica{version_invisible}",
+            expanded=False
+        ):
             evolucion_clinica = st.text_area(
                 "Evolución clínica",
                 height=250,
                 key=f"evolucion_clinica_txt_{st.session_state.evolucion_form_version}"
             )
 
-        with st.expander("🧪 Resultados laboratorio", expanded=st.session_state.expandir_evolucion):
+        with st.expander(
+            f"🧪 Resultados laboratorio{version_invisible}",
+            expanded=False
+        ):
             resultados_laboratorio = st.text_area(
                 "Resultados laboratorio",
                 height=200,
                 key=f"resultados_laboratorio_txt_{st.session_state.evolucion_form_version}"
             )
 
-        with st.expander("🦠 Resultados microbiología", expanded=st.session_state.expandir_evolucion):
+        with st.expander(
+            f"🦠 Resultados microbiología{version_invisible}",
+            expanded=False
+        ):
             resultados_microbiologia = st.text_area(
                 "Resultados microbiología",
                 height=200,
                 key=f"resultados_microbiologia_txt_{st.session_state.evolucion_form_version}"
             )
 
-        with st.expander("💊 Antimicrobianos activos", expanded=st.session_state.expandir_evolucion):
+        with st.expander(
+            f"💊 Antimicrobianos activos{version_invisible}",
+            expanded=False
+        ):
             antimicrobianos_activos = st.text_area(
                 "Antimicrobianos activos",
                 height=180,
                 key=f"antimicrobianos_activos_txt_{st.session_state.evolucion_form_version}"
             )
 
-        with st.expander("💬 Intervención farmacéutica", expanded=st.session_state.expandir_evolucion):
+        with st.expander(
+            f"💬 Intervención farmacéutica{version_invisible}",
+            expanded=False
+        ):
             intervencion_farmaceutica = st.text_area(
                 "Intervención farmacéutica",
                 height=200,
