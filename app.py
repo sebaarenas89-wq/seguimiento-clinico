@@ -483,7 +483,7 @@ def eliminar_terapia_atm(terapia_id):
 
 crear_tablas()
 
-st.title("🏥 Seguimiento Clínico Farmacéutico")
+st.header("🏥 Seguimiento Clínico")
 
 opciones_menu = ["Pacientes", "Ficha clínica", "Evolución diaria", "Terapia ATM", "Búsqueda global"]
 
