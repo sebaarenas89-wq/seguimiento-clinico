@@ -1014,9 +1014,16 @@ elif menu == "Evolución diaria":
         evoluciones_df = obtener_evoluciones_paciente(paciente["id"])
 
         if len(evoluciones_df) > 0:
+            
+            evoluciones_mostrar = evoluciones_df.copy()
+
+            evoluciones_mostrar["fecha"] = pd.to_datetime(
+                evoluciones_mostrar["fecha"]
+            ).dt.strftime("%d/%m/%Y")
+            
             with st.expander("📋 Ver evoluciones registradas", expanded=False):
                 st.dataframe(
-                    evoluciones_df,
+                    evoluciones_mostrar,
                     use_container_width=True
                 )
         else:
