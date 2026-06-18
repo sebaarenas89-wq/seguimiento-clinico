@@ -961,6 +961,14 @@ elif menu == "Evolución diaria":
                 intervencion_farmaceutica
             )
 
+            st.session_state.evolucion_clinica_txt = ""
+            st.session_state.resultados_laboratorio_txt = ""
+            st.session_state.resultados_microbiologia_txt = ""
+            st.session_state.antimicrobianos_activos_txt = ""
+            st.session_state.intervencion_farmaceutica_txt = ""
+
+            st.session_state.expandir_evolucion = False
+
             st.success("Evolución guardada correctamente")
             st.rerun()
 
