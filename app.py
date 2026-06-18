@@ -1027,11 +1027,16 @@ elif menu == "Evolución diaria":
             evoluciones_mostrar["fecha"] = pd.to_datetime(
                 evoluciones_mostrar["fecha"]
             ).dt.strftime("%d/%m/%Y")
+            evoluciones_mostrar = evoluciones_mostrar.drop(
+                columns=["id"],
+                errors="ignore"
+            )
             
             with st.expander("📋 Ver evoluciones registradas", expanded=False):
                 st.dataframe(
                     evoluciones_mostrar,
                     use_container_width=True
+                    hide_index=True
                 )
         else:
             st.info("No hay evoluciones registradas para este paciente")
