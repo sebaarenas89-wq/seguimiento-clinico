@@ -1092,6 +1092,7 @@ elif menu == "Terapia ATM":
     paciente = pacientes_df[paciente_idx].iloc[0]
 
     lista_antimicrobianos = [
+        "",
         "Aciclovir ev",
         "Aciclovir vo",
         "Amikacina",
