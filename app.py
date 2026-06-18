@@ -1025,7 +1025,7 @@ elif menu == "Búsqueda global":
         
 elif menu == "Terapia ATM":
 
-    st.header("💊 Terapia Antimicrobiana")
+    st.markdown("### 💊 Terapia Antimicrobiana")
 
     pacientes_df = obtener_pacientes()
 
