@@ -605,7 +605,7 @@ elif menu == "Ficha clínica":
 
         paciente = pacientes_df[pacientes_df["selector"] == seleccion].iloc[0]
 
-        st.subheader(paciente["nombre"])
+        st.markdown(f"### {paciente['nombre']}")
 
         col1, col2, col3 = st.columns(3)
 
@@ -621,7 +621,7 @@ elif menu == "Ficha clínica":
             st.markdown("**Fecha ingreso**")
             st.markdown(f"#### {formatear_fecha(paciente['fecha_ingreso'])}")
 
-        st.write("#### Diagnósticos")
+        st.markdown("**Diagnósticos**")
         st.info(paciente["diagnosticos"])
 
         with st.expander("✏️ Editar datos del paciente"):
