@@ -621,7 +621,7 @@ elif menu == "Ficha clínica":
             st.markdown("**Fecha ingreso**")
             st.markdown(f"#### {formatear_fecha(paciente['fecha_ingreso'])}")
 
-        st.write("### Diagnósticos")
+        st.write("#### Diagnósticos")
         st.info(paciente["diagnosticos"])
 
         with st.expander("✏️ Editar datos del paciente"):
