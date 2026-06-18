@@ -625,7 +625,7 @@ elif menu == "Ficha clínica":
         background-color:#f8f9fa;
         padding:15px;
         border-radius:8px;
-        font-size:18px;
+        font-size:16px;
         margin-bottom:25px;
     ">
     {paciente["diagnosticos"]}
