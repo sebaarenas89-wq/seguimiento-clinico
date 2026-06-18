@@ -617,8 +617,20 @@ elif menu == "Ficha clínica":
         """
         )
 
-        st.markdown("**Diagnósticos**")
-        st.info(paciente["diagnosticos"])
+        st.markdown(
+        f"""
+    <div style="
+        border-left:5px solid #2E86C1;
+        background-color:#f8f9fa;
+        padding:15px;
+        border-radius:8px;
+        font-size:18px;
+    ">
+    {paciente["diagnosticos"]}
+    </div>
+    """,
+        unsafe_allow_html=True
+    )
 
         with st.expander("✏️ Editar paciente"):
 
