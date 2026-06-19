@@ -1026,6 +1026,7 @@ if menu == "Evolución diaria":
 
     if len(pacientes_df) == 0:
         st.warning("Debe ingresar al menos un paciente antes de registrar evolución")
+        st.stop()
 
     else:
         pacientes_df["selector"] = (
