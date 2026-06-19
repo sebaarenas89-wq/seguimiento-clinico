@@ -443,6 +443,39 @@ def obtener_terapias_atm_paciente(paciente_id):
 
     return df
 
+def guardar_terapia_farmacologica(paciente_id, fecha, tratamiento):
+    conn = conectar_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT INTO terapia_farmacologica (
+            paciente_id,
+            fecha,
+            tratamiento
+        )
+        VALUES (?, ?, ?)
+    """, (
+        int(paciente_id),
+        str(fecha),
+        tratamiento
+    ))
+
+    conn.commit()
+    conn.close()
+
+def obtener_terapia_farmacologica_paciente(paciente_id):
+    conn = conectar_db()
+
+    df = pd.read_sql_query("""
+        SELECT *
+        FROM terapia_farmacologica
+        WHERE paciente_id = ?
+        ORDER BY fecha DESC, id DESC
+    """, conn, params=(int(paciente_id),))
+
+    conn.close()
+    return df
+
 
 def actualizar_terapia_atm(
     terapia_id,
