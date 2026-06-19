@@ -1146,7 +1146,7 @@ if menu == "Evolución diaria":
         else:
             st.info("No hay evoluciones registradas para este paciente")
             
-    elif menu == "Búsqueda global":
+    if menu == "Búsqueda global":
     
         st.header("🔍 Búsqueda global")
     
@@ -1207,7 +1207,7 @@ if menu == "Evolución diaria":
     
         else:
             st.info("Ingrese un término de búsqueda")
-    elif menu == "Terapia farmacológica":
+   if menu == "Terapia farmacológica":
     
         st.markdown("### 💊 Terapia farmacológica")
     
@@ -1287,7 +1287,7 @@ if menu == "Evolución diaria":
         else:
             st.info("Este paciente no tiene terapias farmacológicas registradas")
             
-    elif menu == "Terapia ATM":
+    if menu == "Terapia ATM":
     
         st.markdown("### 💊 Terapia Antimicrobiana")
     
