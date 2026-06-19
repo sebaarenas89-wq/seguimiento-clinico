@@ -705,763 +705,764 @@ elif menu == "Ficha clínica":
 # TERAPIA FARMACOLÓGICA
 # =====================================
 
-st.markdown("### 💊 Terapia farmacológica")
-
-terapia_farma_df = obtener_terapia_farmacologica_paciente(
-    paciente["id"]
-)
-
-if len(terapia_farma_df) > 0:
-
-    ultima_terapia = terapia_farma_df.iloc[0]
-
-    st.markdown(
-        f"""
-        <div style="
-            border-left:5px solid #28A745;
-            background-color:#f8f9fa;
-            padding:15px;
-            border-radius:8px;
-            margin-bottom:20px;
-        ">
-            <b>Fecha:</b> {formatear_fecha(ultima_terapia["fecha"])}
-            <br><br>
-            {ultima_terapia["tratamiento"]}
-        </div>
-        """,
-        unsafe_allow_html=True
+if "paciente" in locals():
+    st.markdown("### 💊 Terapia farmacológica")
+    
+    terapia_farma_df = obtener_terapia_farmacologica_paciente(
+        paciente["id"]
     )
-
-    with st.expander(
-        "📋 Ver terapias farmacológicas previas",
-        expanded=False
-    ):
-
-        terapias_mostrar = terapia_farma_df.copy()
-
-        terapias_mostrar["fecha"] = terapias_mostrar["fecha"].apply(
-            formatear_fecha
+    
+    if len(terapia_farma_df) > 0:
+    
+        ultima_terapia = terapia_farma_df.iloc[0]
+    
+        st.markdown(
+            f"""
+            <div style="
+                border-left:5px solid #28A745;
+                background-color:#f8f9fa;
+                padding:15px;
+                border-radius:8px;
+                margin-bottom:20px;
+            ">
+                <b>Fecha:</b> {formatear_fecha(ultima_terapia["fecha"])}
+                <br><br>
+                {ultima_terapia["tratamiento"]}
+            </div>
+            """,
+            unsafe_allow_html=True
         )
-
-        terapias_mostrar = terapias_mostrar.drop(
-            columns=["id", "paciente_id"],
-            errors="ignore"
-        )
-
-        st.dataframe(
-            terapias_mostrar,
-            use_container_width=True,
-            hide_index=True
-        )
-
-else:
-    st.info("No existen terapias farmacológicas registradas")
-
-with st.expander("✏️ Editar paciente"):
-
-            nuevo_nombre = st.text_input(
-                "Nombre paciente",
-                value=paciente["nombre"],
-                key=f"nombre_paciente_{paciente['id']}"
-            )
-
-            nuevo_id_paciente = st.text_input(
-                "ID paciente",
-                value=paciente["id_paciente"],
-                key=f"id_paciente_{paciente['id']}"
-            )
-
-            servicios = ["UCI", "UTI", "UCO", "Medicina", "Cirugía"]
-            servicio_actual = paciente["servicio"] if paciente["servicio"] in servicios else "UCI"
-
-            nuevo_servicio = st.selectbox(
-                "Servicio",
-                servicios,
-                index=servicios.index(servicio_actual),
-                key=f"servicio_paciente_{paciente['id']}"
-            )
-
-            nueva_fecha_ingreso = st.date_input(
-                "Fecha ingreso",
-                value=pd.to_datetime(paciente["fecha_ingreso"]).date(),
-                format="DD/MM/YYYY",
-                key=f"fecha_ingreso_paciente_{paciente['id']}"
-            )
-
-            nuevos_diagnosticos = st.text_area(
-                "Diagnósticos",
-                value=paciente["diagnosticos"],
-                height=160,
-                key=f"diagnosticos_paciente_{paciente['id']}"
-            )
-
-            if st.button(
-                "Guardar cambios del paciente",
-                key=f"guardar_paciente_{paciente['id']}"
-            ):
-
-                if nuevo_nombre == "" or nuevo_id_paciente == "":
-                    st.error("Nombre e ID no pueden quedar vacíos")
-
-                else:
-                    actualizar_paciente(
-                        paciente["id"],
-                        nuevo_nombre,
-                        nuevo_id_paciente,
-                        nuevo_servicio,
-                        nueva_fecha_ingreso,
-                        nuevos_diagnosticos
-                    )
-
-                    st.success("Paciente actualizado correctamente")
-                    st.rerun()
-
-            st.divider()
-
-            with st.expander("⚠️ Eliminar paciente"):
-
-                confirmar_paciente = st.checkbox(
-                    "Confirmo que deseo eliminar este paciente y todas sus evoluciones",
-                    key=f"confirmar_eliminar_paciente_{paciente['id']}"
-                )
-
-                if st.button(
-                    "🗑️ Eliminar paciente",
-                    key=f"eliminar_paciente_{paciente['id']}"
-                ):
-
-                    if confirmar_paciente:
-                        eliminar_paciente(paciente["id"])
-                        st.success("Paciente eliminado correctamente")
-                        st.rerun()
-                    else:
-                        st.warning("Debe confirmar antes de eliminar")
-            st.divider()
-            st.write("### Terapia antimicrobiana")
-
-            terapias_df = obtener_terapias_atm_paciente(paciente["id"])
-
-            if len(terapias_df) > 0:
-
-                terapias_mostrar = terapias_df.copy()
-            
-                terapias_mostrar["alerta"] = terapias_mostrar.apply(
-                    evaluar_alerta_atm,
-                    axis=1
-                )
-
-                terapias_mostrar["fecha_inicio"] = terapias_mostrar["fecha_inicio"].apply(formatear_fecha)
-                terapias_mostrar["fecha_termino"] = terapias_mostrar["fecha_termino"].apply(formatear_fecha)
-
-                terapias_mostrar = terapias_mostrar[
-                    [
-                        "antimicrobiano",
-                        "fecha_inicio",
-                        "fecha_termino",
-                        "estado",
-                        "dias_tratamiento",
-                        "alerta",
-                        "observacion"
-                    ]
-                ]
-
-                terapias_mostrar = terapias_mostrar.rename(columns={
-                    "antimicrobiano": "Antimicrobiano",
-                    "fecha_inicio": "Inicio",
-                    "fecha_termino": "Término",
-                    "estado": "Estado",
-                    "dias_tratamiento": "Días",
-                    "alerta": "Alerta",
-                    "observacion": "Observación"
-                })
-
-                st.dataframe(terapias_mostrar, use_container_width=True)
-
-            else:
-                st.info("Este paciente no tiene terapias ATM registradas")
-            st.divider()
-            st.write("### Evoluciones registradas")
-
-            evoluciones_df = obtener_evoluciones_paciente(paciente["id"])
-
-            if len(evoluciones_df) == 0:
-                st.info("Este paciente aún no tiene evoluciones registradas")
-
-            else:
-                for idx, evo in evoluciones_df.iterrows():
-
-                    with st.expander(
-                        f"📅 {formatear_fecha(evo['fecha'])}",
-                        expanded=True if idx == evoluciones_df.index[0] else False
-                    ):
-
-                        st.subheader(f"📅 {formatear_fecha(evo['fecha'])}")
-
-                        st.markdown("**Evolución clínica**")
-                        st.write(evo["evolucion_clinica"])
-
-                        st.markdown("**Resultados laboratorio**")
-                        st.write(evo["resultados_laboratorio"])
-
-                        st.markdown("**Resultados microbiología**")
-                        st.write(evo["resultados_microbiologia"])
-
-                        st.markdown("**Antimicrobianos activos**")
-                        st.write(evo["antimicrobianos_activos"])
-
-                        st.markdown("**Intervención farmacéutica**")
-                        st.write(evo["intervencion_farmaceutica"])
-
-                        with st.expander("✏️ Editar evolución"):
-
-                            nueva_fecha = st.date_input(
-                            "Fecha",
-                            value=pd.to_datetime(evo["fecha"]).date(),
-                            key=f"fecha_evo_{evo['id']}"
-                        )
-
-                        nueva_evolucion = st.text_area(
-                            "Evolución clínica",
-                            value=evo["evolucion_clinica"],
-                            height=150,
-                            key=f"evolucion_{evo['id']}"
-                        )
-
-                        nuevo_lab = st.text_area(
-                            "Resultados laboratorio",
-                            value=evo["resultados_laboratorio"],
-                            height=120,
-                            key=f"lab_{evo['id']}"
-                        )
-
-                        nueva_micro = st.text_area(
-                            "Resultados microbiología",
-                            value=evo["resultados_microbiologia"],
-                            height=120,
-                            key=f"micro_{evo['id']}"
-                        )
-
-                        nuevo_atb = st.text_area(
-                            "Antimicrobianos activos",
-                            value=evo["antimicrobianos_activos"],
-                            height=100,
-                            key=f"atb_{evo['id']}"
-                        )
-
-                        nueva_intervencion = st.text_area(
-                            "Intervención farmacéutica",
-                            value=evo["intervencion_farmaceutica"],
-                            height=120,
-                            key=f"interv_{evo['id']}"
-                        )
-
-                        if st.button(
-                            "Guardar cambios evolución",
-                            key=f"guardar_evo_{evo['id']}"
-                        ):
-
-                            actualizar_evolucion(
-                                evo["id"],
-                                nueva_fecha,
-                                nueva_evolucion,
-                                nuevo_lab,
-                                nueva_micro,
-                                nuevo_atb,
-                                nueva_intervencion
-                            )
-
-                            st.success("Evolución actualizada correctamente")
-                            st.rerun()
-
-                    with st.expander("⚠️ Opciones de eliminación"):
-
-                        confirmar = st.checkbox(
-                            "Confirmo que deseo eliminar esta evolución",
-                            key=f"confirmar_eliminar_{evo['id']}"
-                        )
-
-                        if st.button(
-                            "🗑️ Eliminar evolución",
-                            key=f"eliminar_evo_{evo['id']}"
-                        ):
-
-                            if confirmar:
-                                eliminar_evolucion(evo["id"])
-                                st.success("Evolución eliminada correctamente")
-                                st.rerun()
-                            else:
-                                st.warning("Debe confirmar antes de eliminar")
-
-
-# --------------------------
-# EVOLUCIÓN DIARIA
-# --------------------------
-
-if menu == "Evolución diaria":
-
-    st.markdown("### 📝 Evolución clínica diaria")
-
-    if "expandir_evolucion" not in st.session_state:
-        st.session_state.expandir_evolucion = False
-
-    if "evolucion_clinica_txt" not in st.session_state:
-        st.session_state.evolucion_clinica_txt = ""
-
-    if "resultados_laboratorio_txt" not in st.session_state:
-        st.session_state.resultados_laboratorio_txt = ""
-
-    if "resultados_microbiologia_txt" not in st.session_state:
-        st.session_state.resultados_microbiologia_txt = ""
-
-    if "antimicrobianos_activos_txt" not in st.session_state:
-        st.session_state.antimicrobianos_activos_txt = ""
-
-    if "intervencion_farmaceutica_txt" not in st.session_state:
-        st.session_state.intervencion_farmaceutica_txt = ""
-
-    if "evolucion_form_version" not in st.session_state:
-        st.session_state.evolucion_form_version = 0
-
-    pacientes_df = obtener_pacientes()
-
-    if len(pacientes_df) == 0:
-        st.warning("Debe ingresar al menos un paciente antes de registrar evolución")
-        st.stop()
-
-    else:
-        pacientes_df["selector"] = (
-            pacientes_df["nombre"] + " | ID: " + pacientes_df["id_paciente"]
-        )
-
-        opciones_pacientes = ["-- Seleccione paciente --"] + pacientes_df["selector"].tolist()
-
-        seleccion = st.selectbox(
-            "Paciente",
-            opciones_pacientes,
-            index=0
-        )
-
-        if seleccion == "-- Seleccione paciente --":
-            st.info("Seleccione un paciente para registrar una evolución")
-            st.stop()
-
-        paciente = pacientes_df[pacientes_df["selector"] == seleccion].iloc[0]
-
-        fecha_evolucion = st.date_input(
-            "Fecha evolución",
-            value=date.today(),
-            format="DD/MM/YYYY"
-        )
-        version_invisible = "\u200b" * st.session_state.evolucion_form_version
     
         with st.expander(
-            f"📝 Evolución clínica{version_invisible}",
+            "📋 Ver terapias farmacológicas previas",
             expanded=False
         ):
-            evolucion_clinica = st.text_area(
-                "Evolución clínica",
-                height=250,
-                key=f"evolucion_clinica_txt_{st.session_state.evolucion_form_version}"
-            )
-
-        with st.expander(
-            f"🧪 Resultados laboratorio{version_invisible}",
-            expanded=False
-        ):
-            resultados_laboratorio = st.text_area(
-                "Resultados laboratorio",
-                height=200,
-                key=f"resultados_laboratorio_txt_{st.session_state.evolucion_form_version}"
-            )
-
-        with st.expander(
-            f"🦠 Resultados microbiología{version_invisible}",
-            expanded=False
-        ):
-            resultados_microbiologia = st.text_area(
-                "Resultados microbiología",
-                height=200,
-                key=f"resultados_microbiologia_txt_{st.session_state.evolucion_form_version}"
-            )
-
-        with st.expander(
-            f"💊 Antimicrobianos activos{version_invisible}",
-            expanded=False
-        ):
-            antimicrobianos_activos = st.text_area(
-                "Antimicrobianos activos",
-                height=180,
-                key=f"antimicrobianos_activos_txt_{st.session_state.evolucion_form_version}"
-            )
-
-        with st.expander(
-            f"💬 Intervención farmacéutica{version_invisible}",
-            expanded=False
-        ):
-            intervencion_farmaceutica = st.text_area(
-                "Intervención farmacéutica",
-                height=200,
-                key=f"intervencion_farmaceutica_txt_{st.session_state.evolucion_form_version}"
-            )
-
-        if st.button("Guardar evolución"):
-
-            guardar_evolucion(
-                paciente["id"],
-                fecha_evolucion,
-                evolucion_clinica,
-                resultados_laboratorio,
-                resultados_microbiologia,
-                antimicrobianos_activos,
-                intervencion_farmaceutica
-            )
-
-            st.session_state.evolucion_form_version += 1
-            st.session_state.expandir_evolucion = False
-
-            st.success("Evolución guardada correctamente")
-            st.rerun()
-
-        st.divider()
-        st.subheader("Evoluciones del paciente")
-
-        evoluciones_df = obtener_evoluciones_paciente(paciente["id"])
-
-        if len(evoluciones_df) > 0:
-            
-            evoluciones_mostrar = evoluciones_df.copy()
-
-            evoluciones_mostrar["fecha"] = pd.to_datetime(
-                evoluciones_mostrar["fecha"]
-            ).dt.strftime("%d/%m/%Y")
-            evoluciones_mostrar = evoluciones_mostrar.drop(
-                columns=["id"],
-                errors="ignore"
-            )
-            
-            with st.expander("📋 Ver evoluciones registradas", expanded=False):
-                st.dataframe(
-                    evoluciones_mostrar,
-                    use_container_width=True,
-                    hide_index=True
-                )
-        else:
-            st.info("No hay evoluciones registradas para este paciente")
-            
-    if menu == "Búsqueda global":
     
-        st.header("🔍 Búsqueda global")
+            terapias_mostrar = terapia_farma_df.copy()
     
-        texto_busqueda = st.text_input(
-            "Buscar por nombre, ID, diagnóstico, antimicrobiano, microbiología o evolución"
-        )
-    
-        if texto_busqueda.strip():
-    
-            resultados_df = buscar_global(texto_busqueda.strip())
-    
-            if len(resultados_df) > 0:
-    
-                resultados_mostrar = resultados_df.copy()
-                resultados_mostrar["fecha_ingreso"] = resultados_mostrar["fecha_ingreso"].apply(formatear_fecha)
-    
-                resultados_mostrar = resultados_mostrar.rename(columns={
-                    
-                    "nombre": "Paciente",
-                    "id_paciente": "ID paciente",
-                    "servicio": "Servicio",
-                    "fecha_ingreso": "Ingreso",
-                    "diagnosticos": "Diagnósticos",
-                    "origen": "Origen coincidencia"
-                })
-    
-                st.success(f"Se encontraron {len(resultados_mostrar)} paciente(s)")
-    
-                st.dataframe(
-                    resultados_mostrar[
-                        ["Paciente", "ID paciente", "Servicio", "Ingreso", "Diagnósticos", "Origen coincidencia"]
-                    ],
-                    use_container_width=True
-                )
-                st.write("### Acceso rápido")
-    
-                pacientes_unicos = resultados_mostrar.drop_duplicates(
-                    subset=["ID paciente"]
-                )
-    
-                opcion_paciente = st.selectbox(
-                    "Seleccione paciente para revisar",
-                    pacientes_unicos["Paciente"] + " | ID: " + pacientes_unicos["ID paciente"].astype(str)
-                )
-    
-                paciente_seleccionado_busqueda = pacientes_unicos[
-                    (pacientes_unicos["Paciente"] + " | ID: " + pacientes_unicos["ID paciente"].astype(str))
-                    == opcion_paciente
-                ].iloc[0]
-    
-                if st.button("📋 Abrir ficha clínica"):
-                    st.session_state.paciente_ficha_id = int(paciente_seleccionado_busqueda["id"])
-                    st.session_state.menu_actual = "Ficha clínica"
-                    st.rerun()
-    
-            else:
-                st.warning("No se encontraron resultados")
-    
-        else:
-            st.info("Ingrese un término de búsqueda")
-    if menu == "Terapia farmacológica":
-    
-        st.markdown("### 💊 Terapia farmacológica")
-    
-        pacientes_df = obtener_pacientes()
-    
-        if len(pacientes_df) == 0:
-            st.warning("No existen pacientes registrados")
-            st.stop()
-    
-        pacientes_df["selector"] = (
-            pacientes_df["nombre"] + " | ID: " + pacientes_df["id_paciente"].astype(str)
-        )
-    
-        opciones_pacientes = ["-- Seleccione paciente --"] + pacientes_df["selector"].tolist()
-    
-        seleccion = st.selectbox(
-            "Seleccione paciente",
-            opciones_pacientes,
-            index=0
-        )
-    
-        if seleccion == "-- Seleccione paciente --":
-            st.info("Seleccione un paciente para registrar terapia farmacológica")
-            st.stop()
-    
-        paciente = pacientes_df[pacientes_df["selector"] == seleccion].iloc[0]
-    
-        fecha_terapia_farmacologica = st.date_input(
-            "Fecha",
-            format="DD/MM/YYYY"
-        )
-    
-        with st.expander("💊 Ingresar terapia farmacológica", expanded=False):
-            tratamiento = st.text_area(
-                "Terapia farmacológica",
-                height=300
+            terapias_mostrar["fecha"] = terapias_mostrar["fecha"].apply(
+                formatear_fecha
             )
     
-        if st.button("Guardar terapia farmacológica"):
-    
-            if tratamiento.strip():
-    
-                guardar_terapia_farmacologica(
-                    paciente["id"],
-                    fecha_terapia_farmacologica,
-                    tratamiento
-                )
-    
-                st.success("Terapia farmacológica guardada correctamente")
-                st.rerun()
-    
-            else:
-                st.warning("Ingrese terapia farmacológica antes de guardar")
-    
-        st.divider()
-        st.subheader("Terapias farmacológicas registradas")
-    
-        terapias_farma_df = obtener_terapia_farmacologica_paciente(paciente["id"])
-    
-        if len(terapias_farma_df) > 0:
-    
-            terapias_farma_mostrar = terapias_farma_df.copy()
-            terapias_farma_mostrar["fecha"] = terapias_farma_mostrar["fecha"].apply(formatear_fecha)
-    
-            terapias_farma_mostrar = terapias_farma_mostrar.drop(
+            terapias_mostrar = terapias_mostrar.drop(
                 columns=["id", "paciente_id"],
                 errors="ignore"
             )
     
-            with st.expander("📋 Ver terapias farmacológicas registradas", expanded=False):
-                st.dataframe(
-                    terapias_farma_mostrar,
-                    use_container_width=True,
-                    hide_index=True
+            st.dataframe(
+                terapias_mostrar,
+                use_container_width=True,
+                hide_index=True
+            )
+    
+    else:
+        st.info("No existen terapias farmacológicas registradas")
+    
+    with st.expander("✏️ Editar paciente"):
+    
+                nuevo_nombre = st.text_input(
+                    "Nombre paciente",
+                    value=paciente["nombre"],
+                    key=f"nombre_paciente_{paciente['id']}"
                 )
     
-        else:
-            st.info("Este paciente no tiene terapias farmacológicas registradas")
-            
-    if menu == "Terapia ATM":
+                nuevo_id_paciente = st.text_input(
+                    "ID paciente",
+                    value=paciente["id_paciente"],
+                    key=f"id_paciente_{paciente['id']}"
+                )
     
-        st.markdown("### 💊 Terapia Antimicrobiana")
+                servicios = ["UCI", "UTI", "UCO", "Medicina", "Cirugía"]
+                servicio_actual = paciente["servicio"] if paciente["servicio"] in servicios else "UCI"
+    
+                nuevo_servicio = st.selectbox(
+                    "Servicio",
+                    servicios,
+                    index=servicios.index(servicio_actual),
+                    key=f"servicio_paciente_{paciente['id']}"
+                )
+    
+                nueva_fecha_ingreso = st.date_input(
+                    "Fecha ingreso",
+                    value=pd.to_datetime(paciente["fecha_ingreso"]).date(),
+                    format="DD/MM/YYYY",
+                    key=f"fecha_ingreso_paciente_{paciente['id']}"
+                )
+    
+                nuevos_diagnosticos = st.text_area(
+                    "Diagnósticos",
+                    value=paciente["diagnosticos"],
+                    height=160,
+                    key=f"diagnosticos_paciente_{paciente['id']}"
+                )
+    
+                if st.button(
+                    "Guardar cambios del paciente",
+                    key=f"guardar_paciente_{paciente['id']}"
+                ):
+    
+                    if nuevo_nombre == "" or nuevo_id_paciente == "":
+                        st.error("Nombre e ID no pueden quedar vacíos")
+    
+                    else:
+                        actualizar_paciente(
+                            paciente["id"],
+                            nuevo_nombre,
+                            nuevo_id_paciente,
+                            nuevo_servicio,
+                            nueva_fecha_ingreso,
+                            nuevos_diagnosticos
+                        )
+    
+                        st.success("Paciente actualizado correctamente")
+                        st.rerun()
+    
+                st.divider()
+    
+                with st.expander("⚠️ Eliminar paciente"):
+    
+                    confirmar_paciente = st.checkbox(
+                        "Confirmo que deseo eliminar este paciente y todas sus evoluciones",
+                        key=f"confirmar_eliminar_paciente_{paciente['id']}"
+                    )
+    
+                    if st.button(
+                        "🗑️ Eliminar paciente",
+                        key=f"eliminar_paciente_{paciente['id']}"
+                    ):
+    
+                        if confirmar_paciente:
+                            eliminar_paciente(paciente["id"])
+                            st.success("Paciente eliminado correctamente")
+                            st.rerun()
+                        else:
+                            st.warning("Debe confirmar antes de eliminar")
+                st.divider()
+                st.write("### Terapia antimicrobiana")
+    
+                terapias_df = obtener_terapias_atm_paciente(paciente["id"])
+    
+                if len(terapias_df) > 0:
+    
+                    terapias_mostrar = terapias_df.copy()
+                
+                    terapias_mostrar["alerta"] = terapias_mostrar.apply(
+                        evaluar_alerta_atm,
+                        axis=1
+                    )
+    
+                    terapias_mostrar["fecha_inicio"] = terapias_mostrar["fecha_inicio"].apply(formatear_fecha)
+                    terapias_mostrar["fecha_termino"] = terapias_mostrar["fecha_termino"].apply(formatear_fecha)
+    
+                    terapias_mostrar = terapias_mostrar[
+                        [
+                            "antimicrobiano",
+                            "fecha_inicio",
+                            "fecha_termino",
+                            "estado",
+                            "dias_tratamiento",
+                            "alerta",
+                            "observacion"
+                        ]
+                    ]
+    
+                    terapias_mostrar = terapias_mostrar.rename(columns={
+                        "antimicrobiano": "Antimicrobiano",
+                        "fecha_inicio": "Inicio",
+                        "fecha_termino": "Término",
+                        "estado": "Estado",
+                        "dias_tratamiento": "Días",
+                        "alerta": "Alerta",
+                        "observacion": "Observación"
+                    })
+    
+                    st.dataframe(terapias_mostrar, use_container_width=True)
+    
+                else:
+                    st.info("Este paciente no tiene terapias ATM registradas")
+                st.divider()
+                st.write("### Evoluciones registradas")
+    
+                evoluciones_df = obtener_evoluciones_paciente(paciente["id"])
+    
+                if len(evoluciones_df) == 0:
+                    st.info("Este paciente aún no tiene evoluciones registradas")
+    
+                else:
+                    for idx, evo in evoluciones_df.iterrows():
+    
+                        with st.expander(
+                            f"📅 {formatear_fecha(evo['fecha'])}",
+                            expanded=True if idx == evoluciones_df.index[0] else False
+                        ):
+    
+                            st.subheader(f"📅 {formatear_fecha(evo['fecha'])}")
+    
+                            st.markdown("**Evolución clínica**")
+                            st.write(evo["evolucion_clinica"])
+    
+                            st.markdown("**Resultados laboratorio**")
+                            st.write(evo["resultados_laboratorio"])
+    
+                            st.markdown("**Resultados microbiología**")
+                            st.write(evo["resultados_microbiologia"])
+    
+                            st.markdown("**Antimicrobianos activos**")
+                            st.write(evo["antimicrobianos_activos"])
+    
+                            st.markdown("**Intervención farmacéutica**")
+                            st.write(evo["intervencion_farmaceutica"])
+    
+                            with st.expander("✏️ Editar evolución"):
+    
+                                nueva_fecha = st.date_input(
+                                "Fecha",
+                                value=pd.to_datetime(evo["fecha"]).date(),
+                                key=f"fecha_evo_{evo['id']}"
+                            )
+    
+                            nueva_evolucion = st.text_area(
+                                "Evolución clínica",
+                                value=evo["evolucion_clinica"],
+                                height=150,
+                                key=f"evolucion_{evo['id']}"
+                            )
+    
+                            nuevo_lab = st.text_area(
+                                "Resultados laboratorio",
+                                value=evo["resultados_laboratorio"],
+                                height=120,
+                                key=f"lab_{evo['id']}"
+                            )
+    
+                            nueva_micro = st.text_area(
+                                "Resultados microbiología",
+                                value=evo["resultados_microbiologia"],
+                                height=120,
+                                key=f"micro_{evo['id']}"
+                            )
+    
+                            nuevo_atb = st.text_area(
+                                "Antimicrobianos activos",
+                                value=evo["antimicrobianos_activos"],
+                                height=100,
+                                key=f"atb_{evo['id']}"
+                            )
+    
+                            nueva_intervencion = st.text_area(
+                                "Intervención farmacéutica",
+                                value=evo["intervencion_farmaceutica"],
+                                height=120,
+                                key=f"interv_{evo['id']}"
+                            )
+    
+                            if st.button(
+                                "Guardar cambios evolución",
+                                key=f"guardar_evo_{evo['id']}"
+                            ):
+    
+                                actualizar_evolucion(
+                                    evo["id"],
+                                    nueva_fecha,
+                                    nueva_evolucion,
+                                    nuevo_lab,
+                                    nueva_micro,
+                                    nuevo_atb,
+                                    nueva_intervencion
+                                )
+    
+                                st.success("Evolución actualizada correctamente")
+                                st.rerun()
+    
+                        with st.expander("⚠️ Opciones de eliminación"):
+    
+                            confirmar = st.checkbox(
+                                "Confirmo que deseo eliminar esta evolución",
+                                key=f"confirmar_eliminar_{evo['id']}"
+                            )
+    
+                            if st.button(
+                                "🗑️ Eliminar evolución",
+                                key=f"eliminar_evo_{evo['id']}"
+                            ):
+    
+                                if confirmar:
+                                    eliminar_evolucion(evo["id"])
+                                    st.success("Evolución eliminada correctamente")
+                                    st.rerun()
+                                else:
+                                    st.warning("Debe confirmar antes de eliminar")
+    
+    
+    # --------------------------
+    # EVOLUCIÓN DIARIA
+    # --------------------------
+    
+    if menu == "Evolución diaria":
+    
+        st.markdown("### 📝 Evolución clínica diaria")
+    
+        if "expandir_evolucion" not in st.session_state:
+            st.session_state.expandir_evolucion = False
+    
+        if "evolucion_clinica_txt" not in st.session_state:
+            st.session_state.evolucion_clinica_txt = ""
+    
+        if "resultados_laboratorio_txt" not in st.session_state:
+            st.session_state.resultados_laboratorio_txt = ""
+    
+        if "resultados_microbiologia_txt" not in st.session_state:
+            st.session_state.resultados_microbiologia_txt = ""
+    
+        if "antimicrobianos_activos_txt" not in st.session_state:
+            st.session_state.antimicrobianos_activos_txt = ""
+    
+        if "intervencion_farmaceutica_txt" not in st.session_state:
+            st.session_state.intervencion_farmaceutica_txt = ""
+    
+        if "evolucion_form_version" not in st.session_state:
+            st.session_state.evolucion_form_version = 0
     
         pacientes_df = obtener_pacientes()
     
         if len(pacientes_df) == 0:
-            st.warning("No existen pacientes registrados")
+            st.warning("Debe ingresar al menos un paciente antes de registrar evolución")
             st.stop()
     
-        opciones_pacientes = ["-- Seleccione paciente --"] + (
-            pacientes_df["nombre"] + " | ID: " + pacientes_df["id_paciente"].astype(str)
-        ).tolist()
+        else:
+            pacientes_df["selector"] = (
+                pacientes_df["nombre"] + " | ID: " + pacientes_df["id_paciente"]
+            )
     
-        paciente_seleccionado = st.selectbox(
-            "Seleccione paciente",
-            opciones_pacientes,
-            index=0
-        )
+            opciones_pacientes = ["-- Seleccione paciente --"] + pacientes_df["selector"].tolist()
     
-        if paciente_seleccionado == "-- Seleccione paciente --":
-            st.info("Seleccione un paciente para continuar")
-            st.stop()
+            seleccion = st.selectbox(
+                "Paciente",
+                opciones_pacientes,
+                index=0
+            )
     
-        paciente_idx = (
-            pacientes_df["nombre"]
-            + " | ID: "
-            + pacientes_df["id_paciente"].astype(str)
-        ) == paciente_seleccionado
+            if seleccion == "-- Seleccione paciente --":
+                st.info("Seleccione un paciente para registrar una evolución")
+                st.stop()
     
-        paciente = pacientes_df[paciente_idx].iloc[0]
+            paciente = pacientes_df[pacientes_df["selector"] == seleccion].iloc[0]
     
-        lista_antimicrobianos = [
-            "-- Seleccione antimicrobiano --",
-            "Aciclovir ev",
-            "Aciclovir vo",
-            "Amikacina",
-            "Ampicilina",
-            "Ampicilina/sulbactam",
-            "Anfotericina B liposomal",
-            "Anidulafungina",
-            "Azitromicina ev",
-            "Azitromicina vo",
-            "Aztreonam",
-            "Cefazolina",
-            "Cefepime",
-            "Cefotaxima ev",
-            "Ceftazidima",
-            "Ceftazidima/avibactam", 
-            "Ceftriaxona",
-            "Ciprofloxacino ev",  
-            "Ciprofloxacino vo",
-            "Clindamicina vo",
-            "Clindamicina ev",
-            "Cloxacilina ev",
-            "Cloxacilina vo",
-            "Colistin",
-            "Cotrimoxazol ev",
-            "Cotrimoxazol vo",
-            "Daptomicina",
-            "Ertapenem",
-            "Fluconazol ev",
-            "Fluconazol vo",
-            "Fosfomicina ev",
-            "Ganciclovir",
-            "Imipenem",
-            "Isavuconazol vo",
-            "Isavuconazol ev",
-            "Levofloxacino ev",
-            "Levofloxacino vo",
-            "Linezolid vo",
-            "Linezolid ev",
-            "Meropenem",
-            "Metronidazol ev",
-            "Metronidazol vo",
-            "Penicilina G",
-            "Piperacilina/tazobactam",
-            "Tigeciclina",
-            "Vancomicina",
-            "Voriconazol ev",
-            "Voriconazol vo",
-            "Otro"
-        ]
-    
-        antimicrobiano = st.selectbox(
-            "Antimicrobiano",
-            lista_antimicrobianos,
-            index=0
-        )
-    
-        if antimicrobiano == "Otro":
-            antimicrobiano = st.text_input("Especifique antimicrobiano")
-    
-    
-        fecha_inicio = st.date_input(
-            "Fecha inicio",
-            format="DD/MM/YYYY"
-        )
-    
-        estado = st.selectbox(
-            "Estado",
-            [
-                "Vigente",
-                "Cambio",
-                "Suspendida",
-                "Término tratamiento"
-            ]
-        )
-    
-        fecha_termino = None
-    
-        if estado != "Vigente":
-            fecha_termino = st.date_input(
-                "Fecha término",
+            fecha_evolucion = st.date_input(
+                "Fecha evolución",
+                value=date.today(),
                 format="DD/MM/YYYY"
             )
+            version_invisible = "\u200b" * st.session_state.evolucion_form_version
+        
+            with st.expander(
+                f"📝 Evolución clínica{version_invisible}",
+                expanded=False
+            ):
+                evolucion_clinica = st.text_area(
+                    "Evolución clínica",
+                    height=250,
+                    key=f"evolucion_clinica_txt_{st.session_state.evolucion_form_version}"
+                )
     
-        observacion = st.text_area(
-            "Observación"
-        )
+            with st.expander(
+                f"🧪 Resultados laboratorio{version_invisible}",
+                expanded=False
+            ):
+                resultados_laboratorio = st.text_area(
+                    "Resultados laboratorio",
+                    height=200,
+                    key=f"resultados_laboratorio_txt_{st.session_state.evolucion_form_version}"
+                )
     
-        excepcion_prolongada = st.checkbox(
-            "Tratamiento prolongado justificado"
-        )
+            with st.expander(
+                f"🦠 Resultados microbiología{version_invisible}",
+                expanded=False
+            ):
+                resultados_microbiologia = st.text_area(
+                    "Resultados microbiología",
+                    height=200,
+                    key=f"resultados_microbiologia_txt_{st.session_state.evolucion_form_version}"
+                )
     
-        motivo_excepcion = ""
+            with st.expander(
+                f"💊 Antimicrobianos activos{version_invisible}",
+                expanded=False
+            ):
+                antimicrobianos_activos = st.text_area(
+                    "Antimicrobianos activos",
+                    height=180,
+                    key=f"antimicrobianos_activos_txt_{st.session_state.evolucion_form_version}"
+                )
     
-        if excepcion_prolongada:
-            motivo_excepcion = st.text_area(
-                "Motivo de excepción"
-            )
+            with st.expander(
+                f"💬 Intervención farmacéutica{version_invisible}",
+                expanded=False
+            ):
+                intervencion_farmaceutica = st.text_area(
+                    "Intervención farmacéutica",
+                    height=200,
+                    key=f"intervencion_farmaceutica_txt_{st.session_state.evolucion_form_version}"
+                )
     
-        if st.button("Guardar terapia ATM"):
-            if antimicrobiano == "-- Seleccione antimicrobiano --":
-                st.warning("Seleccione un antimicrobiano")
+            if st.button("Guardar evolución"):
     
-            else:
-    
-                guardar_terapia_atm(
+                guardar_evolucion(
                     paciente["id"],
-                    antimicrobiano,
-                    fecha_inicio,
-                    fecha_termino,
-                    estado,
-                    observacion,
-                    excepcion_prolongada,
-                    motivo_excepcion
+                    fecha_evolucion,
+                    evolucion_clinica,
+                    resultados_laboratorio,
+                    resultados_microbiologia,
+                    antimicrobianos_activos,
+                    intervencion_farmaceutica
                 )
     
-                st.success("Terapia registrada correctamente")
+                st.session_state.evolucion_form_version += 1
+                st.session_state.expandir_evolucion = False
+    
+                st.success("Evolución guardada correctamente")
                 st.rerun()
-                st.divider()
-        st.subheader("Terapias ATM registradas")
     
-        terapias_df = obtener_terapias_atm_paciente(paciente["id"])
+            st.divider()
+            st.subheader("Evoluciones del paciente")
     
-        if len(terapias_df) > 0:
+            evoluciones_df = obtener_evoluciones_paciente(paciente["id"])
     
-            terapias_df["fecha_inicio"] = terapias_df["fecha_inicio"].apply(formatear_fecha)
-            terapias_df["fecha_termino"] = terapias_df["fecha_termino"].apply(formatear_fecha)
+            if len(evoluciones_df) > 0:
+                
+                evoluciones_mostrar = evoluciones_df.copy()
     
-            terapias_mostrar = terapias_df.copy()
-            
-            columnas_ocultar = ["id", "paciente_id"]
-            terapias_mostrar = terapias_mostrar.drop(
-                columns=[col for col in columnas_ocultar if col in terapias_mostrar.columns]
-            )
-    
-            with st.expander("💊 Ver terapias ATM registradas", expanded=False):
-                st.dataframe(
-                    terapias_mostrar,
-                    use_container_width=True
+                evoluciones_mostrar["fecha"] = pd.to_datetime(
+                    evoluciones_mostrar["fecha"]
+                ).dt.strftime("%d/%m/%Y")
+                evoluciones_mostrar = evoluciones_mostrar.drop(
+                    columns=["id"],
+                    errors="ignore"
                 )
-    
-    else:
-        st.info("Este paciente no tiene terapias ATM registradas")
+                
+                with st.expander("📋 Ver evoluciones registradas", expanded=False):
+                    st.dataframe(
+                        evoluciones_mostrar,
+                        use_container_width=True,
+                        hide_index=True
+                    )
+            else:
+                st.info("No hay evoluciones registradas para este paciente")
+                
+        if menu == "Búsqueda global":
+        
+            st.header("🔍 Búsqueda global")
+        
+            texto_busqueda = st.text_input(
+                "Buscar por nombre, ID, diagnóstico, antimicrobiano, microbiología o evolución"
+            )
+        
+            if texto_busqueda.strip():
+        
+                resultados_df = buscar_global(texto_busqueda.strip())
+        
+                if len(resultados_df) > 0:
+        
+                    resultados_mostrar = resultados_df.copy()
+                    resultados_mostrar["fecha_ingreso"] = resultados_mostrar["fecha_ingreso"].apply(formatear_fecha)
+        
+                    resultados_mostrar = resultados_mostrar.rename(columns={
+                        
+                        "nombre": "Paciente",
+                        "id_paciente": "ID paciente",
+                        "servicio": "Servicio",
+                        "fecha_ingreso": "Ingreso",
+                        "diagnosticos": "Diagnósticos",
+                        "origen": "Origen coincidencia"
+                    })
+        
+                    st.success(f"Se encontraron {len(resultados_mostrar)} paciente(s)")
+        
+                    st.dataframe(
+                        resultados_mostrar[
+                            ["Paciente", "ID paciente", "Servicio", "Ingreso", "Diagnósticos", "Origen coincidencia"]
+                        ],
+                        use_container_width=True
+                    )
+                    st.write("### Acceso rápido")
+        
+                    pacientes_unicos = resultados_mostrar.drop_duplicates(
+                        subset=["ID paciente"]
+                    )
+        
+                    opcion_paciente = st.selectbox(
+                        "Seleccione paciente para revisar",
+                        pacientes_unicos["Paciente"] + " | ID: " + pacientes_unicos["ID paciente"].astype(str)
+                    )
+        
+                    paciente_seleccionado_busqueda = pacientes_unicos[
+                        (pacientes_unicos["Paciente"] + " | ID: " + pacientes_unicos["ID paciente"].astype(str))
+                        == opcion_paciente
+                    ].iloc[0]
+        
+                    if st.button("📋 Abrir ficha clínica"):
+                        st.session_state.paciente_ficha_id = int(paciente_seleccionado_busqueda["id"])
+                        st.session_state.menu_actual = "Ficha clínica"
+                        st.rerun()
+        
+                else:
+                    st.warning("No se encontraron resultados")
+        
+            else:
+                st.info("Ingrese un término de búsqueda")
+        if menu == "Terapia farmacológica":
+        
+            st.markdown("### 💊 Terapia farmacológica")
+        
+            pacientes_df = obtener_pacientes()
+        
+            if len(pacientes_df) == 0:
+                st.warning("No existen pacientes registrados")
+                st.stop()
+        
+            pacientes_df["selector"] = (
+                pacientes_df["nombre"] + " | ID: " + pacientes_df["id_paciente"].astype(str)
+            )
+        
+            opciones_pacientes = ["-- Seleccione paciente --"] + pacientes_df["selector"].tolist()
+        
+            seleccion = st.selectbox(
+                "Seleccione paciente",
+                opciones_pacientes,
+                index=0
+            )
+        
+            if seleccion == "-- Seleccione paciente --":
+                st.info("Seleccione un paciente para registrar terapia farmacológica")
+                st.stop()
+        
+            paciente = pacientes_df[pacientes_df["selector"] == seleccion].iloc[0]
+        
+            fecha_terapia_farmacologica = st.date_input(
+                "Fecha",
+                format="DD/MM/YYYY"
+            )
+        
+            with st.expander("💊 Ingresar terapia farmacológica", expanded=False):
+                tratamiento = st.text_area(
+                    "Terapia farmacológica",
+                    height=300
+                )
+        
+            if st.button("Guardar terapia farmacológica"):
+        
+                if tratamiento.strip():
+        
+                    guardar_terapia_farmacologica(
+                        paciente["id"],
+                        fecha_terapia_farmacologica,
+                        tratamiento
+                    )
+        
+                    st.success("Terapia farmacológica guardada correctamente")
+                    st.rerun()
+        
+                else:
+                    st.warning("Ingrese terapia farmacológica antes de guardar")
+        
+            st.divider()
+            st.subheader("Terapias farmacológicas registradas")
+        
+            terapias_farma_df = obtener_terapia_farmacologica_paciente(paciente["id"])
+        
+            if len(terapias_farma_df) > 0:
+        
+                terapias_farma_mostrar = terapias_farma_df.copy()
+                terapias_farma_mostrar["fecha"] = terapias_farma_mostrar["fecha"].apply(formatear_fecha)
+        
+                terapias_farma_mostrar = terapias_farma_mostrar.drop(
+                    columns=["id", "paciente_id"],
+                    errors="ignore"
+                )
+        
+                with st.expander("📋 Ver terapias farmacológicas registradas", expanded=False):
+                    st.dataframe(
+                        terapias_farma_mostrar,
+                        use_container_width=True,
+                        hide_index=True
+                    )
+        
+            else:
+                st.info("Este paciente no tiene terapias farmacológicas registradas")
+                
+        if menu == "Terapia ATM":
+        
+            st.markdown("### 💊 Terapia Antimicrobiana")
+        
+            pacientes_df = obtener_pacientes()
+        
+            if len(pacientes_df) == 0:
+                st.warning("No existen pacientes registrados")
+                st.stop()
+        
+            opciones_pacientes = ["-- Seleccione paciente --"] + (
+                pacientes_df["nombre"] + " | ID: " + pacientes_df["id_paciente"].astype(str)
+            ).tolist()
+        
+            paciente_seleccionado = st.selectbox(
+                "Seleccione paciente",
+                opciones_pacientes,
+                index=0
+            )
+        
+            if paciente_seleccionado == "-- Seleccione paciente --":
+                st.info("Seleccione un paciente para continuar")
+                st.stop()
+        
+            paciente_idx = (
+                pacientes_df["nombre"]
+                + " | ID: "
+                + pacientes_df["id_paciente"].astype(str)
+            ) == paciente_seleccionado
+        
+            paciente = pacientes_df[paciente_idx].iloc[0]
+        
+            lista_antimicrobianos = [
+                "-- Seleccione antimicrobiano --",
+                "Aciclovir ev",
+                "Aciclovir vo",
+                "Amikacina",
+                "Ampicilina",
+                "Ampicilina/sulbactam",
+                "Anfotericina B liposomal",
+                "Anidulafungina",
+                "Azitromicina ev",
+                "Azitromicina vo",
+                "Aztreonam",
+                "Cefazolina",
+                "Cefepime",
+                "Cefotaxima ev",
+                "Ceftazidima",
+                "Ceftazidima/avibactam", 
+                "Ceftriaxona",
+                "Ciprofloxacino ev",  
+                "Ciprofloxacino vo",
+                "Clindamicina vo",
+                "Clindamicina ev",
+                "Cloxacilina ev",
+                "Cloxacilina vo",
+                "Colistin",
+                "Cotrimoxazol ev",
+                "Cotrimoxazol vo",
+                "Daptomicina",
+                "Ertapenem",
+                "Fluconazol ev",
+                "Fluconazol vo",
+                "Fosfomicina ev",
+                "Ganciclovir",
+                "Imipenem",
+                "Isavuconazol vo",
+                "Isavuconazol ev",
+                "Levofloxacino ev",
+                "Levofloxacino vo",
+                "Linezolid vo",
+                "Linezolid ev",
+                "Meropenem",
+                "Metronidazol ev",
+                "Metronidazol vo",
+                "Penicilina G",
+                "Piperacilina/tazobactam",
+                "Tigeciclina",
+                "Vancomicina",
+                "Voriconazol ev",
+                "Voriconazol vo",
+                "Otro"
+            ]
+        
+            antimicrobiano = st.selectbox(
+                "Antimicrobiano",
+                lista_antimicrobianos,
+                index=0
+            )
+        
+            if antimicrobiano == "Otro":
+                antimicrobiano = st.text_input("Especifique antimicrobiano")
+        
+        
+            fecha_inicio = st.date_input(
+                "Fecha inicio",
+                format="DD/MM/YYYY"
+            )
+        
+            estado = st.selectbox(
+                "Estado",
+                [
+                    "Vigente",
+                    "Cambio",
+                    "Suspendida",
+                    "Término tratamiento"
+                ]
+            )
+        
+            fecha_termino = None
+        
+            if estado != "Vigente":
+                fecha_termino = st.date_input(
+                    "Fecha término",
+                    format="DD/MM/YYYY"
+                )
+        
+            observacion = st.text_area(
+                "Observación"
+            )
+        
+            excepcion_prolongada = st.checkbox(
+                "Tratamiento prolongado justificado"
+            )
+        
+            motivo_excepcion = ""
+        
+            if excepcion_prolongada:
+                motivo_excepcion = st.text_area(
+                    "Motivo de excepción"
+                )
+        
+            if st.button("Guardar terapia ATM"):
+                if antimicrobiano == "-- Seleccione antimicrobiano --":
+                    st.warning("Seleccione un antimicrobiano")
+        
+                else:
+        
+                    guardar_terapia_atm(
+                        paciente["id"],
+                        antimicrobiano,
+                        fecha_inicio,
+                        fecha_termino,
+                        estado,
+                        observacion,
+                        excepcion_prolongada,
+                        motivo_excepcion
+                    )
+        
+                    st.success("Terapia registrada correctamente")
+                    st.rerun()
+                    st.divider()
+            st.subheader("Terapias ATM registradas")
+        
+            terapias_df = obtener_terapias_atm_paciente(paciente["id"])
+        
+            if len(terapias_df) > 0:
+        
+                terapias_df["fecha_inicio"] = terapias_df["fecha_inicio"].apply(formatear_fecha)
+                terapias_df["fecha_termino"] = terapias_df["fecha_termino"].apply(formatear_fecha)
+        
+                terapias_mostrar = terapias_df.copy()
+                
+                columnas_ocultar = ["id", "paciente_id"]
+                terapias_mostrar = terapias_mostrar.drop(
+                    columns=[col for col in columnas_ocultar if col in terapias_mostrar.columns]
+                )
+        
+                with st.expander("💊 Ver terapias ATM registradas", expanded=False):
+                    st.dataframe(
+                        terapias_mostrar,
+                        use_container_width=True
+                    )
+        
+        else:
+            st.info("Este paciente no tiene terapias ATM registradas")
