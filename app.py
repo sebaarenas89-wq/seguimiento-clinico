@@ -1227,7 +1227,8 @@ elif menu == "Terapia ATM":
         )
 
     observacion = st.text_area(
-        "Observación"
+        "Observación",
+        key=f"observacion_atm_{st.session_state.atm_form_version}"
     )
 
     excepcion_prolongada = st.checkbox(
