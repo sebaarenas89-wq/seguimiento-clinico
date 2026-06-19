@@ -1151,7 +1151,85 @@ elif menu == "Búsqueda global":
 
     else:
         st.info("Ingrese un término de búsqueda")
+elif menu == "Terapia farmacológica":
 
+    st.markdown("### 💊 Terapia farmacológica")
+
+    pacientes_df = obtener_pacientes()
+
+    if len(pacientes_df) == 0:
+        st.warning("No existen pacientes registrados")
+        st.stop()
+
+    pacientes_df["selector"] = (
+        pacientes_df["nombre"] + " | ID: " + pacientes_df["id_paciente"].astype(str)
+    )
+
+    opciones_pacientes = ["-- Seleccione paciente --"] + pacientes_df["selector"].tolist()
+
+    seleccion = st.selectbox(
+        "Seleccione paciente",
+        opciones_pacientes,
+        index=0
+    )
+
+    if seleccion == "-- Seleccione paciente --":
+        st.info("Seleccione un paciente para registrar terapia farmacológica")
+        st.stop()
+
+    paciente = pacientes_df[pacientes_df["selector"] == seleccion].iloc[0]
+
+    fecha_terapia_farmacologica = st.date_input(
+        "Fecha",
+        format="DD/MM/YYYY"
+    )
+
+    with st.expander("💊 Ingresar terapia farmacológica", expanded=False):
+        tratamiento = st.text_area(
+            "Terapia farmacológica",
+            height=300
+        )
+
+    if st.button("Guardar terapia farmacológica"):
+
+        if tratamiento.strip():
+
+            guardar_terapia_farmacologica(
+                paciente["id"],
+                fecha_terapia_farmacologica,
+                tratamiento
+            )
+
+            st.success("Terapia farmacológica guardada correctamente")
+            st.rerun()
+
+        else:
+            st.warning("Ingrese terapia farmacológica antes de guardar")
+
+    st.divider()
+    st.subheader("Terapias farmacológicas registradas")
+
+    terapias_farma_df = obtener_terapia_farmacologica_paciente(paciente["id"])
+
+    if len(terapias_farma_df) > 0:
+
+        terapias_farma_mostrar = terapias_farma_df.copy()
+        terapias_farma_mostrar["fecha"] = terapias_farma_mostrar["fecha"].apply(formatear_fecha)
+
+        terapias_farma_mostrar = terapias_farma_mostrar.drop(
+            columns=["id", "paciente_id"],
+            errors="ignore"
+        )
+
+        with st.expander("📋 Ver terapias farmacológicas registradas", expanded=False):
+            st.dataframe(
+                terapias_farma_mostrar,
+                use_container_width=True,
+                hide_index=True
+            )
+
+    else:
+        st.info("Este paciente no tiene terapias farmacológicas registradas")
         
 elif menu == "Terapia ATM":
 
