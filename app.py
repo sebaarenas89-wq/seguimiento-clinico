@@ -635,21 +635,24 @@ elif menu == "Ficha clínica":
         )
         st.markdown("**Diagnósticos**")
         
+        diagnosticos_html = str(paciente["diagnosticos"]).replace("\n", "<br>")
+        
         st.markdown(
-        f"""
-    <div style="
-        border-left:5px solid #2E86C1;
-        background-color:#f8f9fa;
-        padding:15px;
-        border-radius:8px;
-        font-size:16px;
-        margin-bottom:25px;
-    ">
-    {paciente["diagnosticos"]}
-    </div>
-    """,
-        unsafe_allow_html=True
-    )
+            f"""
+        <div style="
+            border-left:5px solid #2E86C1;
+            background-color:#f8f9fa;
+            padding:15px;
+            border-radius:8px;
+            font-size:16px;
+            margin-bottom:25px;
+            white-space:pre-wrap;
+        ">
+        {diagnosticos_html}
+        </div>
+        """,
+            unsafe_allow_html=True
+        )
 
         with st.expander("✏️ Editar paciente"):
 
