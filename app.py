@@ -717,7 +717,7 @@ elif menu == "Ficha clínica":
                         nuevos_diagnosticos
                     )
                     st.session_state.paciente_ficha_id = paciente["id"]
-                    st.session_state.editar_paciente_abierto = False
+                    st.session_state.editar_paciente_version += 1
 
                     st.success("Paciente actualizado correctamente")
                     st.rerun()
