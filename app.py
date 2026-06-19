@@ -1207,7 +1207,7 @@ if menu == "Evolución diaria":
     
         else:
             st.info("Ingrese un término de búsqueda")
-   if menu == "Terapia farmacológica":
+    if menu == "Terapia farmacológica":
     
         st.markdown("### 💊 Terapia farmacológica")
     
