@@ -653,8 +653,13 @@ elif menu == "Ficha clínica":
         """,
             unsafe_allow_html=True
         )
-
-        with st.expander("✏️ Editar paciente"):
+        if "editar_paciente_abierto" not in st.session_state:
+            st.session_state.editar_paciente_abierto = False
+            
+        with st.expander(
+            "✏️ Editar paciente",
+            expanded=st.session_state.editar_paciente_abierto
+        ):
 
             nuevo_nombre = st.text_input(
                 "Nombre paciente",
@@ -710,6 +715,7 @@ elif menu == "Ficha clínica":
                         nuevos_diagnosticos
                     )
                     st.session_state.paciente_ficha_id = paciente["id"]
+                    st.session_state.editar_paciente_abierto = False
 
                     st.success("Paciente actualizado correctamente")
                     st.rerun()
