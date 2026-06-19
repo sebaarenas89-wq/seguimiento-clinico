@@ -709,6 +709,7 @@ elif menu == "Ficha clínica":
                         nueva_fecha_ingreso,
                         nuevos_diagnosticos
                     )
+                    st.session_state.paciente_ficha_id = paciente["id"]
 
                     st.success("Paciente actualizado correctamente")
                     st.rerun()
