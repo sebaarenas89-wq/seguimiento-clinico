@@ -653,12 +653,14 @@ elif menu == "Ficha clínica":
         """,
             unsafe_allow_html=True
         )
-        if "editar_paciente_abierto" not in st.session_state:
-            st.session_state.editar_paciente_abierto = False
-            
+        if "editar_paciente_version" not in st.session_state:
+            st.session_state.editar_paciente_version = 0
+
+        version_editar_paciente = "\u200b" * st.session_state.editar_paciente_version
+
         with st.expander(
-            "✏️ Editar paciente",
-            expanded=st.session_state.editar_paciente_abierto
+            f"✏️ Editar paciente{version_editar_paciente}",
+            expanded=False
         ):
 
             nuevo_nombre = st.text_input(
