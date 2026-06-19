@@ -1194,6 +1194,7 @@ elif menu == "Terapia ATM":
         "Antimicrobiano",
         lista_antimicrobianos,
         index=0
+        key=f"antimicrobiano_atm_{st.session_state.atm_form_version}"
     )
 
     if antimicrobiano == "Otro":
