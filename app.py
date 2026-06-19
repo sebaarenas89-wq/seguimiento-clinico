@@ -1203,7 +1203,8 @@ elif menu == "Terapia ATM":
 
     fecha_inicio = st.date_input(
         "Fecha inicio",
-        format="DD/MM/YYYY"
+        format="DD/MM/YYYY",
+        key=f"fecha_inicio_atm_{st.session_state.atm_form_version}"
     )
 
     estado = st.selectbox(
