@@ -835,8 +835,8 @@ with st.expander("✏️ Editar paciente"):
                         st.rerun()
                     else:
                         st.warning("Debe confirmar antes de eliminar")
-        st.divider()
-        st.write("### Terapia antimicrobiana")
+            st.divider()
+            st.write("### Terapia antimicrobiana")
 
         terapias_df = obtener_terapias_atm_paciente(paciente["id"])
 
