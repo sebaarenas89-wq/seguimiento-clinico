@@ -1106,6 +1106,9 @@ elif menu == "Búsqueda global":
 elif menu == "Terapia ATM":
 
     st.markdown("### 💊 Terapia Antimicrobiana")
+    
+    if "atm_form_version" not in st.session_state:
+        st.session_state.atm_form_version = 0
 
     pacientes_df = obtener_pacientes()
 
