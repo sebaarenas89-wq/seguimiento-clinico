@@ -1262,6 +1262,7 @@ elif menu == "Terapia ATM":
             )
 
             st.success("Terapia registrada correctamente")
+            st.session_state.atm_form_version += 1
             st.rerun()
             st.divider()
     st.subheader("Terapias ATM registradas")
