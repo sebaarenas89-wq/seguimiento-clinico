@@ -996,7 +996,7 @@ with st.expander("✏️ Editar paciente"):
 # EVOLUCIÓN DIARIA
 # --------------------------
 
-    elif menu == "Evolución diaria":
+        elif menu == "Evolución diaria":
 
         st.markdown("### 📝 Evolución clínica diaria")
     
