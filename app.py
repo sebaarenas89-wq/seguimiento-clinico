@@ -700,6 +700,61 @@ elif menu == "Ficha clínica":
     """,
         unsafe_allow_html=True
     )
+# =====================================
+# TERAPIA FARMACOLÓGICA
+# =====================================
+
+st.markdown("### 💊 Terapia farmacológica")
+
+terapia_farma_df = obtener_terapia_farmacologica_paciente(
+    paciente["id"]
+)
+
+if len(terapia_farma_df) > 0:
+
+    ultima_terapia = terapia_farma_df.iloc[0]
+
+    st.markdown(
+        f"""
+        <div style="
+            border-left:5px solid #28A745;
+            background-color:#f8f9fa;
+            padding:15px;
+            border-radius:8px;
+            margin-bottom:20px;
+        ">
+            <b>Fecha:</b> {formatear_fecha(ultima_terapia["fecha"])}
+            <br><br>
+            {ultima_terapia["tratamiento"]}
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    with st.expander(
+        "📋 Ver terapias farmacológicas previas",
+        expanded=False
+    ):
+
+        terapias_mostrar = terapia_farma_df.copy()
+
+        terapias_mostrar["fecha"] = terapias_mostrar["fecha"].apply(
+            formatear_fecha
+        )
+
+        terapias_mostrar = terapias_mostrar.drop(
+            columns=["id", "paciente_id"],
+            errors="ignore"
+        )
+
+        st.dataframe(
+            terapias_mostrar,
+            use_container_width=True,
+            hide_index=True
+        )
+
+else:
+    st.info("No existen terapias farmacológicas registradas")
 
         with st.expander("✏️ Editar paciente"):
 
