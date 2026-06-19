@@ -1232,7 +1232,8 @@ elif menu == "Terapia ATM":
     )
 
     excepcion_prolongada = st.checkbox(
-        "Tratamiento prolongado justificado"
+        "Tratamiento prolongado justificado",
+        key=f"excepcion_atm_{st.session_state.atm_form_version}"
     )
 
     motivo_excepcion = ""
