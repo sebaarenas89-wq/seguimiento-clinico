@@ -756,7 +756,7 @@ if len(terapia_farma_df) > 0:
 else:
     st.info("No existen terapias farmacológicas registradas")
 
-        with st.expander("✏️ Editar paciente"):
+with st.expander("✏️ Editar paciente"):
 
             nuevo_nombre = st.text_input(
                 "Nombre paciente",
