@@ -889,31 +889,31 @@ with st.expander("✏️ Editar paciente"):
             else:
                 for idx, evo in evoluciones_df.iterrows():
 
-                with st.expander(
-                    f"📅 {formatear_fecha(evo['fecha'])}",
-                    expanded=True if idx == evoluciones_df.index[0] else False
-                ):
+                    with st.expander(
+                        f"📅 {formatear_fecha(evo['fecha'])}",
+                        expanded=True if idx == evoluciones_df.index[0] else False
+                    ):
 
-                    st.subheader(f"📅 {formatear_fecha(evo['fecha'])}")
+                        st.subheader(f"📅 {formatear_fecha(evo['fecha'])}")
 
-                    st.markdown("**Evolución clínica**")
-                    st.write(evo["evolucion_clinica"])
+                        st.markdown("**Evolución clínica**")
+                        st.write(evo["evolucion_clinica"])
 
-                    st.markdown("**Resultados laboratorio**")
-                    st.write(evo["resultados_laboratorio"])
+                        st.markdown("**Resultados laboratorio**")
+                        st.write(evo["resultados_laboratorio"])
 
-                    st.markdown("**Resultados microbiología**")
-                    st.write(evo["resultados_microbiologia"])
+                        st.markdown("**Resultados microbiología**")
+                        st.write(evo["resultados_microbiologia"])
 
-                    st.markdown("**Antimicrobianos activos**")
-                    st.write(evo["antimicrobianos_activos"])
+                        st.markdown("**Antimicrobianos activos**")
+                        st.write(evo["antimicrobianos_activos"])
 
-                    st.markdown("**Intervención farmacéutica**")
-                    st.write(evo["intervencion_farmaceutica"])
+                        st.markdown("**Intervención farmacéutica**")
+                        st.write(evo["intervencion_farmaceutica"])
 
-                    with st.expander("✏️ Editar evolución"):
+                        with st.expander("✏️ Editar evolución"):
 
-                        nueva_fecha = st.date_input(
+                            nueva_fecha = st.date_input(
                             "Fecha",
                             value=pd.to_datetime(evo["fecha"]).date(),
                             key=f"fecha_evo_{evo['id']}"
