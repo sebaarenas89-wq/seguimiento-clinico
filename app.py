@@ -165,6 +165,16 @@ def crear_tablas():
         )
     """)
 
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS terapia_farmacologica (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            paciente_id INTEGER NOT NULL,
+            fecha TEXT NOT NULL,
+            tratamiento TEXT,
+            FOREIGN KEY (paciente_id) REFERENCES pacientes(id)
+        )
+    """)
+
     conn.commit()
     conn.close()
 
