@@ -1240,7 +1240,8 @@ elif menu == "Terapia ATM":
 
     if excepcion_prolongada:
         motivo_excepcion = st.text_area(
-            "Motivo de excepción"
+            "Motivo de excepción",
+            key=f"motivo_excepcion_atm_{st.session_state.atm_form_version}"
         )
 
     if st.button("Guardar terapia ATM"):
