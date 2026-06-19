@@ -838,56 +838,56 @@ with st.expander("✏️ Editar paciente"):
             st.divider()
             st.write("### Terapia antimicrobiana")
 
-        terapias_df = obtener_terapias_atm_paciente(paciente["id"])
+            terapias_df = obtener_terapias_atm_paciente(paciente["id"])
 
-        if len(terapias_df) > 0:
+            if len(terapias_df) > 0:
 
-            terapias_mostrar = terapias_df.copy()
+                terapias_mostrar = terapias_df.copy()
             
-            terapias_mostrar["alerta"] = terapias_mostrar.apply(
-                evaluar_alerta_atm,
-                axis=1
-            )
+                terapias_mostrar["alerta"] = terapias_mostrar.apply(
+                    evaluar_alerta_atm,
+                    axis=1
+                )
 
-            terapias_mostrar["fecha_inicio"] = terapias_mostrar["fecha_inicio"].apply(formatear_fecha)
-            terapias_mostrar["fecha_termino"] = terapias_mostrar["fecha_termino"].apply(formatear_fecha)
+                terapias_mostrar["fecha_inicio"] = terapias_mostrar["fecha_inicio"].apply(formatear_fecha)
+                terapias_mostrar["fecha_termino"] = terapias_mostrar["fecha_termino"].apply(formatear_fecha)
 
-            terapias_mostrar = terapias_mostrar[
-                [
-                    "antimicrobiano",
-                    "fecha_inicio",
-                    "fecha_termino",
-                    "estado",
-                    "dias_tratamiento",
-                    "alerta",
-                    "observacion"
+                terapias_mostrar = terapias_mostrar[
+                    [
+                        "antimicrobiano",
+                        "fecha_inicio",
+                        "fecha_termino",
+                        "estado",
+                        "dias_tratamiento",
+                        "alerta",
+                        "observacion"
+                    ]
                 ]
-            ]
 
-            terapias_mostrar = terapias_mostrar.rename(columns={
-                "antimicrobiano": "Antimicrobiano",
-                "fecha_inicio": "Inicio",
-                "fecha_termino": "Término",
-                "estado": "Estado",
-                "dias_tratamiento": "Días",
-                "alerta": "Alerta",
-                "observacion": "Observación"
-            })
+                terapias_mostrar = terapias_mostrar.rename(columns={
+                    "antimicrobiano": "Antimicrobiano",
+                    "fecha_inicio": "Inicio",
+                    "fecha_termino": "Término",
+                    "estado": "Estado",
+                    "dias_tratamiento": "Días",
+                    "alerta": "Alerta",
+                    "observacion": "Observación"
+                })
 
-            st.dataframe(terapias_mostrar, use_container_width=True)
+                st.dataframe(terapias_mostrar, use_container_width=True)
 
-        else:
-            st.info("Este paciente no tiene terapias ATM registradas")
-        st.divider()
-        st.write("### Evoluciones registradas")
+            else:
+                st.info("Este paciente no tiene terapias ATM registradas")
+            st.divider()
+            st.write("### Evoluciones registradas")
 
-        evoluciones_df = obtener_evoluciones_paciente(paciente["id"])
+            evoluciones_df = obtener_evoluciones_paciente(paciente["id"])
 
-        if len(evoluciones_df) == 0:
-            st.info("Este paciente aún no tiene evoluciones registradas")
+            if len(evoluciones_df) == 0:
+                st.info("Este paciente aún no tiene evoluciones registradas")
 
-        else:
-            for idx, evo in evoluciones_df.iterrows():
+            else:
+                for idx, evo in evoluciones_df.iterrows():
 
                 with st.expander(
                     f"📅 {formatear_fecha(evo['fecha'])}",
