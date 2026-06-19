@@ -996,155 +996,156 @@ with st.expander("✏️ Editar paciente"):
 # EVOLUCIÓN DIARIA
 # --------------------------
 
-    elif menu == "Evolución diaria":
+elif menu == "Evolución diaria":
 
-        st.markdown("### 📝 Evolución clínica diaria")
+    st.markdown("### 📝 Evolución clínica diaria")
+
+    if "expandir_evolucion" not in st.session_state:
+        st.session_state.expandir_evolucion = False
+
+    if "evolucion_clinica_txt" not in st.session_state:
+        st.session_state.evolucion_clinica_txt = ""
+
+    if "resultados_laboratorio_txt" not in st.session_state:
+        st.session_state.resultados_laboratorio_txt = ""
+
+    if "resultados_microbiologia_txt" not in st.session_state:
+        st.session_state.resultados_microbiologia_txt = ""
+
+    if "antimicrobianos_activos_txt" not in st.session_state:
+        st.session_state.antimicrobianos_activos_txt = ""
+
+    if "intervencion_farmaceutica_txt" not in st.session_state:
+        st.session_state.intervencion_farmaceutica_txt = ""
+
+    if "evolucion_form_version" not in st.session_state:
+        st.session_state.evolucion_form_version = 0
+
+    pacientes_df = obtener_pacientes()
+
+    if len(pacientes_df) == 0:
+        st.warning("Debe ingresar al menos un paciente antes de registrar evolución")
+
+    else:
+        pacientes_df["selector"] = (
+            pacientes_df["nombre"] + " | ID: " + pacientes_df["id_paciente"]
+        )
+
+        opciones_pacientes = ["-- Seleccione paciente --"] + pacientes_df["selector"].tolist()
+
+        seleccion = st.selectbox(
+            "Paciente",
+            opciones_pacientes,
+            index=0
+        )
+
+        if seleccion == "-- Seleccione paciente --":
+            st.info("Seleccione un paciente para registrar una evolución")
+            st.stop()
+
+        paciente = pacientes_df[pacientes_df["selector"] == seleccion].iloc[0]
+
+        fecha_evolucion = st.date_input(
+            "Fecha evolución",
+            value=date.today(),
+            format="DD/MM/YYYY"
+        )
+        version_invisible = "\u200b" * st.session_state.evolucion_form_version
     
-        if "expandir_evolucion" not in st.session_state:
+        with st.expander(
+            f"📝 Evolución clínica{version_invisible}",
+            expanded=False
+        ):
+            evolucion_clinica = st.text_area(
+                "Evolución clínica",
+                height=250,
+                key=f"evolucion_clinica_txt_{st.session_state.evolucion_form_version}"
+            )
+
+        with st.expander(
+            f"🧪 Resultados laboratorio{version_invisible}",
+            expanded=False
+        ):
+            resultados_laboratorio = st.text_area(
+                "Resultados laboratorio",
+                height=200,
+                key=f"resultados_laboratorio_txt_{st.session_state.evolucion_form_version}"
+            )
+
+        with st.expander(
+            f"🦠 Resultados microbiología{version_invisible}",
+            expanded=False
+        ):
+            resultados_microbiologia = st.text_area(
+                "Resultados microbiología",
+                height=200,
+                key=f"resultados_microbiologia_txt_{st.session_state.evolucion_form_version}"
+            )
+
+        with st.expander(
+            f"💊 Antimicrobianos activos{version_invisible}",
+            expanded=False
+        ):
+            antimicrobianos_activos = st.text_area(
+                "Antimicrobianos activos",
+                height=180,
+                key=f"antimicrobianos_activos_txt_{st.session_state.evolucion_form_version}"
+            )
+
+        with st.expander(
+            f"💬 Intervención farmacéutica{version_invisible}",
+            expanded=False
+        ):
+            intervencion_farmaceutica = st.text_area(
+                "Intervención farmacéutica",
+                height=200,
+                key=f"intervencion_farmaceutica_txt_{st.session_state.evolucion_form_version}"
+            )
+
+        if st.button("Guardar evolución"):
+
+            guardar_evolucion(
+                paciente["id"],
+                fecha_evolucion,
+                evolucion_clinica,
+                resultados_laboratorio,
+                resultados_microbiologia,
+                antimicrobianos_activos,
+                intervencion_farmaceutica
+            )
+
+            st.session_state.evolucion_form_version += 1
             st.session_state.expandir_evolucion = False
 
-        if "evolucion_clinica_txt" not in st.session_state:
-            st.session_state.evolucion_clinica_txt = ""
+            st.success("Evolución guardada correctamente")
+            st.rerun()
 
-        if "resultados_laboratorio_txt" not in st.session_state:
-            st.session_state.resultados_laboratorio_txt = ""
+        st.divider()
+        st.subheader("Evoluciones del paciente")
 
-        if "resultados_microbiologia_txt" not in st.session_state:
-            st.session_state.resultados_microbiologia_txt = ""
+        evoluciones_df = obtener_evoluciones_paciente(paciente["id"])
 
-        if "antimicrobianos_activos_txt" not in st.session_state:
-            st.session_state.antimicrobianos_activos_txt = ""
+        if len(evoluciones_df) > 0:
+            
+            evoluciones_mostrar = evoluciones_df.copy()
 
-        if "intervencion_farmaceutica_txt" not in st.session_state:
-            st.session_state.intervencion_farmaceutica_txt = ""
-
-        if "evolucion_form_version" not in st.session_state:
-            st.session_state.evolucion_form_version = 0
-
-        pacientes_df = obtener_pacientes()
-
-        if len(pacientes_df) == 0:
-            st.warning("Debe ingresar al menos un paciente antes de registrar evolución")
-
+            evoluciones_mostrar["fecha"] = pd.to_datetime(
+                evoluciones_mostrar["fecha"]
+            ).dt.strftime("%d/%m/%Y")
+            evoluciones_mostrar = evoluciones_mostrar.drop(
+                columns=["id"],
+                errors="ignore"
+            )
+            
+            with st.expander("📋 Ver evoluciones registradas", expanded=False):
+                st.dataframe(
+                    evoluciones_mostrar,
+                    use_container_width=True,
+                    hide_index=True
+                )
         else:
-            pacientes_df["selector"] = (
-                pacientes_df["nombre"] + " | ID: " + pacientes_df["id_paciente"]
-            )
-
-            opciones_pacientes = ["-- Seleccione paciente --"] + pacientes_df["selector"].tolist()
-
-            seleccion = st.selectbox(
-                "Paciente",
-                opciones_pacientes,
-                index=0
-            )
-
-            if seleccion == "-- Seleccione paciente --":
-                st.info("Seleccione un paciente para registrar una evolución")
-                st.stop()
-
-            paciente = pacientes_df[pacientes_df["selector"] == seleccion].iloc[0]
-
-            fecha_evolucion = st.date_input(
-                "Fecha evolución",
-                value=date.today(),
-                format="DD/MM/YYYY"
-            )
-            version_invisible = "\u200b" * st.session_state.evolucion_form_version
-        
-            with st.expander(
-                f"📝 Evolución clínica{version_invisible}",
-                expanded=False
-            ):
-                evolucion_clinica = st.text_area(
-                    "Evolución clínica",
-                    height=250,
-                    key=f"evolucion_clinica_txt_{st.session_state.evolucion_form_version}"
-                )
-    
-            with st.expander(
-                f"🧪 Resultados laboratorio{version_invisible}",
-                expanded=False
-            ):
-                resultados_laboratorio = st.text_area(
-                    "Resultados laboratorio",
-                    height=200,
-                    key=f"resultados_laboratorio_txt_{st.session_state.evolucion_form_version}"
-                )
-    
-            with st.expander(
-                f"🦠 Resultados microbiología{version_invisible}",
-                expanded=False
-            ):
-                resultados_microbiologia = st.text_area(
-                    "Resultados microbiología",
-                    height=200,
-                    key=f"resultados_microbiologia_txt_{st.session_state.evolucion_form_version}"
-                )
-    
-            with st.expander(
-                f"💊 Antimicrobianos activos{version_invisible}",
-                expanded=False
-            ):
-                antimicrobianos_activos = st.text_area(
-                    "Antimicrobianos activos",
-                    height=180,
-                    key=f"antimicrobianos_activos_txt_{st.session_state.evolucion_form_version}"
-                )
-    
-            with st.expander(
-                f"💬 Intervención farmacéutica{version_invisible}",
-                expanded=False
-            ):
-                intervencion_farmaceutica = st.text_area(
-                    "Intervención farmacéutica",
-                    height=200,
-                    key=f"intervencion_farmaceutica_txt_{st.session_state.evolucion_form_version}"
-                )
-    
-            if st.button("Guardar evolución"):
-    
-                guardar_evolucion(
-                    paciente["id"],
-                    fecha_evolucion,
-                    evolucion_clinica,
-                    resultados_laboratorio,
-                    resultados_microbiologia,
-                    antimicrobianos_activos,
-                    intervencion_farmaceutica
-                )
-    
-                st.session_state.evolucion_form_version += 1
-                st.session_state.expandir_evolucion = False
-    
-                st.success("Evolución guardada correctamente")
-                st.rerun()
-    
-            st.divider()
-            st.subheader("Evoluciones del paciente")
-    
-            evoluciones_df = obtener_evoluciones_paciente(paciente["id"])
-    
-            if len(evoluciones_df) > 0:
-                
-                evoluciones_mostrar = evoluciones_df.copy()
-    
-                evoluciones_mostrar["fecha"] = pd.to_datetime(
-                    evoluciones_mostrar["fecha"]
-                ).dt.strftime("%d/%m/%Y")
-                evoluciones_mostrar = evoluciones_mostrar.drop(
-                    columns=["id"],
-                    errors="ignore"
-                )
-                
-                with st.expander("📋 Ver evoluciones registradas", expanded=False):
-                    st.dataframe(
-                        evoluciones_mostrar,
-                        use_container_width=True,
-                        hide_index=True
-                    )
-            else:
-                st.info("No hay evoluciones registradas para este paciente")
+            st.info("No hay evoluciones registradas para este paciente")
+            
     elif menu == "Búsqueda global":
     
         st.header("🔍 Búsqueda global")
