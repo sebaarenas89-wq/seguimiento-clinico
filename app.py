@@ -1214,7 +1214,8 @@ elif menu == "Terapia ATM":
             "Cambio",
             "Suspendida",
             "Término tratamiento"
-        ]
+        ],
+        key=f"estado_atm_{st.session_state.atm_form_version}"
     )
 
     fecha_termino = None
