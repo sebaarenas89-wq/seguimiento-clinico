@@ -631,6 +631,7 @@ elif menu == "Ficha clínica":
 
     if len(pacientes_df) == 0:
         st.warning("No existen pacientes registrados")
+        st.stop()
 
     else:
         pacientes_df["selector"] = (
