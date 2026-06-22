@@ -670,8 +670,7 @@ elif menu == "Ficha clínica":
             font-size:16px;
             margin-bottom:15px;
             white-space:pre-wrap;
-        ">
-        {diagnosticos_html}
+        ">{diagnosticos_html}
         </div>
         """,
             unsafe_allow_html=True
