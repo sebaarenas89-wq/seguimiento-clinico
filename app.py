@@ -666,7 +666,7 @@ elif menu == "Ficha clínica":
             padding:5px 15px;
             border-radius:8px;
             font-size:16px;
-            margin-bottom:25px;
+            margin-bottom:15px;
             white-space:pre-wrap;
         ">
         {diagnosticos_html}
