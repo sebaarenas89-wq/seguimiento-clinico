@@ -545,10 +545,14 @@ if menu == "Pacientes":
             key=f"fecha_ingreso_nuevo_{st.session_state.paciente_form_version}"
         )
         
-        with st.expander("📝 Diagnósticos", expanded=False):
+        with st.expander(
+            f"📝 Diagnósticos{version_paciente}",
+            expanded=False
+        ):
             diagnosticos = st.text_area(
                 "Diagnósticos",
-                height=220
+                height=220,
+                key=f"diagnosticos_nuevo_{st.session_state.paciente_form_version}"
             )
 
     if st.button("Guardar paciente"):
