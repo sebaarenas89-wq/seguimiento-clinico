@@ -840,7 +840,7 @@ elif menu == "Ficha clínica":
 
                     st.divider()
 
-                    st.markdown("**Antimicrobianos activos**")
+                    st.markdown("**Terapia farmacológica**")
                     st.write(evo["antimicrobianos_activos"])
 
                     st.divider()
