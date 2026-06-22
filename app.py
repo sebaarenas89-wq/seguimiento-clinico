@@ -1029,7 +1029,7 @@ elif menu == "Evolución diaria":
             )
 
         with st.expander(
-            f"💊 Antimicrobianos activos{version_invisible}",
+            f"💊 Terapia farmacológica{version_invisible}",
             expanded=False
         ):
             antimicrobianos_activos = st.text_area(
