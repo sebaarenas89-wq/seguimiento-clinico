@@ -828,14 +828,22 @@ elif menu == "Ficha clínica":
                     st.markdown("**Evolución clínica**")
                     st.write(evo["evolucion_clinica"])
 
+                    st.divider()
+
                     st.markdown("**Resultados laboratorio**")
                     st.write(evo["resultados_laboratorio"])
+
+                    st.divider()
 
                     st.markdown("**Resultados microbiología**")
                     st.write(evo["resultados_microbiologia"])
 
+                    st.divider()
+
                     st.markdown("**Antimicrobianos activos**")
                     st.write(evo["antimicrobianos_activos"])
+
+                    st.divider()
 
                     st.markdown("**Intervención farmacéutica**")
                     st.write(evo["intervencion_farmaceutica"])
