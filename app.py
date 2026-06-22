@@ -1256,10 +1256,12 @@ elif menu == "Terapia ATM":
 
     fecha_termino = None
 
-    if estado != "Vigente":
+    if estado not in ["Vigente", "-- Seleccione estado --"]:
         fecha_termino = st.date_input(
             "Fecha término",
-            format="DD/MM/YYYY"
+            value=None,
+            format="DD/MM/YYYY",
+            key=f"fecha_termino_atm_{st.session_state.atm_form_version}"
         )
 
     observacion = st.text_area(
