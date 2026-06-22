@@ -1283,6 +1283,12 @@ elif menu == "Terapia ATM":
     if st.button("Guardar terapia ATM"):
         if antimicrobiano == "-- Seleccione antimicrobiano --":
             st.warning("Seleccione un antimicrobiano")
+            
+        elif fecha_inicio is None:
+            st.warning("Seleccione fecha de inicio")
+
+        elif estado == "-- Seleccione estado --":
+            st.warning("Seleccione un estado")
 
         else:
 
