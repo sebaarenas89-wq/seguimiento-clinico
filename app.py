@@ -886,7 +886,7 @@ elif menu == "Ficha clínica":
                         )
 
                         nuevo_atb = st.text_area(
-                            "Antimicrobianos activos",
+                            "Terapia farmacológica",
                             value=evo["antimicrobianos_activos"],
                             height=100,
                             key=f"atb_{evo['id']}"
