@@ -663,7 +663,7 @@ elif menu == "Ficha clínica":
         <div style="
             border-left:5px solid #2E86C1;
             background-color:#f8f9fa;
-            padding:15px;
+            padding:5px 15px;
             border-radius:8px;
             font-size:16px;
             margin-bottom:25px;
