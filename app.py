@@ -1244,11 +1244,13 @@ elif menu == "Terapia ATM":
     estado = st.selectbox(
         "Estado",
         [
+            "-- Seleccione estado --",
             "Vigente",
             "Cambio",
             "Suspendida",
             "Término tratamiento"
         ],
+        index=0,
         key=f"estado_atm_{st.session_state.atm_form_version}"
     )
 
