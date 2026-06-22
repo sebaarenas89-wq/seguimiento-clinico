@@ -1231,7 +1231,10 @@ elif menu == "Terapia ATM":
     )
 
     if antimicrobiano == "Otro":
-        antimicrobiano = st.text_input("Especifique antimicrobiano")
+        antimicrobiano = st.text_input(
+            "Especifique antimicrobiano",
+            key=f"otro_antimicrobiano_atm_{st.session_state.atm_form_version}"
+        )
 
 
     fecha_inicio = st.date_input(
