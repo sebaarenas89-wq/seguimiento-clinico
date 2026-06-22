@@ -840,7 +840,15 @@ elif menu == "Ficha clínica":
                     st.markdown("**Intervención farmacéutica**")
                     st.write(evo["intervencion_farmaceutica"])
 
-                    with st.expander("✏️ Editar evolución"):
+                    if "editar_evolucion_version" not in st.session_state:
+                        st.session_state.editar_evolucion_version = 0
+
+                    version_editar_evolucion = "\u200b" * st.session_state.editar_evolucion_version
+
+                    with st.expander(
+                        f"✏️ Editar evolución{version_editar_evolucion}",
+                        expanded=False
+                    ):
 
                         nueva_fecha = st.date_input(
                             "Fecha",
@@ -899,6 +907,7 @@ elif menu == "Ficha clínica":
                             )
 
                             st.success("Evolución actualizada correctamente")
+                            st.session_state.editar_evolucion_version += 1
                             st.rerun()
 
                     with st.expander("⚠️ Opciones de eliminación"):
