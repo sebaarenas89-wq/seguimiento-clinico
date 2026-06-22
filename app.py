@@ -567,6 +567,7 @@ if menu == "Pacientes":
                 diagnosticos
             )
             st.success("Paciente guardado correctamente")
+            st.session_state.paciente_form_version += 1
             st.rerun()
 
     st.divider()
