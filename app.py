@@ -1,11 +1,10 @@
 import streamlit as st
 import pandas as pd
-import sqlite3
+import psycopg2
 from datetime import date
 
 st.set_page_config(page_title="Seguimiento Clínico", layout="wide")
 
-DB_NAME = "seguimiento_clinico.db"
 
 def formatear_fecha(fecha):
     if fecha is None or fecha == "":
@@ -31,7 +30,13 @@ def evaluar_alerta_atm(fila):
 
 
 def conectar_db():
-    return sqlite3.connect(DB_NAME, check_same_thread=False)
+    return psycopg2.connect(
+        host=st.secrets["postgres"]["host"],
+        port=st.secrets["postgres"]["port"],
+        database=st.secrets["postgres"]["database"],
+        user=st.secrets["postgres"]["user"],
+        password=st.secrets["postgres"]["password"]
+    )
 
 def buscar_global(texto_busqueda):
     conn = conectar_db()
