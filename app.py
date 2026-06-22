@@ -656,7 +656,9 @@ elif menu == "Ficha clínica":
         )
         st.markdown("**Diagnósticos**")
         
-        diagnosticos_html = str(paciente["diagnosticos"]).replace("\n", "<br>")
+        diagnosticos_html = str(
+            paciente["diagnosticos"]
+        ).strip().replace("\n", "<br>")
         
         st.markdown(
             f"""
