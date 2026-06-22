@@ -541,7 +541,7 @@ if menu == "Pacientes":
     with col2:
         fecha_ingreso = st.date_input(
             "Fecha ingreso",
-            format="DD/MM/YYYY"
+            format="DD/MM/YYYY",
             key=f"fecha_ingreso_nuevo_{st.session_state.paciente_form_version}"
         )
         
