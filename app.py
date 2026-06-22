@@ -513,6 +513,10 @@ menu = st.session_state.menu_actual
 if menu == "Pacientes":
 
     st.subheader("👤 Ingreso de paciente")
+    if "paciente_form_version" not in st.session_state:
+    st.session_state.paciente_form_version = 0
+
+    version_paciente = "\u200b" * st.session_state.paciente_form_version
 
     col1, col2 = st.columns(2)
 
