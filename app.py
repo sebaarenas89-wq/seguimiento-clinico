@@ -522,17 +522,21 @@ if menu == "Pacientes":
     col1, col2 = st.columns(2)
 
     with col1:
-        nombre = st.text_input("Nombre paciente")
+    nombre = st.text_input(
+        "Nombre paciente",
         key=f"nombre_paciente_nuevo_{st.session_state.paciente_form_version}"
-)
-        id_paciente = st.text_input("ID paciente")
+    )
+
+    id_paciente = st.text_input(
+        "ID paciente",
         key=f"id_paciente_nuevo_{st.session_state.paciente_form_version}"
-)
-        servicio = st.selectbox(
-            "Servicio",
-            ["UCI", "UTI", "UCO", "Medicina", "Cirugía"]
-            key=f"servicio_nuevo_{st.session_state.paciente_form_version}"
-        )
+    )
+
+    servicio = st.selectbox(
+        "Servicio",
+        ["UCI", "UTI", "UCO", "Medicina", "Cirugía"],
+        key=f"servicio_nuevo_{st.session_state.paciente_form_version}"
+    )
 
     with col2:
         fecha_ingreso = st.date_input(
