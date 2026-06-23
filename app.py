@@ -375,8 +375,8 @@ def guardar_terapia_atm(
     """, (
         int(paciente_id),
         antimicrobiano,
-        str(fecha_inicio),
-        fecha_termino_texto,
+        fecha_inicio,
+        fecha_termino,
         estado,
         observacion,
         1 if excepcion_prolongada else 0,
