@@ -830,7 +830,7 @@ elif menu == "Ficha clínica":
                     st.divider()
 
                     st.markdown("**Resultados laboratorio**")
-                    st.write(evo["resultados_laboratorio"])
+                    st.text(evo["resultados_laboratorio"])
 
                     st.divider()
 
