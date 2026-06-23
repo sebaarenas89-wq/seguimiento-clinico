@@ -379,7 +379,7 @@ def guardar_terapia_atm(
         fecha_termino,
         estado,
         observacion,
-        1 if excepcion_prolongada else 0,
+        bool(excepcion_prolongada),
         motivo_excepcion
     ))
 
