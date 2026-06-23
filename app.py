@@ -121,58 +121,47 @@ def crear_tablas():
     cursor = conn.cursor()
 
     cursor.execute("""
-        CREATE TABLE IF NOT EXISTS terapias_atm (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            paciente_id INTEGER NOT NULL,
-            antimicrobiano TEXT NOT NULL,
-            fecha_inicio TEXT NOT NULL,
-            fecha_termino TEXT,
-            estado TEXT,
-            observacion TEXT,
-            excepcion_prolongada INTEGER DEFAULT 0,
-            motivo_excepcion TEXT,
-            FOREIGN KEY (paciente_id) REFERENCES pacientes(id)
-        )
+        CREATE TABLE IF NOT EXISTS pacientes (
+            id BIGSERIAL PRIMARY KEY,
+            nombre TEXT NOT NULL,
+            id_paciente TEXT NOT NULL,
+            servicio TEXT,
+            fecha_ingreso DATE,
+            diagnosticos TEXT
+        );
     """)
-    try:
-        cursor.execute(
-            "ALTER TABLE terapias_atm ADD COLUMN excepcion_prolongada INTEGER DEFAULT 0"
-        )
-    except sqlite3.OperationalError:
-        pass
 
-    try:
-        cursor.execute(
-            "ALTER TABLE terapias_atm ADD COLUMN motivo_excepcion TEXT")
-    except sqlite3.OperationalError:
-       pass
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS evoluciones (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            paciente_id INTEGER NOT NULL,
-            fecha TEXT,
+            id BIGSERIAL PRIMARY KEY,
+            paciente_id BIGINT REFERENCES pacientes(id) ON DELETE CASCADE,
+            fecha DATE,
             evolucion_clinica TEXT,
             resultados_laboratorio TEXT,
             resultados_microbiologia TEXT,
             antimicrobianos_activos TEXT,
-            intervencion_farmaceutica TEXT,
-            FOREIGN KEY (paciente_id) REFERENCES pacientes(id)
-        )
+            intervencion_farmaceutica TEXT
+        );
     """)
 
     cursor.execute("""
-        CREATE TABLE IF NOT EXISTS pacientes (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nombre TEXT NOT NULL,
-            id_paciente TEXT NOT NULL,
-            servicio TEXT,
-            fecha_ingreso TEXT,
-            diagnosticos TEXT
-        )
+        CREATE TABLE IF NOT EXISTS terapias_atm (
+            id BIGSERIAL PRIMARY KEY,
+            paciente_id BIGINT REFERENCES pacientes(id) ON DELETE CASCADE,
+            antimicrobiano TEXT,
+            fecha_inicio DATE,
+            fecha_termino DATE,
+            estado TEXT,
+            observacion TEXT,
+            excepcion_prolongada BOOLEAN DEFAULT FALSE,
+            motivo_excepcion TEXT
+        );
     """)
 
     conn.commit()
+    cursor.close()
     conn.close()
+   
 
 def guardar_paciente(nombre, id_paciente, servicio, fecha_ingreso, diagnosticos):
     conn = conectar_db()
