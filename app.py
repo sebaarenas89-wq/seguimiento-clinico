@@ -53,9 +53,9 @@ def buscar_global(texto_busqueda):
             diagnosticos
         FROM pacientes
         WHERE
-            nombre LIKE ?
-            OR id_paciente LIKE ?
-            OR diagnosticos LIKE ?
+            nombre ILIKE %s
+            OR id_paciente ILIKE %s
+            OR diagnosticos ILIKE %s
         """,
         conn,
         params=(texto, texto, texto)
