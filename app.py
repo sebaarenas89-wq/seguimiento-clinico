@@ -211,7 +211,7 @@ def eliminar_paciente(paciente_id):
 
     cursor.execute("""
         DELETE FROM evoluciones
-        WHERE paciente_id = ?
+        WHERE paciente_id = %s
     """, (int(paciente_id),))
 
     cursor.execute("""
