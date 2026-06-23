@@ -1340,7 +1340,8 @@ elif menu == "Terapia ATM":
 
         terapias_mostrar = terapias_df.copy()
         
-        columnas_ocultar = ["id", "paciente_id"]
+        columnas_ocultar = ["id", "paciente_id", "excepcion_prolongada"]
+        
         terapias_mostrar = terapias_mostrar.drop(
             columns=[col for col in columnas_ocultar if col in terapias_mostrar.columns]
         )
