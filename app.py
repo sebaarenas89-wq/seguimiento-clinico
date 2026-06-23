@@ -74,11 +74,11 @@ def buscar_global(texto_busqueda):
         FROM pacientes p
         INNER JOIN evoluciones e ON e.paciente_id = p.id
         WHERE
-            e.evolucion_clinica LIKE ?
-            OR e.resultados_laboratorio LIKE ?
-            OR e.resultados_microbiologia LIKE ?
-            OR e.antimicrobianos_activos LIKE ?
-            OR e.intervencion_farmaceutica LIKE ?
+            e.evolucion_clinica ILIKE %s
+            OR e.resultados_laboratorio ILIKE %s
+            OR e.resultados_microbiologia ILIKE %s
+            OR e.antimicrobianos_activos ILIKE %s
+            OR e.intervencion_farmaceutica ILIKE %s
         """,
         conn,
         params=(texto, texto, texto, texto, texto)
@@ -97,9 +97,9 @@ def buscar_global(texto_busqueda):
         FROM pacientes p
         INNER JOIN terapias_atm t ON t.paciente_id = p.id
         WHERE
-            t.antimicrobiano LIKE ?
-            OR t.observacion LIKE ?
-            OR t.motivo_excepcion LIKE ?
+            t.antimicrobiano ILIKE %s
+            OR t.observacion ILIKE %s
+            OR t.motivo_excepcion ILIKE %s
         """,
         conn,
         params=(texto, texto, texto)
