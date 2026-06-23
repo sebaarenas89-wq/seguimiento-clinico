@@ -282,7 +282,7 @@ def actualizar_evolucion(
     cursor.execute("""
         UPDATE evoluciones
         SET
-            fecha = ?,
+            fecha = %s,
             evolucion_clinica = %s,
             resultados_laboratorio = %s,
             resultados_microbiologia = %s,
