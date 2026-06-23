@@ -180,7 +180,7 @@ def guardar_paciente(nombre, id_paciente, servicio, fecha_ingreso, diagnosticos)
         INSERT INTO pacientes (
             nombre, id_paciente, servicio, fecha_ingreso, diagnosticos
         )
-        VALUES (?, ?, ?, ?, ?)
+        VALUES (%s, %s, %s, %s, %s)
     """, (nombre, id_paciente, servicio, str(fecha_ingreso), diagnosticos))
     conn.commit()
     conn.close()
@@ -191,8 +191,8 @@ def actualizar_paciente(paciente_id, nombre, id_paciente, servicio, fecha_ingres
     cursor = conn.cursor()
     cursor.execute("""
         UPDATE pacientes
-        SET nombre = ?, id_paciente = ?, servicio = ?, fecha_ingreso = ?, diagnosticos = ?
-        WHERE id = ?
+        SET nombre = %s, id_paciente = %s, servicio = %s, fecha_ingreso = %s, diagnosticos = %s
+        WHERE id = %s
     """, (
         nombre,
         id_paciente,
@@ -216,7 +216,7 @@ def eliminar_paciente(paciente_id):
 
     cursor.execute("""
         DELETE FROM pacientes
-        WHERE id = ?
+        WHERE id = %s
     """, (int(paciente_id),))
 
     conn.commit()
@@ -252,7 +252,7 @@ def guardar_evolucion(
             antimicrobianos_activos,
             intervencion_farmaceutica
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
     """, (
         int(paciente_id),
         str(fecha),
@@ -283,12 +283,12 @@ def actualizar_evolucion(
         UPDATE evoluciones
         SET
             fecha = ?,
-            evolucion_clinica = ?,
-            resultados_laboratorio = ?,
-            resultados_microbiologia = ?,
-            antimicrobianos_activos = ?,
-            intervencion_farmaceutica = ?
-        WHERE id = ?
+            evolucion_clinica = %s,
+            resultados_laboratorio = %s,
+            resultados_microbiologia = %s,
+            antimicrobianos_activos = %s,
+            intervencion_farmaceutica = %s
+        WHERE id = %s
     """, (
         str(fecha),
         evolucion_clinica,
@@ -309,7 +309,7 @@ def eliminar_evolucion(evolucion_id):
 
     cursor.execute("""
         DELETE FROM evoluciones
-        WHERE id = ?
+        WHERE id = %s
     """, (int(evolucion_id),))
 
     conn.commit()
@@ -329,7 +329,7 @@ def obtener_evoluciones_paciente(paciente_id):
             antimicrobianos_activos,
             intervencion_farmaceutica
         FROM evoluciones
-        WHERE paciente_id = ?
+        WHERE paciente_id = %s
         ORDER BY fecha DESC
         """,
         conn,
@@ -377,7 +377,7 @@ def guardar_terapia_atm(
             excepcion_prolongada,
             motivo_excepcion
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
     """, (
         int(paciente_id),
         antimicrobiano,
@@ -409,7 +409,7 @@ def obtener_terapias_atm_paciente(paciente_id):
             excepcion_prolongada,
             motivo_excepcion
         FROM terapias_atm
-        WHERE paciente_id = ?
+        WHERE paciente_id = %s
         ORDER BY
             CASE estado
                 WHEN 'Vigente' THEN 1
@@ -455,12 +455,12 @@ def actualizar_terapia_atm(
     cursor.execute("""
         UPDATE terapias_atm
         SET
-            antimicrobiano = ?,
-            fecha_inicio = ?,
-            fecha_termino = ?,
-            estado = ?,
-            observacion = ?
-        WHERE id = ?
+            antimicrobiano = %s,
+            fecha_inicio = %s,
+            fecha_termino = %s,
+            estado = %s,
+            observacion = %s
+        WHERE id = %s
     """, (
         antimicrobiano,
         str(fecha_inicio),
@@ -480,7 +480,7 @@ def eliminar_terapia_atm(terapia_id):
 
     cursor.execute("""
         DELETE FROM terapias_atm
-        WHERE id = ?
+        WHERE id = %s
     """, (int(terapia_id),))
 
     conn.commit()
