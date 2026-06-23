@@ -32,10 +32,11 @@ def evaluar_alerta_atm(fila):
 def conectar_db():
     return psycopg2.connect(
         host=st.secrets["postgres"]["host"],
-        port=st.secrets["postgres"]["port"],
+        port=int(st.secrets["postgres"]["port"]),
         database=st.secrets["postgres"]["database"],
         user=st.secrets["postgres"]["user"],
-        password=st.secrets["postgres"]["password"]
+        password=st.secrets["postgres"]["password"],
+        sslmode="require"
     )
 
 def buscar_global(texto_busqueda):
