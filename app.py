@@ -1038,7 +1038,7 @@ elif menu == "Evolución diaria":
             expanded=False
         ):
             antimicrobianos_activos = st.text_area(
-                "Antimicrobianos activos",
+                "",
                 height=180,
                 key=f"antimicrobianos_activos_txt_{st.session_state.evolucion_form_version}"
             )
