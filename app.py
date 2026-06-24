@@ -984,9 +984,9 @@ elif menu == "Ficha clínica":
 elif menu == "Evolución diaria":
 
     st.markdown("### 📝 Evolución clínica diaria")
-    st.info(
-    "Puede usar formato Markdown: **negrita**, ### subtítulos, - listas."
-    )
+    # st.info(
+    # "Puede usar formato Markdown: **negrita**, ### subtítulos, - listas."
+    # )
     
     if "expandir_evolucion" not in st.session_state:
         st.session_state.expandir_evolucion = False
