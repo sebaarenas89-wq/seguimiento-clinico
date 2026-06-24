@@ -856,12 +856,12 @@ elif menu == "Ficha clínica":
                     st.subheader(f"📅 {formatear_fecha(evo['fecha'])}")
 
                     st.markdown("**Evolución clínica**")
-                    st.write(evo["evolucion_clinica"])
+                    st.markdown(evo["evolucion_clinica"])
 
                     st.divider()
 
                     st.markdown("**Resultados laboratorio**")
-                    st.text(evo["resultados_laboratorio"])
+                    st.markdown(evo["resultados_microbiologia"])
 
                     st.divider()
 
