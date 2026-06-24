@@ -21,7 +21,7 @@ def evaluar_alerta_atm(fila):
         return "🔵 Prolongado justificado"
 
     if dias >= 14:
-        return "🔴 Alerta PROA"
+        return "🔴 Revisar"
 
     if dias >= 7:
         return "🟡 Reevaluar"
