@@ -386,6 +386,37 @@ def guardar_terapia_atm(
     conn.commit()
     conn.close()
 
+def actualizar_fechas_estado_terapia_atm(
+    terapia_id,
+    fecha_inicio,
+    fecha_termino,
+    estado
+):
+    conn = conectar_db()
+    cursor = conn.cursor()
+
+    if not fecha_inicio:
+        fecha_inicio = None
+
+    if not fecha_termino:
+        fecha_termino = None
+
+    cursor.execute("""
+        UPDATE terapias_atm
+        SET
+            fecha_inicio = %s,
+            fecha_termino = %s,
+            estado = %s
+        WHERE id = %s
+    """, (
+        fecha_inicio,
+        fecha_termino,
+        estado,
+        int(terapia_id)
+    ))
+
+    conn.commit()
+    conn.close()
 
 def obtener_terapias_atm_paciente(paciente_id):
     conn = conectar_db()
