@@ -845,7 +845,33 @@ elif menu == "Ficha clínica":
                 "observacion": "Observación"
             })
 
-            st.dataframe(terapias_mostrar, use_container_width=True)
+            terapias_vigentes = terapias_mostrar[
+                terapias_mostrar["Estado"].str.contains("Vigente", na=False)
+            ]
+
+            terapias_no_vigentes = terapias_mostrar[
+                ~terapias_mostrar["Estado"].str.contains("Vigente", na=False)
+            ]
+
+            st.markdown("#### 🟢 Terapias vigentes")
+
+            if len(terapias_vigentes) > 0:
+                st.dataframe(
+                    terapias_vigentes,
+                    use_container_width=True
+                )
+            else:
+                st.info("No existen terapias vigentes")
+
+            if len(terapias_no_vigentes) > 0:
+                with st.expander(
+                    "📂 Ver terapias finalizadas / suspendidas / cambio",
+                    expanded=False
+                ):
+                    st.dataframe(
+                        terapias_no_vigentes,
+                        use_container_width=True
+                    )
 
         else:
             st.info("Este paciente no tiene terapias ATM registradas")
