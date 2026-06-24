@@ -802,6 +802,18 @@ elif menu == "Ficha clínica":
         if len(terapias_df) > 0:
 
             terapias_mostrar = terapias_df.copy()
+            def colorear_estado(estado):
+                if estado == "Vigente":
+                    return "🔵 Vigente"
+                elif estado == "Cambio":
+                    return "🟠 Cambio"
+                elif estado == "Suspendida":
+                    return "🔴 Suspendida"
+                elif estado == "Término tratamiento":
+                    return "⚫ Término tratamiento"
+                return estado
+
+            terapias_mostrar["estado"] = terapias_mostrar["estado"].apply(colorear_estado)
             
             terapias_mostrar["alerta"] = terapias_mostrar.apply(
                 evaluar_alerta_atm,
