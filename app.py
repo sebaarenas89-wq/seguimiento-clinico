@@ -1369,6 +1369,7 @@ elif menu == "Terapia ATM":
     st.subheader("Terapias ATM registradas")
 
     terapias_df = obtener_terapias_atm_paciente(paciente["id"])
+    terapias_editor_df = terapias_df.copy()
 
     if len(terapias_df) > 0:
 
@@ -1388,6 +1389,60 @@ elif menu == "Terapia ATM":
                 terapias_mostrar,
                 use_container_width=True
             )
+
+    st.divider()
+    st.markdown("### ✏️ Editar fechas y estado de terapias ATM")
+
+    for _, terapia in terapias_editor_df.iterrows():
+
+        with st.expander(
+            f"✏️ {terapia['antimicrobiano']} | Inicio: {formatear_fecha(terapia['fecha_inicio'])}",
+            expanded=False
+        ):
+
+            nueva_fecha_inicio = st.date_input(
+                "Fecha inicio",
+                value=pd.to_datetime(terapia["fecha_inicio"], dayfirst=True).date() if terapia["fecha_inicio"] else None,
+                format="DD/MM/YYYY",
+                key=f"editar_fecha_inicio_atm_{terapia['id']}"
+            )
+
+            nueva_fecha_termino = st.date_input(
+                "Fecha término",
+                value=pd.to_datetime(terapia["fecha_termino"], dayfirst=True).date() if terapia["fecha_termino"] else None,
+                format="DD/MM/YYYY",
+                key=f"editar_fecha_termino_atm_{terapia['id']}"
+            )
+
+            estados_atm = [
+                "Vigente",
+                "Cambio",
+                "Suspendida",
+                "Término tratamiento"
+            ]
+
+            estado_actual = terapia["estado"] if terapia["estado"] in estados_atm else "Vigente"
+
+            nuevo_estado = st.selectbox(
+                "Estado",
+                estados_atm,
+                index=estados_atm.index(estado_actual),
+                key=f"editar_estado_atm_{terapia['id']}"
+            )
+
+            if st.button(
+                "Guardar cambios",
+                key=f"guardar_edicion_atm_{terapia['id']}"
+            ):
+                actualizar_fechas_estado_terapia_atm(
+                    terapia["id"],
+                    nueva_fecha_inicio,
+                    nueva_fecha_termino,
+                    nuevo_estado
+                )
+
+                st.success("Terapia ATM actualizada correctamente")
+                st.rerun()
 
 else:
     st.info("Este paciente no tiene terapias ATM registradas")
