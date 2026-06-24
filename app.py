@@ -856,7 +856,10 @@ elif menu == "Ficha clínica":
                     st.subheader(f"📅 {formatear_fecha(evo['fecha'])}")
 
                     st.markdown("**Evolución clínica**")
-                    st.markdown(evo["evolucion_clinica"])
+                    st.markdown(
+                        str(evo["evolucion_clinica"]),
+                        unsafe_allow_html=False
+                    )
 
                     st.divider()
 
