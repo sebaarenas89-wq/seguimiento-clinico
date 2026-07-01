@@ -927,7 +927,10 @@ elif menu == "Ficha clínica":
                     st.divider()
 
                     st.markdown("**Intervención farmacéutica**")
-                    st.write(evo["intervencion_farmaceutica"])
+                    st.markdown(
+                        str(evo["intervencion_farmaceutica"]).replace("\n", "<br>"),
+                        unsafe_allow_html=True
+                    )
 
                     if "editar_evolucion_version" not in st.session_state:
                         st.session_state.editar_evolucion_version = 0
