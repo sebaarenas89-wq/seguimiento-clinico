@@ -902,13 +902,17 @@ elif menu == "Ficha clínica":
                     st.divider()
 
                     st.markdown("**Resultados laboratorio**")
-                    st.markdown(evo["resultados_microbiologia"])
+                    st.markdown(
+                        str(evo["resultados_laboratorio"]).replace("\n", "<br>"),
+                        unsafe_allow_html=True
+                    )
+                    
 
                     st.divider()
 
                     st.markdown("**Resultados microbiología**")
                     st.markdown(
-                        str(evo["intervencion_farmaceutica"]).replace("\n", "<br>"),
+                        str(evo["resultados_microbiologia"]).replace("\n", "<br>"),
                         unsafe_allow_html=True
                     )
 
