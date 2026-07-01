@@ -38,6 +38,17 @@ def evaluar_alerta_atm(fila):
 
     return "🟢 Dentro de rango"
 
+def calcular_estado_visual_atm(fila):
+    estado = fila.get("estado", "")
+    fecha_termino = fila.get("fecha_termino", None)
+
+    if fecha_termino:
+        fecha_termino_dt = pd.to_datetime(fecha_termino).date()
+        if fecha_termino_dt < date.today():
+            return "Término tratamiento"
+
+    return estado
+
 
 def conectar_db():
     return psycopg2.connect(
