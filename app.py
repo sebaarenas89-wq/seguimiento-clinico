@@ -823,6 +823,11 @@ elif menu == "Ficha clínica":
         if len(terapias_df) > 0:
 
             terapias_mostrar = terapias_df.copy()
+            
+            terapias_mostrar["estado"] = terapias_mostrar.apply(
+                calcular_estado_visual_atm,
+                axis=1
+            )
             def colorear_estado(estado):
                 if estado == "Vigente":
                     return "🔵 Vigente"
