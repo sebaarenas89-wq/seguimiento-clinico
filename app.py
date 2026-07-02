@@ -1173,10 +1173,8 @@ elif menu == "Evolución diaria":
                 intervencion_farmaceutica
             )
 
-            st.session_state.evolucion_form_version += 1
-            st.session_state.expandir_evolucion = False
-
             st.success("Evolución guardada correctamente")
+            st.session_state.evolucion_form_version += 1
             st.rerun()
 
         st.divider()
