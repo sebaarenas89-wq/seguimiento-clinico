@@ -39,10 +39,10 @@ def evaluar_alerta_atm(fila):
     return "🟢 Dentro de rango"
 
 def calcular_estado_visual_atm(fila):
-    estado = fila.get("estado", "")
+    estado = str(fila.get("estado", "")).replace("🔵", "").strip()
     fecha_termino = fila.get("fecha_termino", None)
 
-    if fecha_termino:
+    if fecha_termino is not None and str(fecha_termino).strip() not in ["", "NaT", "None"]:
         fecha_termino_dt = pd.to_datetime(fecha_termino).date()
         if fecha_termino_dt < date.today():
             return "Término tratamiento"
