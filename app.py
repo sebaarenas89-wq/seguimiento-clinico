@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import psycopg2
 from datetime import date
+from streamlit_option_menu import option_menu
 
 st.set_page_config(page_title="Seguimiento Clínico", layout="wide")
 
