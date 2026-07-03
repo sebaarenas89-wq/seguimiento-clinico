@@ -536,7 +536,21 @@ crear_tablas()
 
 st.header("🏥 Seguimiento Clínico")
 
-opciones_menu = ["Pacientes", "Ficha clínica", "Evolución diaria", "Terapia ATM", "Búsqueda global"]
+opciones_menu = [
+    "Pacientes", 
+    "Ficha clínica", 
+    "Evolución diaria", 
+    "Terapia ATM", 
+    "Búsqueda global"
+]
+
+tab_ingreso, tab_evolucion, tab_atm, tab_busqueda, tab_ficha = st.tabs([
+    "🏠 Ingreso de paciente",
+    "📝 Evolución diaria",
+    "💊 Terapia antimicrobiana",
+    "🔎 Búsqueda global",
+    "📋 Ficha clínica"
+])
 
 if "menu_actual" not in st.session_state:
     st.session_state.menu_actual = "Pacientes"
