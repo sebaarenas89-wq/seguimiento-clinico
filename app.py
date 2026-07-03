@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import psycopg2
 from datetime import date
-from streamlit_option_menu import option_menu
 
 st.set_page_config(page_title="Seguimiento Clínico", layout="wide")
 
@@ -537,21 +536,7 @@ crear_tablas()
 
 st.header("🏥 Seguimiento Clínico")
 
-opciones_menu = [
-    "Pacientes", 
-    "Ficha clínica", 
-    "Evolución diaria", 
-    "Terapia ATM", 
-    "Búsqueda global"
-]
-
-tab_ingreso, tab_evolucion, tab_atm, tab_busqueda, tab_ficha = st.tabs([
-    "🏠 Ingreso de paciente",
-    "📝 Evolución diaria",
-    "💊 Terapia antimicrobiana",
-    "🔎 Búsqueda global",
-    "📋 Ficha clínica"
-])
+opciones_menu = ["Pacientes", "Ficha clínica", "Evolución diaria", "Terapia ATM", "Búsqueda global"]
 
 if "menu_actual" not in st.session_state:
     st.session_state.menu_actual = "Pacientes"
@@ -562,12 +547,12 @@ if "menu_radio" not in st.session_state:
 def cambiar_menu():
     st.session_state.menu_actual = st.session_state.menu_radio
 
-# st.sidebar.radio(
-#     "Menú",
-#     opciones_menu,
-#     key="menu_radio",
-#     on_change=cambiar_menu
-# )
+st.sidebar.radio(
+    "Menú",
+    opciones_menu,
+    key="menu_radio",
+    on_change=cambiar_menu
+)
 
 menu = st.session_state.menu_actual
 
@@ -576,7 +561,7 @@ menu = st.session_state.menu_actual
 # PACIENTES
 # --------------------------
 
-with tab_ingreso:
+if menu == "Pacientes":
 
     st.subheader("👤 Ingreso de paciente")
     
@@ -660,7 +645,7 @@ with tab_ingreso:
 # FICHA CLÍNICA
 # --------------------------
 
-with tab_ficha:
+elif menu == "Ficha clínica":
 
     st.subheader("📋 Ficha clínica")
 
@@ -1067,7 +1052,7 @@ with tab_ficha:
 # EVOLUCIÓN DIARIA
 # --------------------------
 
-with tab_evolucion:
+elif menu == "Evolución diaria":
 
     st.markdown("### 📝 Evolución clínica diaria")
     # st.info(
@@ -1217,7 +1202,7 @@ with tab_evolucion:
                 )
         else:
             st.info("No hay evoluciones registradas para este paciente")
-with tab_busqueda:
+elif menu == "Búsqueda global":
 
     st.header("🔍 Búsqueda global")
 
@@ -1280,7 +1265,7 @@ with tab_busqueda:
         st.info("Ingrese un término de búsqueda")
 
         
-with tab_atm:
+elif menu == "Terapia ATM":
 
     st.markdown("### 💊 Terapia Antimicrobiana")
     
