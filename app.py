@@ -561,12 +561,12 @@ if "menu_radio" not in st.session_state:
 def cambiar_menu():
     st.session_state.menu_actual = st.session_state.menu_radio
 
-st.sidebar.radio(
-    "Menú",
-    opciones_menu,
-    key="menu_radio",
-    on_change=cambiar_menu
-)
+# st.sidebar.radio(
+#     "Menú",
+#     opciones_menu,
+#     key="menu_radio",
+#     on_change=cambiar_menu
+# )
 
 menu = st.session_state.menu_actual
 
