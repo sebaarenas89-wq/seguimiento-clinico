@@ -575,8 +575,6 @@ menu = option_menu(
     default_index=opciones_menu.index(st.session_state.menu_actual)
 )
 
-st.session_state.menu_actual = menu
-
 # --------------------------
 # PACIENTES
 # --------------------------
