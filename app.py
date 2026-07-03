@@ -659,7 +659,7 @@ with tab_ingreso:
 # FICHA CLÍNICA
 # --------------------------
 
-elif menu == "Ficha clínica":
+with tab_ficha:
 
     st.subheader("📋 Ficha clínica")
 
