@@ -575,7 +575,7 @@ menu = st.session_state.menu_actual
 # PACIENTES
 # --------------------------
 
-if menu == "Pacientes":
+with tab_ingreso:
 
     st.subheader("👤 Ingreso de paciente")
     
