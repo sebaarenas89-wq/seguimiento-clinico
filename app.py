@@ -1066,7 +1066,7 @@ with tab_ficha:
 # EVOLUCIÓN DIARIA
 # --------------------------
 
-elif menu == "Evolución diaria":
+with tab_evolucion:
 
     st.markdown("### 📝 Evolución clínica diaria")
     # st.info(
