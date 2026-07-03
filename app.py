@@ -554,15 +554,28 @@ if "menu_radio" not in st.session_state:
 def cambiar_menu():
     st.session_state.menu_actual = st.session_state.menu_radio
 
-st.sidebar.radio(
-    "Menú",
-    opciones_menu,
-    key="menu_radio",
-    on_change=cambiar_menu
+# st.sidebar.radio(
+#    "Menú",
+#    opciones_menu,
+#    key="menu_radio",
+#    on_change=cambiar_menu
+# )
+
+menu = option_menu(
+    menu_title=None,
+    options=opciones_menu,
+    icons=[
+        "person-plus",
+        "clipboard2-pulse",
+        "journal-medical",
+        "capsule",
+        "search"
+    ],
+    orientation="horizontal",
+    default_index=opciones_menu.index(st.session_state.menu_actual)
 )
 
-menu = st.session_state.menu_actual
-
+st.session_state.menu_actual = menu
 
 # --------------------------
 # PACIENTES
