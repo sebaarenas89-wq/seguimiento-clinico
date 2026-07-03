@@ -1279,7 +1279,7 @@ elif menu == "Búsqueda global":
         st.info("Ingrese un término de búsqueda")
 
         
-elif menu == "Terapia ATM":
+with tab_atm:
 
     st.markdown("### 💊 Terapia Antimicrobiana")
     
