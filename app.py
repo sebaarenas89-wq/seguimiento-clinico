@@ -1216,7 +1216,7 @@ with tab_evolucion:
                 )
         else:
             st.info("No hay evoluciones registradas para este paciente")
-elif menu == "Búsqueda global":
+with tab_busqueda:
 
     st.header("🔍 Búsqueda global")
 
