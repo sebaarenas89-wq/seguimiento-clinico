@@ -149,7 +149,8 @@ def crear_tablas():
             id_paciente TEXT NOT NULL,
             servicio TEXT,
             fecha_ingreso DATE,
-            diagnosticos TEXT
+            diagnosticos TEXT,
+            antecedentes TEXT
         );
     """)
 
