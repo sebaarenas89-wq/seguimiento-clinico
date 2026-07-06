@@ -186,15 +186,15 @@ def crear_tablas():
     conn.close()
    
 
-def guardar_paciente(nombre, id_paciente, servicio, fecha_ingreso, diagnosticos):
+def guardar_paciente(nombre, id_paciente, servicio, fecha_ingreso, diagnosticos, antecedentes):
     conn = conectar_db()
     cursor = conn.cursor()
     cursor.execute("""
         INSERT INTO pacientes (
-            nombre, id_paciente, servicio, fecha_ingreso, diagnosticos
+            nombre, id_paciente, servicio, fecha_ingreso, diagnosticos, antecedentes
         )
-        VALUES (%s, %s, %s, %s, %s)
-    """, (nombre, id_paciente, servicio, str(fecha_ingreso), diagnosticos))
+        VALUES (%s, %s, %s, %s, %s, %s)
+    """, (nombre, id_paciente, servicio, str(fecha_ingreso), diagnosticos, antecedentes))
     conn.commit()
     conn.close()
 
