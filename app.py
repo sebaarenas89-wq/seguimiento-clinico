@@ -835,7 +835,7 @@ elif menu == "Ficha clínica":
                         nuevo_id_paciente,
                         nuevo_servicio,
                         nueva_fecha_ingreso,
-                        nuevos_diagnosticos
+                        nuevos_diagnosticos,
                         nuevos_antecedentes
                     )
                     st.session_state.paciente_ficha_id = paciente["id"]
