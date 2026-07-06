@@ -647,19 +647,20 @@ if menu == "Pacientes":
             )
 
         if st.button("Guardar paciente"):
-        if nombre == "" or id_paciente == "":
-            st.error("Debe ingresar nombre e ID del paciente")
-        else:
-            guardar_paciente(
-                nombre,
-                id_paciente,
-                servicio,
-                fecha_ingreso,
-                diagnosticos
-            )
-            st.success("Paciente guardado correctamente")
-            st.session_state.paciente_form_version += 1
-            st.rerun()
+            if nombre == "" or id_paciente == "":
+                st.error("Debe ingresar nombre e ID del paciente")
+            else:
+                guardar_paciente(
+                    nombre,
+                    id_paciente,
+                    servicio,
+                    fecha_ingreso,
+                    diagnosticos,
+                    antecedentes
+                )
+                st.success("Paciente guardado correctamente")
+                st.session_state.paciente_form_version += 1
+                st.rerun()
 
     st.divider()
     st.subheader("Pacientes registrados")
