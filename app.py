@@ -813,6 +813,13 @@ elif menu == "Ficha clínica":
                 key=f"diagnosticos_paciente_{paciente['id']}"
             )
 
+            nuevos_antecedentes = st.text_area(
+                "Antecedentes",
+                value=paciente.get("antecedentes", ""),
+                height=160,
+                key=f"antecedentes_paciente_{paciente['id']}"
+            )
+
             if st.button(
                 "Guardar cambios del paciente",
                 key=f"guardar_paciente_{paciente['id']}"
