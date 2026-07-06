@@ -635,8 +635,18 @@ if menu == "Pacientes":
                 height=220,
                 key=f"diagnosticos_nuevo_{st.session_state.paciente_form_version}"
             )
+            
+        with st.expander(
+            f"📋 Antecedentes{version_paciente}",
+            expanded=False
+        ):
+            antecedentes = st.text_area(
+                "Antecedentes",
+                height=180,
+                key=f"antecedentes_nuevo_{st.session_state.paciente_form_version}"
+            )
 
-    if st.button("Guardar paciente"):
+        if st.button("Guardar paciente"):
         if nombre == "" or id_paciente == "":
             st.error("Debe ingresar nombre e ID del paciente")
         else:
