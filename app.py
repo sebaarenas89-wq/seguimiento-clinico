@@ -199,12 +199,17 @@ def guardar_paciente(nombre, id_paciente, servicio, fecha_ingreso, diagnosticos,
     conn.close()
 
 
-def actualizar_paciente(paciente_id, nombre, id_paciente, servicio, fecha_ingreso, diagnosticos):
+def actualizar_paciente(paciente_id, nombre, id_paciente, servicio, fecha_ingreso, diagnosticos, antecedentes):
     conn = conectar_db()
     cursor = conn.cursor()
     cursor.execute("""
         UPDATE pacientes
-        SET nombre = %s, id_paciente = %s, servicio = %s, fecha_ingreso = %s, diagnosticos = %s
+        SET nombre = %s,
+            id_paciente = %s,
+            servicio = %s,
+            fecha_ingreso = %s,
+            diagnosticos = %s,
+            antecedentes = %s
         WHERE id = %s
     """, (
         nombre,
@@ -212,11 +217,11 @@ def actualizar_paciente(paciente_id, nombre, id_paciente, servicio, fecha_ingres
         servicio,
         str(fecha_ingreso),
         diagnosticos,
+        antecedentes,
         int(paciente_id)
     ))
     conn.commit()
     conn.close()
-
 
 def eliminar_paciente(paciente_id):
     conn = conectar_db()
