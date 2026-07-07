@@ -747,6 +747,13 @@ elif menu == "Ficha clínica":
         """
         )
 
+        st.markdown(
+            """
+            <div style="margin-top:-20px;"></div>
+            """,
+            unsafe_allow_html=True
+        )
+
         col_diag, col_ant = st.columns([3, 2])
          
         with col_diag:
