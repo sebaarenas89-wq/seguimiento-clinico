@@ -770,7 +770,7 @@ elif menu == "Ficha clínica":
             background-color:#f8f9fa;
             padding:5px 15px;
             border-radius:8px;
-            font-size:16px;
+            font-size:15px;
             margin-bottom:15px;
             white-space:pre-wrap;
         ">{diagnosticos_html}
@@ -794,7 +794,7 @@ elif menu == "Ficha clínica":
             background-color:#f8f9fa;
             padding:5px 15px;
             border-radius:8px;
-            font-size:16px;
+            font-size:15px;
             margin-bottom:15px;
             white-space:pre-wrap;
         ">
