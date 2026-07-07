@@ -784,7 +784,7 @@ elif menu == "Ficha clínica":
             st.markdown(
                 f"""
         <div style="
-            border-left:5px solid #28A745;
+            border-left:5px solid #4CAF50;
             background-color:#f8f9fa;
             padding:5px 15px;
             border-radius:8px;
