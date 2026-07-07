@@ -737,13 +737,24 @@ elif menu == "Ficha clínica":
 
         st.markdown(f"**👤 {paciente['nombre']}**")
 
+        fecha_ingreso_unidad = pd.to_datetime(
+            paciente["fecha_ingreso"]
+        ).date()
+
+        dias_unidad = (
+            date.today() - fecha_ingreso_unidad
+        ).days
+
         st.info(
             f"""
         🏥 **Servicio:** {paciente['servicio']}
 
         🆔 **ID paciente:** {paciente['id_paciente']}
 
-        📅 **Fecha ingreso:** {formatear_fecha(paciente['fecha_ingreso'])}
+        📅 **Ingreso a la unidad:** {formatear_fecha(paciente['fecha_ingreso'])}
+
+        🏥 **Días en la unidad:** {dias_unidad}
+        
         """
         )
 
