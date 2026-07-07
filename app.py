@@ -747,7 +747,7 @@ elif menu == "Ficha clínica":
         """
         )
 
-        col_diag, col_ant = st.columns([2, 1])
+        col_diag, col_ant = st.columns([3, 2])
          
         with col_diag:
             st.markdown("### 📋 Diagnósticos")
