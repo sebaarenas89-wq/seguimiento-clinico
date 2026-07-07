@@ -752,12 +752,12 @@ elif menu == "Ficha clínica":
         with col_diag:
             st.markdown("### Diagnósticos")
         
-        diagnosticos_html = str(
+            diagnosticos_html = str(
             paciente["diagnosticos"]
-        ).strip().replace("\n", "<br>")
+            ).strip().replace("\n", "<br>")
         
-        st.markdown(
-            f"""
+            st.markdown(
+                f"""
         <div style="
             border-left:5px solid #2E86C1;
             background-color:#f8f9fa;
