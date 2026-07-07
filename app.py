@@ -750,7 +750,7 @@ elif menu == "Ficha clínica":
         col_diag, col_ant = st.columns([2, 1])
          
         with col_diag:
-            st.markdown("### 🩺 Diagnósticos")
+            st.markdown("### 📋 Diagnósticos")
         
             diagnosticos_html = str(
             paciente["diagnosticos"]
@@ -774,7 +774,7 @@ elif menu == "Ficha clínica":
 
         with col_ant:
             
-            st.markdown("### 📜 Antecedentes")
+            st.markdown("### 📄 Antecedentes")
 
             antecedentes_html = str(
                 paciente.get("antecedentes", "")
