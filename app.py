@@ -763,6 +763,7 @@ elif menu == "Ficha clínica":
             background-color:#f8f9fa;
             padding:5px 15px;
             border-radius:8px;
+            min-height:340px;
             font-size:16px;
             margin-bottom:15px;
             white-space:pre-wrap;
@@ -787,6 +788,7 @@ elif menu == "Ficha clínica":
             background-color:#f8f9fa;
             padding:5px 15px;
             border-radius:8px;
+            min-height:340px;
             font-size:16px;
             margin-bottom:15px;
             white-space:pre-wrap;
