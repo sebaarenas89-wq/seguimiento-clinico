@@ -746,7 +746,11 @@ elif menu == "Ficha clínica":
         📅 **Fecha ingreso:** {formatear_fecha(paciente['fecha_ingreso'])}
         """
         )
-        st.markdown("**Diagnósticos**")
+
+        col_diag, col_ant = st.columns([2, 1])
+         
+        with col_diag:
+            st.markdown("### Diagnósticos")
         
         diagnosticos_html = str(
             paciente["diagnosticos"]
@@ -767,6 +771,32 @@ elif menu == "Ficha clínica":
         """,
             unsafe_allow_html=True
         )
+
+        with col_ant:
+            
+            st.markdown("### Antecedentes")
+
+            antecedentes_html = str(
+                paciente.get("antecedentes", "")
+            ).strip().replace("\n", "<br>")
+
+            st.markdown(
+                f"""
+        <div style="
+            border-left:5px solid #28A745;
+            background-color:#f8f9fa;
+            padding:5px 15px;
+            border-radius:8px;
+            font-size:16px;
+            margin-bottom:15px;
+            white-space:pre-wrap;
+        ">
+        {antecedentes_html if antecedentes_html else "<i>Sin antecedentes registrados</i>"}
+        </div>
+        """,
+                unsafe_allow_html=True
+            )
+            
         if "editar_paciente_version" not in st.session_state:
             st.session_state.editar_paciente_version = 0
 
