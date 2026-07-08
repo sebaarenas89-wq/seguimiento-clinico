@@ -827,7 +827,7 @@ if menu == "Pacientes":
     st.divider()
     st.subheader("Pacientes registrados")
 
-    pacientes_df = obtener_pacientes()
+    pacientes_df = obtener_pacientes(st.session_state.usuario_logueado["id"])
 
     if len(pacientes_df) > 0:
 
@@ -852,7 +852,7 @@ elif menu == "Ficha clínica":
 
     st.subheader("📋 Ficha clínica")
 
-    pacientes_df = obtener_pacientes()
+    pacientes_df = obtener_pacientes(st.session_state.usuario_logueado["id"])
 
     if len(pacientes_df) == 0:
         st.warning("No existen pacientes registrados")
@@ -1339,7 +1339,7 @@ elif menu == "Evolución diaria":
     if "evolucion_form_version" not in st.session_state:
         st.session_state.evolucion_form_version = 0
 
-    pacientes_df = obtener_pacientes()
+    pacientes_df = obtener_pacientes(st.session_state.usuario_logueado["id"])
 
     if len(pacientes_df) == 0:
         st.warning("Debe ingresar al menos un paciente antes de registrar evolución")
@@ -1531,7 +1531,7 @@ elif menu == "Terapia ATM":
     if "atm_form_version" not in st.session_state:
         st.session_state.atm_form_version = 0
 
-    pacientes_df = obtener_pacientes()
+    pacientes_df = obtener_pacientes(st.session_state.usuario_logueado["id"])
 
     if len(pacientes_df) == 0:
         st.warning("No existen pacientes registrados")
