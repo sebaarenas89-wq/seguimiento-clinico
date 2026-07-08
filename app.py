@@ -76,13 +76,15 @@ def buscar_global(texto_busqueda, usuario_id):
             fecha_ingreso,
             diagnosticos
         FROM pacientes
-        WHERE
+        WHERE usuario_id = %s
+        AND (
             nombre ILIKE %s
             OR id_paciente ILIKE %s
             OR diagnosticos ILIKE %s
+        )
         """,
         conn,
-        params=(texto, texto, texto)
+        params=(int(usuario_id), texto, texto, texto)
     )
     pacientes["origen"] = "Datos del paciente / Diagnóstico"
 
@@ -97,16 +99,25 @@ def buscar_global(texto_busqueda, usuario_id):
             p.diagnosticos
         FROM pacientes p
         INNER JOIN evoluciones e ON e.paciente_id = p.id
-        WHERE
+        WHERE p.usuario_id = %s
+        AND (
             e.evolucion_clinica ILIKE %s
             OR e.resultados_laboratorio ILIKE %s
             OR e.resultados_microbiologia ILIKE %s
             OR e.antimicrobianos_activos ILIKE %s
             OR e.intervencion_farmaceutica ILIKE %s
+        )
         """,
         conn,
-        params=(texto, texto, texto, texto, texto)
-    )
+        params=(
+            int(usuario_id),
+            texto,
+            texto,
+            texto,
+            texto,
+            texto
+
+        )
     evoluciones["origen"] = "Evolución clínica"
 
     terapias = pd.read_sql_query(
