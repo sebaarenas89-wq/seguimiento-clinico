@@ -164,6 +164,7 @@ def crear_tablas():
             fecha_ingreso DATE,
             diagnosticos TEXT,
             antecedentes TEXT
+            usuario_id BIGINT
         );
     """)
 
