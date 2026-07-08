@@ -807,6 +807,7 @@ if menu == "Pacientes":
                     fecha_ingreso,
                     diagnosticos,
                     antecedentes
+                    st.session_state.usuario_logueado["id"]
                 )
                 st.success("Paciente guardado correctamente")
                 st.session_state.paciente_form_version += 1
