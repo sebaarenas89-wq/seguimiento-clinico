@@ -326,6 +326,16 @@ def validar_login(email, password):
 
     return usuario    
 
+def contar_usuarios():
+    conn = conectar_db()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM usuarios")
+    total = cursor.fetchone()[0]
+
+    conn.close()
+    return total
+
 
 def guardar_evolucion(
     paciente_id,
