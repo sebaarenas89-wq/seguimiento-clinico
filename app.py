@@ -817,7 +817,7 @@ if menu == "Pacientes":
                     servicio,
                     fecha_ingreso,
                     diagnosticos,
-                    antecedentes
+                    antecedentes,
                     st.session_state.usuario_logueado["id"]
                 )
                 st.success("Paciente guardado correctamente")
