@@ -682,6 +682,16 @@ if st.session_state.usuario_logueado is None:
 
 st.header("🏥 Seguimiento Clínico")
 
+col_user, col_logout = st.columns([4, 1])
+
+with col_user:
+    st.caption(f"Usuario: {st.session_state.usuario_logueado['nombre']}")
+
+with col_logout:
+    if st.button("Cerrar sesión"):
+        st.session_state.usuario_logueado = None
+        st.rerun()
+
 opciones_menu = [
     "Pacientes", 
     "Evolución diaria",  
