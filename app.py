@@ -260,6 +260,72 @@ def obtener_pacientes():
     conn.close()
     return df
 
+def crear_usuario(nombre, email, password, rol="usuario"):
+    conn = conectar_db()
+    cursor = conn.cursor()
+
+    password_hash = bcrypt.hashpw(
+        password.encode("utf-8"),
+        bcrypt.gensalt()
+    ).decode("utf-8")
+
+    cursor.execute("""
+        INSERT INTO usuarios (
+            nombre,
+            email,
+            password_hash,
+            rol
+        )
+        VALUES (%s, %s, %s, %s)
+    """, (
+        nombre,
+        email.lower().strip(),
+        password_hash,
+        rol
+    ))
+
+    conn.commit()
+    conn.close()
+
+
+def obtener_usuario_por_email(email):
+    conn = conectar_db()
+
+    df = pd.read_sql_query(
+        """
+        SELECT *
+        FROM usuarios
+        WHERE email = %s
+        AND activo = TRUE
+        """,
+        conn,
+        params=(email.lower().strip(),)
+    )
+
+    conn.close()
+
+    if len(df) == 0:
+        return None
+
+    return df.iloc[0]
+
+
+def validar_login(email, password):
+    usuario = obtener_usuario_por_email(email)
+
+    if usuario is None:
+        return None
+
+    password_ok = bcrypt.checkpw(
+        password.encode("utf-8"),
+        usuario["password_hash"].encode("utf-8")
+    )
+
+    if not password_ok:
+        return None
+
+    return usuario    
+
 
 def guardar_evolucion(
     paciente_id,
