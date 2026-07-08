@@ -143,6 +143,18 @@ def crear_tablas():
     cursor = conn.cursor()
 
     cursor.execute("""
+        CREATE TABLE IF NOT EXISTS usuarios (
+        id BIGSERIAL PRIMARY KEY,
+        nombre TEXT NOT NULL,
+        email TEXT UNIQUE NOT NULL,
+        password_hash TEXT NOT NULL,
+        rol TEXT DEFAULT 'usuario',
+        activo BOOLEAN DEFAULT TRUE,
+        creado_en TIMESTAMP DEFAULT NOW()
+        );
+    """)
+
+    cursor.execute("""
         CREATE TABLE IF NOT EXISTS pacientes (
             id BIGSERIAL PRIMARY KEY,
             nombre TEXT NOT NULL,
