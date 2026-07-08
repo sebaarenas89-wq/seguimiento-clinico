@@ -86,6 +86,7 @@ def buscar_global(texto_busqueda, usuario_id):
         conn,
         params=(int(usuario_id), texto, texto, texto)
     )
+
     pacientes["origen"] = "Datos del paciente / Diagnóstico"
 
     evoluciones = pd.read_sql_query(
@@ -116,9 +117,18 @@ def buscar_global(texto_busqueda, usuario_id):
             texto,
             texto,
             texto
-
         )
+    )
+
     evoluciones["origen"] = "Evolución clínica"
+
+    resultados = pd.concat(
+        [pacientes, evoluciones],
+        ignore_index=True
+    ).drop_duplicates(subset=["id"])
+
+    conn.close()
+    return resultados
 
     terapias = pd.read_sql_query(
         """
