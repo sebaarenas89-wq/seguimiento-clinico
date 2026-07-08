@@ -62,7 +62,7 @@ def conectar_db():
         sslmode="require"
     )
 
-def buscar_global(texto_busqueda):
+def buscar_global(texto_busqueda, usuario_id):
     conn = conectar_db()
     texto = f"%{texto_busqueda}%"
 
