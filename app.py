@@ -255,9 +255,20 @@ def eliminar_paciente(paciente_id):
     conn.close()
 
 
-def obtener_pacientes():
+def obtener_pacientes(usuario_id):
     conn = conectar_db()
-    df = pd.read_sql_query("SELECT * FROM pacientes", conn)
+
+    df = pd.read_sql_query(
+        """
+        SELECT *
+        FROM pacientes
+        WHERE usuario_id = %s
+        ORDER BY nombre
+        """,
+        conn,
+        params=(int(usuario_id),)
+    )
+
     conn.close()
     return df
 
