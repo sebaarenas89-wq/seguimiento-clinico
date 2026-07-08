@@ -630,6 +630,56 @@ def eliminar_terapia_atm(terapia_id):
 
 crear_tablas()
 
+if "usuario_logueado" not in st.session_state:
+    st.session_state.usuario_logueado = None
+
+if contar_usuarios() == 0:
+    st.title("Crear usuario administrador")
+
+    nombre_admin = st.text_input("Nombre")
+    email_admin = st.text_input("Email")
+    password_admin = st.text_input("Contraseña", type="password")
+    password_admin_2 = st.text_input("Confirmar contraseña", type="password")
+
+    if st.button("Crear administrador"):
+        if nombre_admin == "" or email_admin == "" or password_admin == "":
+            st.error("Debe completar todos los campos")
+        elif password_admin != password_admin_2:
+            st.error("Las contraseñas no coinciden")
+        else:
+            crear_usuario(
+                nombre_admin,
+                email_admin,
+                password_admin,
+                rol="admin"
+            )
+            st.success("Administrador creado correctamente. Inicie sesión.")
+            st.rerun()
+
+    st.stop()
+
+if st.session_state.usuario_logueado is None:
+    st.title("Ingreso al sistema")
+
+    email_login = st.text_input("Email")
+    password_login = st.text_input("Contraseña", type="password")
+
+    if st.button("Ingresar"):
+        usuario = validar_login(email_login, password_login)
+
+        if usuario is None:
+            st.error("Email o contraseña incorrectos")
+        else:
+            st.session_state.usuario_logueado = {
+                "id": int(usuario["id"]),
+                "nombre": usuario["nombre"],
+                "email": usuario["email"],
+                "rol": usuario["rol"]
+            }
+            st.rerun()
+
+    st.stop()
+
 st.header("🏥 Seguimiento Clínico")
 
 opciones_menu = [
