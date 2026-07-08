@@ -1492,7 +1492,10 @@ elif menu == "Búsqueda global":
 
     if texto_busqueda.strip():
 
-        resultados_df = buscar_global(texto_busqueda.strip())
+        resultados_df = buscar_global(
+            texto_busqueda,
+            st.session_state.usuario_logueado["id"]
+        )
 
         if len(resultados_df) > 0:
 
