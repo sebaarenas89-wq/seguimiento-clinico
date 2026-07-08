@@ -545,9 +545,9 @@ st.header("🏥 Seguimiento Clínico")
 
 opciones_menu = [
     "Pacientes", 
-    "Ficha clínica", 
-    "Evolución diaria", 
+    "Evolución diaria",  
     "Terapia ATM", 
+    "Ficha clínica",
     "Búsqueda global"
 ]
 
