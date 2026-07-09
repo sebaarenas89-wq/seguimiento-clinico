@@ -1875,17 +1875,18 @@ if menu == "Usuarios":
         if nombre and email and password:
             crear_usuario(nombre, email, password)
             st.success("Usuario creado correctamente")
+            st.rerun()
         else:
             st.warning("Complete todos los campos")
 
-st.divider()
+    st.divider()
 
-st.subheader("👥 Usuarios registrados")
+    st.subheader("👥 Usuarios registrados")
 
-usuarios_df = obtener_usuarios()
+    usuarios_df = obtener_usuarios()
 
-st.dataframe(
-    usuarios_df,
-    use_container_width=True,
-    hide_index=True
-)
+    st.dataframe(
+        usuarios_df,
+        use_container_width=True,
+        hide_index=True
+    )
