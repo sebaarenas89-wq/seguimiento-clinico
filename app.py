@@ -1830,7 +1830,7 @@ elif menu == "Terapia ATM":
 else:
     st.info("Este paciente no tiene terapias ATM registradas")
 
-elif menu == "Usuarios":
+if menu == "Usuarios":
 
     st.header("👥 Administración de usuarios")
 
