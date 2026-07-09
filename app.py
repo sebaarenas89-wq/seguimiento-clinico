@@ -227,7 +227,7 @@ def guardar_paciente(nombre, id_paciente, servicio, cama, fecha_ingreso, diagnos
     cursor = conn.cursor()
     cursor.execute("""
         INSERT INTO pacientes (
-            nombre, id_paciente, servicio, fecha_ingreso, diagnosticos, antecedentes, usuario_id
+            nombre, id_paciente, servicio, cama, fecha_ingreso, diagnosticos, antecedentes, usuario_id
         )
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
     """, (nombre, id_paciente, servicio, cama, str(fecha_ingreso), diagnosticos, antecedentes, int(usuario_id)))
