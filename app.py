@@ -755,6 +755,7 @@ opciones_menu = [
 
 if st.session_state.usuario_logueado["rol"] == "admin":
     opciones_menu.append("Usuarios")
+    iconos_menu.append("people")
 
 if "menu_actual" not in st.session_state:
     st.session_state.menu_actual = "Pacientes"
