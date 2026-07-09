@@ -782,6 +782,22 @@ def cambiar_menu():
 #    on_change=cambiar_menu
 # )
 
+opciones_menu = [
+    "Pacientes",
+    "Evolución diaria",
+    "Terapia ATM",
+    "Ficha clínica",
+    "Búsqueda global"
+]
+
+iconos_menu = [
+    "person-plus",
+    "clipboard2-pulse",
+    "capsule",
+    "journal-medical",
+    "search"
+]
+
 if st.session_state.usuario_logueado["rol"] == "admin":
     opciones_menu.append("Usuarios")
     iconos_menu.append("people")
