@@ -183,7 +183,7 @@ def crear_tablas():
             id_paciente TEXT NOT NULL,
             servicio TEXT,
             cama TEXT,
-            fecha_ingreso DATE,,
+            fecha_ingreso DATE,
             diagnosticos TEXT,
             antecedentes TEXT,
             usuario_id BIGINT
