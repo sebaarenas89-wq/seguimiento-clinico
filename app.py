@@ -782,7 +782,7 @@ menu = option_menu(
         "capsule",
         "journal-medical",
         "search",
-        "people"
+        "people-fill"
     ]
     orientation="horizontal",
     default_index=opciones_menu.index(st.session_state.menu_actual)
