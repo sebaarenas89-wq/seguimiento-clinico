@@ -850,8 +850,30 @@ if menu == "Pacientes":
 
         servicio = st.selectbox(
             "Servicio",
-            ["UCI", "UTI", "UCO", "Medicina", "Cirugía"],
+            [
+                "UCI",
+                "UTI",
+                "UCO",
+                "Quinto A",
+                "Quinto B",
+                "Quinto C",
+                "Sexto A",
+                "Sexto B",
+                "Sexto C",
+                "Séptimo A",
+                "Séptimo B",
+                "Séptimo C",
+                "Séptimo D", 
+                "Pediatría",
+                "UCI-pediatría",
+                "UCI-neo",
+            ],    
             key=f"servicio_nuevo_{st.session_state.paciente_form_version}"
+        )
+
+        cama = st.text_input(
+            "Cama",
+            key=f"cama_paciente_nuevo_{st.session_state.paciente_form_version}"
         )
 
     with col2:
