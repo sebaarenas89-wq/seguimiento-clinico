@@ -773,17 +773,18 @@ def cambiar_menu():
 #    on_change=cambiar_menu
 # )
 
+if st.session_state.usuario_logueado["rol"] == "admin":
+    opciones_menu.append("Usuarios")
+    iconos_menu.append("people")
+
+if st.session_state.menu_actual not in opciones_menu:
+    st.session_state.menu_actual = "Pacientes"
+    st.session_state.menu_radio = "Pacientes"
+
 menu = option_menu(
     menu_title=None,
     options=opciones_menu,
-    icons=[
-        "person-plus",
-        "clipboard2-pulse",
-        "capsule",
-        "journal-medical",
-        "search",
-        "people-fill"
-    ],
+    icons=iconos_menu,
     orientation="horizontal",
     default_index=opciones_menu.index(st.session_state.menu_actual)
 )
