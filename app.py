@@ -368,7 +368,27 @@ def contar_usuarios():
 
     conn.close()
     return total
+    
+def obtener_usuarios():
+    conn = conectar_db()
 
+    df = pd.read_sql_query(
+        """
+        SELECT
+            id,
+            nombre,
+            email,
+            rol,
+            activo,
+            creado_en
+        FROM usuarios
+        ORDER BY creado_en DESC
+        """,
+        conn
+    )
+
+    conn.close()
+    return df
 
 def guardar_evolucion(
     paciente_id,
