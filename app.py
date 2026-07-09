@@ -753,8 +753,17 @@ opciones_menu = [
     "Búsqueda global",
 ]
 
+iconos_menu = [
+    "person-plus",
+    "clipboard2-pulse",
+    "capsule",
+    "journal-medical",
+    "search"
+]
+
 if st.session_state.usuario_logueado["rol"] == "admin":
     opciones_menu.append("Usuarios")
+    iconos_menu.append("people")
     
 
 if "menu_actual" not in st.session_state:
@@ -791,6 +800,7 @@ menu = option_menu(
 
 if menu != st.session_state.menu_actual:
     st.session_state.menu_actual = menu
+    st.session_state.menu_radio = menu
     st.rerun()
 
 menu = st.session_state.menu_actual
