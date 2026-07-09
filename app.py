@@ -1851,4 +1851,14 @@ if menu == "Usuarios":
         else:
             st.warning("Complete todos los campos")
 
+st.divider()
 
+st.subheader("👥 Usuarios registrados")
+
+usuarios_df = obtener_usuarios()
+
+st.dataframe(
+    usuarios_df,
+    use_container_width=True,
+    hide_index=True
+)
