@@ -751,7 +751,6 @@ opciones_menu = [
     "Terapia ATM", 
     "Ficha clínica",
     "Búsqueda global",
-    "Usuarios"
 ]
 
 if st.session_state.usuario_logueado["rol"] == "admin":
