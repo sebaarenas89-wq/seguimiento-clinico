@@ -911,6 +911,7 @@ if menu == "Pacientes":
                     nombre,
                     id_paciente,
                     servicio,
+                    cama,
                     fecha_ingreso,
                     diagnosticos,
                     antecedentes,
