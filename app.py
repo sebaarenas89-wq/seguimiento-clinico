@@ -783,7 +783,7 @@ menu = option_menu(
         "journal-medical",
         "search",
         "people-fill"
-    ]
+    ],
     orientation="horizontal",
     default_index=opciones_menu.index(st.session_state.menu_actual)
 )
