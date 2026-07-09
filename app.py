@@ -182,7 +182,8 @@ def crear_tablas():
             nombre TEXT NOT NULL,
             id_paciente TEXT NOT NULL,
             servicio TEXT,
-            fecha_ingreso DATE,
+            cama TEXT,
+            fecha_ingreso DATE,,
             diagnosticos TEXT,
             antecedentes TEXT,
             usuario_id BIGINT
@@ -1072,7 +1073,24 @@ elif menu == "Ficha clínica":
                 key=f"id_paciente_{paciente['id']}"
             )
 
-            servicios = ["UCI", "UTI", "UCO", "Medicina", "Cirugía"]
+            servicios = [
+                "UCI",
+                "UTI",
+                "UCO",
+                "Quinto A",
+                "Quinto B",
+                "Quinto C",
+                "Sexto A",
+                "Sexto B",
+                "Sexto C",
+                "Séptimo A",
+                "Séptimo B",
+                "Séptimo C",
+                "Séptimo D", 
+                "Pediatría",
+                "UCI-pediatría",
+                "UCI-neo",                
+            ]
             servicio_actual = paciente["servicio"] if paciente["servicio"] in servicios else "UCI"
 
             nuevo_servicio = st.selectbox(
