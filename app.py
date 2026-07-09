@@ -753,6 +753,9 @@ opciones_menu = [
     "Búsqueda global"
 ]
 
+if st.session_state.usuario_logueado["rol"] == "admin":
+    opciones_menu.append("Usuarios")
+
 if "menu_actual" not in st.session_state:
     st.session_state.menu_actual = "Pacientes"
 
@@ -775,10 +778,11 @@ menu = option_menu(
     icons=[
         "person-plus",
         "clipboard2-pulse",
-        "journal-medical",
         "capsule",
-        "search"
-    ],
+        "journal-medical",
+        "search",
+        "people"
+    ]
     orientation="horizontal",
     default_index=opciones_menu.index(st.session_state.menu_actual)
 )
