@@ -1829,3 +1829,26 @@ elif menu == "Terapia ATM":
 
 else:
     st.info("Este paciente no tiene terapias ATM registradas")
+
+elif menu == "Usuarios":
+
+    st.header("👥 Administración de usuarios")
+
+    if st.session_state.usuario_logueado["rol"] != "admin":
+        st.error("Acceso sólo para administradores.")
+        st.stop()
+
+    st.subheader("Crear nuevo usuario")
+
+    nombre = st.text_input("Nombre")
+    email = st.text_input("Email")
+    password = st.text_input("Contraseña", type="password")
+
+    if st.button("Crear usuario"):
+        if nombre and email and password:
+            crear_usuario(nombre, email, password)
+            st.success("Usuario creado correctamente")
+        else:
+            st.warning("Complete todos los campos")
+
+
