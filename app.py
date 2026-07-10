@@ -369,6 +369,98 @@ def validar_login(email, password):
 
     return usuario    
 
+TIEMPO_INACTIVIDAD_MINUTOS = 30
+COOKIE_SESION = "sesion_usuario"
+
+
+def guardar_sesion_cookie(usuario):
+    ahora = datetime.now(timezone.utc)
+
+    datos_sesion = {
+        "usuario_id": int(usuario["id"]),
+        "ultima_actividad": ahora.isoformat()
+    }
+
+    cookies[COOKIE_SESION] = json.dumps(datos_sesion)
+    cookies.save()
+
+
+def eliminar_sesion_cookie():
+    if COOKIE_SESION in cookies:
+        del cookies[COOKIE_SESION]
+        cookies.save()
+
+
+def obtener_usuario_por_id(usuario_id):
+    conn = conectar_db()
+
+    df = pd.read_sql_query(
+        """
+        SELECT
+            id,
+            nombre,
+            email,
+            rol,
+            activo
+        FROM usuarios
+        WHERE id = %s
+        """,
+        conn,
+        params=(int(usuario_id),)
+    )
+
+    conn.close()
+
+    if len(df) == 0:
+        return None
+
+    usuario = df.iloc[0]
+
+    if not bool(usuario["activo"]):
+        return None
+
+    return usuario
+
+def recuperar_sesion_cookie():
+    valor_cookie = cookies.get(COOKIE_SESION)
+
+    if not valor_cookie:
+        return None
+
+    try:
+        datos = json.loads(valor_cookie)
+
+        ultima_actividad = datetime.fromisoformat(
+            datos["ultima_actividad"]
+        )
+
+        ahora = datetime.now(timezone.utc)
+
+        if ahora - ultima_actividad > timedelta(
+            minutes=TIEMPO_INACTIVIDAD_MINUTOS
+        ):
+            eliminar_sesion_cookie()
+            return None
+
+        usuario = obtener_usuario_por_id(
+            datos["usuario_id"]
+        )
+
+        if usuario is None:
+            eliminar_sesion_cookie()
+            return None
+
+        return usuario
+
+    except (
+        KeyError,
+        ValueError,
+        TypeError,
+        json.JSONDecodeError
+    ):
+        eliminar_sesion_cookie()
+        return None
+    
 def contar_usuarios():
     conn = conectar_db()
     cursor = conn.cursor()
