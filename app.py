@@ -881,6 +881,7 @@ if menu == "Pacientes":
     with col2:
         fecha_ingreso = st.date_input(
             "Fecha ingreso",
+            value=None,
             format="DD/MM/YYYY",
             key=f"fecha_ingreso_nuevo_{st.session_state.paciente_form_version}"
         )
@@ -911,6 +912,9 @@ if menu == "Pacientes":
                 
             elif servicio == "Seleccione servicio":
                 st.error("Debe seleccionar un servicio")
+
+            elif fecha_ingreso is None:
+                st.error("Debe ingresar la fecha de ingreso")
                 
             else:
                 guardar_paciente(
