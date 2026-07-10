@@ -3,3 +3,4 @@ pandas
 psycopg2-binary
 streamlit-option-menu
 bcrypt
+streamlit-cookies-manager
