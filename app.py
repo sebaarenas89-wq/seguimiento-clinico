@@ -851,6 +851,7 @@ if menu == "Pacientes":
         servicio = st.selectbox(
             "Servicio",
             [
+                "Seleccione servicio",
                 "UCI",
                 "UTI",
                 "UCO",
@@ -867,7 +868,8 @@ if menu == "Pacientes":
                 "Pediatría",
                 "UCI-pediatría",
                 "UCI-neo",
-            ],    
+            ],
+            index=0,
             key=f"servicio_nuevo_{st.session_state.paciente_form_version}"
         )
 
@@ -906,6 +908,10 @@ if menu == "Pacientes":
         if st.button("Guardar paciente"):
             if nombre == "" or id_paciente == "":
                 st.error("Debe ingresar nombre e ID del paciente")
+                
+            elif servicio == "Seleccione servicio":
+                st.error("Debe seleccionar un servicio")
+                
             else:
                 guardar_paciente(
                     nombre,
@@ -1097,6 +1103,7 @@ elif menu == "Ficha clínica":
             )
 
             servicios = [
+                "Seleccione servicio",
                 "UCI",
                 "UTI",
                 "UCO",
