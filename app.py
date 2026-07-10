@@ -2,10 +2,19 @@ import streamlit as st
 import pandas as pd
 import psycopg2
 import bcrypt
-from datetime import datetime, date
+import json
+from datetime import datetime, date, timedelta, timezone
 from streamlit_option_menu import option_menu
+from streamlit_cookies_manager import EncryptedCookieManager
 
 st.set_page_config(page_title="Seguimiento Clínico", layout="wide")
+cookies = EncryptedCookieManager(
+    prefix="seguimiento_clinico/",
+    password=st.secrets["cookies"]["password"]
+)
+
+if not cookies.ready():
+    st.stop()
 
 
 def formatear_fecha(fecha):
