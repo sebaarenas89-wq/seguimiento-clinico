@@ -856,7 +856,7 @@ if st.session_state.usuario_logueado is None:
                 "email": usuario["email"],
                 "rol": usuario["rol"]
             }
-
+            st.session_state.logout_realizado = False
             guardar_sesion_cookie(usuario)
             st.rerun()
 
