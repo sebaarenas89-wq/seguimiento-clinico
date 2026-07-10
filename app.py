@@ -386,9 +386,8 @@ def guardar_sesion_cookie(usuario):
 
 
 def eliminar_sesion_cookie():
-    if COOKIE_SESION in cookies:
-        del cookies[COOKIE_SESION]
-        cookies.save()
+    cookies[COOKIE_SESION] = ""
+    cookies.save()
 
 
 def obtener_usuario_por_id(usuario_id):
@@ -788,7 +787,22 @@ crear_tablas()
 if "usuario_logueado" not in st.session_state:
     st.session_state.usuario_logueado = None
 
-if st.session_state.usuario_logueado is None:
+if "logout_realizado" not in st.session_state:
+    st.session_state.usuario_logueado = {
+        "id": int(usuario["id"]),
+        "nombre": usuario["nombre"],
+        "email": usuario["email"],
+        "rol": usuario["rol"]
+    }
+    st.session_state.logout_realizado = False
+    guardar_sesion_cookie(usuario)
+
+    st.rerun()
+
+if (
+    st.session_state.usuario_logueado is None
+    and not st.session_state.logout_realizado
+):
     usuario_recuperado = recuperar_sesion_cookie()
 
     if usuario_recuperado is not None:
@@ -866,9 +880,14 @@ with col_user:
 
 with col_logout:
     if st.button("Cerrar sesión"):
-        eliminar_sesion_cookie()
-        st.session_state.usuario_logueado = None
-        st.rerun()
+    eliminar_sesion_cookie()
+
+    st.session_state.usuario_logueado = None
+    st.session_state.logout_realizado = True
+    st.session_state.menu_actual = "Pacientes"
+    st.session_state.menu_radio = "Pacientes"
+
+    st.rerun()
 
 opciones_menu = [
     "Pacientes", 
