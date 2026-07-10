@@ -788,16 +788,7 @@ if "usuario_logueado" not in st.session_state:
     st.session_state.usuario_logueado = None
 
 if "logout_realizado" not in st.session_state:
-    st.session_state.usuario_logueado = {
-        "id": int(usuario["id"]),
-        "nombre": usuario["nombre"],
-        "email": usuario["email"],
-        "rol": usuario["rol"]
-    }
     st.session_state.logout_realizado = False
-    guardar_sesion_cookie(usuario)
-
-    st.rerun()
 
 if (
     st.session_state.usuario_logueado is None
