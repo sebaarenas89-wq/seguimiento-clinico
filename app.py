@@ -866,6 +866,7 @@ with col_user:
 
 with col_logout:
     if st.button("Cerrar sesión"):
+        eliminar_sesion_cookie()
         st.session_state.usuario_logueado = None
         st.rerun()
 
