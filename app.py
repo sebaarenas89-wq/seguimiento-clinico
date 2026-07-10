@@ -880,14 +880,14 @@ with col_user:
 
 with col_logout:
     if st.button("Cerrar sesión"):
-    eliminar_sesion_cookie()
+        eliminar_sesion_cookie()
 
-    st.session_state.usuario_logueado = None
-    st.session_state.logout_realizado = True
-    st.session_state.menu_actual = "Pacientes"
-    st.session_state.menu_radio = "Pacientes"
+        st.session_state.usuario_logueado = None
+        st.session_state.logout_realizado = True
+        st.session_state.menu_actual = "Pacientes"
+        st.session_state.menu_radio = "Pacientes"
 
-    st.rerun()
+        st.rerun()
 
 opciones_menu = [
     "Pacientes", 
