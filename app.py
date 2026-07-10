@@ -788,6 +788,17 @@ crear_tablas()
 if "usuario_logueado" not in st.session_state:
     st.session_state.usuario_logueado = None
 
+if st.session_state.usuario_logueado is None:
+    usuario_recuperado = recuperar_sesion_cookie()
+
+    if usuario_recuperado is not None:
+        st.session_state.usuario_logueado = {
+            "id": int(usuario_recuperado["id"]),
+            "nombre": usuario_recuperado["nombre"],
+            "email": usuario_recuperado["email"],
+            "rol": usuario_recuperado["rol"]
+        }
+
 if contar_usuarios() == 0:
     st.title("Crear usuario administrador")
 
@@ -840,6 +851,8 @@ if st.session_state.usuario_logueado is None:
                 "email": usuario["email"],
                 "rol": usuario["rol"]
             }
+
+            guardar_sesion_cookie(usuario)
             st.rerun()
 
     st.stop()
