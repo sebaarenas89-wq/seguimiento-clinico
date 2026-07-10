@@ -715,11 +715,20 @@ if contar_usuarios() == 0:
 if st.session_state.usuario_logueado is None:
     st.title("Ingreso al sistema")
 
-    email_login = st.text_input("Email")
-    password_login = st.text_input("Contraseña", type="password")
+    with st.form("login_form"):
+        email_login = st.text_input("Email")
+        password_login = st.text_input(
+            "Contraseña",
+            type="password"
+        )
 
-    if st.button("Ingresar"):
-        usuario = validar_login(email_login, password_login)
+        ingresar = st.form_submit_button("Ingresar")
+
+    if ingresar:
+        usuario = validar_login(
+            email_login,
+            password_login
+        )
 
         if usuario is None:
             st.error("Email o contraseña incorrectos")
